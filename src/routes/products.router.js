@@ -1,14 +1,13 @@
 import { Router } from "express";
-import { uploader } from "../utils.js";
 import ProductManager from "../ProductManager.js";
 
 const router = Router();
-let products = [];
 const productManager = new ProductManager();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   const limit = req.query.limit;
-  const products = productManager.getProducts();
+  const products = await productManager.getProducts();
+console.log(products);
 
   if (!limit) {
     res.send({ products });
@@ -21,33 +20,29 @@ router.get("/", (req, res) => {
   }
 });
 
-router.get("/:pid", (req, res) => {
+router.get("/:pid", async (req, res) => {
   const pid = parseInt(req.params.pid);
-  const product = productManager.getProductById(pid);
+  const product = await productManager.getProductById(pid);
   res.send(product);
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const product = req.body;
-  let products = productManager.getProduct();
-  products = productManager.addProduct(product)
-  return res.send({ status: "Success" });
+  const products = await productManager.addProduct(product)
+  return res.send({ products /*status: "Success"*/ });
 });
 
-router.put("/:pid/", (req, res) => {
+router.put("/:pid", async (req, res) => {
   const pid = parseInt(req.params.pid);
-  const updateProduct = res.body
-  let products = productManager.getProduct();
-  const productIndex = products.findIndex(
-    (productToUpdate) => productToUpdate.id === pid
-  );
-  producs = productManager.updateProduct(pid, updateProduct)
+  const updateProduct = req.body;
+  const products = await productManager.updateProduct(pid, updateProduct)
+  return res.send({ products });
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:pid", async (req, res) => {
   const pid = parseInt(req.params.pid);
-  let products = res-body;
-  products = productManager.deleteProduct(pid)
+  const products = await productManager.deleteProduct(pid);
+  return res.send({ products });
 })
 
 export default router;

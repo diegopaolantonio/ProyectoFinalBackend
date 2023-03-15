@@ -2,7 +2,7 @@ import fs from "fs";
 
 export default class ProductManager {
   constructor() {
-    this.path = "./files/fileproducts.json";
+    this.path = "./files/productos.json";
   }
 
   getProducts = async () => {
@@ -23,7 +23,7 @@ export default class ProductManager {
     );
 
     if (productIndex === -1) {
-      return "Not found";
+      return "Id not found";
     }
     return products[productIndex];
   };
