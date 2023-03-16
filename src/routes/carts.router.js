@@ -5,10 +5,15 @@ const router = Router();
 const cartManager = new CartManager();
 let carts = [];
 
-router.get("/:cid", async (req, res) => {
-  const cid = req.params.cid;  
-  const carts = await cartManager.getCartById(cid);
+router.get("/", async (req, res) => {
+  const carts = await cartManager.getCarts();
   res.send({ carts });
+});
+
+router.get("/:cid", async (req, res) => {
+  const cid = parseInt(req.params.cid);
+  const cartsProd = await cartManager.getCartById(cid);
+  res.send({ cartsProd });
 });
 
 router.post("/", async (req, res) => {
@@ -16,11 +21,11 @@ router.post("/", async (req, res) => {
   return res.send({ carts });
 });
 
-router.post("/:cid/porduct/:pid", async (req, res) => {
-  const cid = req.params.cid;
-  const pid = req.params.pid;
-  
-  const carts = await cartManager.addCarts();
+router.post("/:cid/product/:pid", async (req, res) => {
+  const cid = parseInt(req.params.cid);
+  const pid = parseInt(req.params.pid);
+
+  const carts = await cartManager.updateCart(cid, pid);
   return res.send({ carts });
 });
 

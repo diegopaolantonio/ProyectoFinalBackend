@@ -19,73 +19,75 @@ export default class CartManager {
   };
 
   getCartById = async (cartId) => {
-    const carts = await this.getcarts();
+    const carts = await this.getCarts();
 
-    const cartIndex = carts.findIndex(
-      (cart) => cart.id === cartId
-    );
+    const cartIndex = carts.findIndex((cart) => cart.id === cartId);
 
     if (cartIndex === -1) {
       return "Id not found";
     }
-    return carts[cartIndex];
+    return carts[cartIndex].products;
   };
 
-// Agrega el producto al archivo
-addCart = async (cart) => {
-  let carts = await this.getCarts();
-
-  if (carts.length === 0) {
-    carts: {
-      id = 1,
-      products = []
-    };
-  } else {
-    carts: {
-      id = carts[carts.length - 1].id + 1,
-      products = []
-    };
-  }
-  return carts;
-};
-
-// Actualiza producto del id indicado con los campos enviados
-updateCart = async (cartId, productId) => {
-  const carts = await this.getCarts();
-
-  const products = await productManager.getProducts();
-  const productIndex = products.findIndex(
-    (product) => product.id === productId
-  );
-
-  if (productIndex === -1) {
-    return "Product not exist"
-  } else {
-
-  const cartIndex = carts.products.findIndex(
-    (cartToUpdate) => cartToUpdate.id === cartId
-  );
-
-  if (cartIndex === -1) {
-    carts.products[carts.length + 1] = {
-      product: productId,
-      quantity: 1
-    };
-
+  // Agrega el producto al archivo
+  addCart = async () => {
+    let carts = await this.getCarts();
+    if (carts.length === 0) {
+      carts = [
+        {
+          id: 1,
+          products: [],
+        },
+      ];
+    } else {
+      const cart = {
+        id: carts[carts.length - 1].id + 1,
+        products: [],
+      };
+      carts.push(cart);
+    }
     const string = JSON.stringify(carts, null, "\t");
     await fs.promises.writeFile(this.path, string);
+    return carts;
+  };
 
-    return carts.products[carts.length];
-  } else {
-    carts[cartIndex].quantity++;
+  // Actualiza producto del id indicado con los campos enviados
+  updateCart = async (cartId, productId) => {
+    const carts = await this.getCarts();
+    const products = await productManager.getProducts();
+    let cartProductIndex;
+    const cartIndex = carts.findIndex((cart) => cart.id === cartId);
 
-    const string = JSON.stringify(carts, null, "\t");
-    await fs.promises.writeFile(this.path, string);
+    if (cartIndex === -1) {
+      return "Cart not found";
+    } else {
+      const productIndex = products.findIndex(
+        (product) => product.id === productId
+      );
+      if (productIndex === -1) {
+        return "Product not exist";
+      } else {
+        cartProductIndex = -1;
+        carts[cartIndex].products.forEach((element, index) => {
+          if (element.product === productId) {
+            cartProductIndex = index;
+          }
+        });
 
-    return carts[cartIndex];
-  }}
-};
+        if (cartProductIndex === -1) {
+          carts[cartIndex].products[carts[cartIndex].products.length] = {
+            product: productId,
+            quantity: 1,
+          };
+        } else {
+          carts[cartIndex].products[cartProductIndex].quantity++;
+        }
 
+        const string = JSON.stringify(carts, null, "\t");
+        await fs.promises.writeFile(this.path, string);
+
+        return carts[cartIndex];
+      }
+    }
+  };
 }
-
-
