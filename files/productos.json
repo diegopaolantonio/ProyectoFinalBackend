@@ -97,5 +97,15 @@
 		"category": "entrar",
 		"id": 9,
 		"status": true
+	},
+	{
+		"title": "1100",
+		"description": "HMI",
+		"price": 1240,
+		"code": "Siemen8550",
+		"stock": 256,
+		"category": "entrar",
+		"status": false,
+		"id": 10
 	}
 ]

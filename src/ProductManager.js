@@ -5,6 +5,7 @@ export default class ProductManager {
     this.path = "./files/productos.json";
   }
 
+  //Funcion para obtener todos los datos del carchivo productos.json
   getProducts = async () => {
     if (fs.existsSync(this.path)) {
       const fileData = await fs.promises.readFile(this.path, "utf-8");
@@ -15,6 +16,7 @@ export default class ProductManager {
     }
   };
 
+  // Funcion para obtener un product especifico por el id
   getProductById = async (productId) => {
     const products = await this.getProducts();
 
@@ -30,7 +32,7 @@ export default class ProductManager {
     return products[productIndex];
   };
 
-  // Agrega el producto al archivo
+  // Funcion para agregar un product al archivo
   addProduct = async (product) => {
     let products = await this.getProducts();
 
@@ -54,8 +56,7 @@ export default class ProductManager {
       (product.code ?? false) &&
       (product.price ?? false) &&
       (product.stock ?? false) &&
-      (product.category ?? false) &&
-      (product.thumbnail ?? false)
+      (product.category ?? false)
     ) {
       if (!this.productToAdd) {
         products.push(product);
@@ -73,7 +74,7 @@ export default class ProductManager {
     }
   };
 
-  // Actualiza producto del id indicado con los campos enviados
+  // Funcion para actualizar un product por el id en el archivo
   updateProduct = async (productId, product) => {
     const products = await this.getProducts();
 
@@ -93,7 +94,7 @@ export default class ProductManager {
     }
   };
 
-  // Elimina un producto por el id
+  // Funcion para eliminar un product por el id en el archivo
   deleteProduct = async (productId) => {
     const products = await this.getProducts();
 

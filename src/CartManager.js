@@ -8,6 +8,7 @@ export default class CartManager {
     this.path = "./files/carrito.json";
   }
 
+  // Funcion para obtener los datos del archivo carrito.jason
   getCarts = async () => {
     if (fs.existsSync(this.path)) {
       const fileData = await fs.promises.readFile(this.path, "utf-8");
@@ -18,6 +19,7 @@ export default class CartManager {
     }
   };
 
+  // Funcion para obtener los datos de un cart especifico por el id
   getCartById = async (cartId) => {
     const carts = await this.getCarts();
 
@@ -29,7 +31,7 @@ export default class CartManager {
     return carts[cartIndex].products;
   };
 
-  // Agrega el producto al archivo
+  // Funcion para agregar un cart al arcihvo
   addCart = async () => {
     let carts = await this.getCarts();
     if (carts.length === 0) {
@@ -51,7 +53,7 @@ export default class CartManager {
     return carts;
   };
 
-  // Actualiza producto del id indicado con los campos enviados
+  // Funcion para agregar un producto por el id al cart undicado por su id
   updateCart = async (cartId, productId) => {
     const carts = await this.getCarts();
     const products = await productManager.getProducts();
