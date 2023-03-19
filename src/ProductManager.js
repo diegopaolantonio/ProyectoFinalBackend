@@ -19,11 +19,12 @@ export default class ProductManager {
   // Funcion para obtener un product especifico por el id
   getProductById = async (productId) => {
     const products = await this.getProducts();
+    let productIndex = -1;
 
-    const productIndex = products.findIndex((product) => {
-      product.id === productId;
-      console.log(product.id);
-      console.log(productId);
+    products.forEach((element, index) => {
+      if (element.id === productId) {
+        productIndex = index;
+      }
     });
 
     if (productIndex === -1) {
