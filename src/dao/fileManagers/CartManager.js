@@ -22,8 +22,15 @@ export default class CartManager {
   // Funcion para obtener los datos de un cart especifico por el id
   getCartById = async (cartId) => {
     const carts = await this.getCarts();
+    const cartIdInt = parseInt(cartId);
+    let cartIndex = -1;
 
-    const cartIndex = carts.findIndex((cart) => cart.id === cartId);
+    carts.forEach((element, index) => {
+      if (element._id === cartIdInt) {
+        cartIndex = index;
+      }
+    });
+    console.log(carts);
 
     if (cartIndex === -1) {
       return "Id not found";
@@ -37,13 +44,13 @@ export default class CartManager {
     if (carts.length === 0) {
       carts = [
         {
-          id: 1,
+          _id: 1,
           products: [],
         },
       ];
     } else {
       const cart = {
-        id: carts[carts.length - 1].id + 1,
+        _id: carts[carts.length - 1]._id + 1,
         products: [],
       };
       carts.push(cart);
@@ -55,30 +62,32 @@ export default class CartManager {
 
   // Funcion para agregar un producto por el id al cart undicado por su id
   updateCart = async (cartId, productId) => {
+    const cartIdInt = parseInt(cartId);
+    const productIdInt = parseInt(productId);
     const carts = await this.getCarts();
     const products = await productManager.getProducts();
     let cartProductIndex;
-    const cartIndex = carts.findIndex((cart) => cart.id === cartId);
+    const cartIndex = carts.findIndex((cart) => cart._id === cartIdInt);
 
     if (cartIndex === -1) {
       return "Cart not found";
     } else {
       const productIndex = products.findIndex(
-        (product) => product.id === productId
+        (product) => product._id === productIdInt
       );
       if (productIndex === -1) {
         return "Product not exist";
       } else {
         cartProductIndex = -1;
         carts[cartIndex].products.forEach((element, index) => {
-          if (element.product === productId) {
+          if (element.product === productIdInt) {
             cartProductIndex = index;
           }
         });
 
         if (cartProductIndex === -1) {
           carts[cartIndex].products[carts[cartIndex].products.length] = {
-            product: productId,
+            product: productIdInt,
             quantity: 1,
           };
         } else {

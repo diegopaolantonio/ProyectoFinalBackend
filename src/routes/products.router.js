@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductManager from "../ProductManager.js";
+import ProductManager from "../dao/dbManagers/ProductManager.js";
 
 const router = Router();
 const productManager = new ProductManager();
@@ -8,7 +8,6 @@ const productManager = new ProductManager();
 router.get("/", async (req, res) => {
   const limit = req.query.limit;
   const products = await productManager.getProducts();
-  console.log(products);
 
   if (!limit) {
     res.send({ products });
@@ -23,31 +22,53 @@ router.get("/", async (req, res) => {
 
 // Pedido de un product especifico por el pid (product id)
 router.get("/:pid", async (req, res) => {
-  const pid = parseInt(req.params.pid);
+  const pid = req.params.pid;
   const product = await productManager.getProductById(pid);
-  res.send(product);
+  if (!product) {
+    return res.status(400).send({ status: "error", error: "Id not found" });
+  } else {
+    return res.send(product);
+  }
 });
 
 // Agregar un nuevo product
 router.post("/", async (req, res) => {
   const product = req.body;
   const products = await productManager.addProduct(product);
-  return res.send({ products /*status: "Success"*/ });
+  if (!products) {
+    return res
+      .status(400)
+      .send({ status: "error", error: "Add product error" });
+  } else {
+    return res.send({ products });
+  }
 });
 
 // Actualizar los datos de un product epecifico por el pid (product id)
 router.put("/:pid", async (req, res) => {
-  const pid = parseInt(req.params.pid);
+  const pid = req.params.pid;
   const updateProduct = req.body;
   const products = await productManager.updateProduct(pid, updateProduct);
-  return res.send({ products });
+  if (!products) {
+    return res
+      .status(400)
+      .send({ status: "error", error: "Update product error" });
+  } else {
+    return res.send({ products });
+  }
 });
 
 // Eliminar un product especifico por el pid (product id)
 router.delete("/:pid", async (req, res) => {
-  const pid = parseInt(req.params.pid);
+  const pid = req.params.pid;
   const products = await productManager.deleteProduct(pid);
-  return res.send({ products });
+  if (!products) {
+    return res
+      .status(400)
+      .send({ status: "error", error: "Delete product error" });
+  } else {
+    return res.send({ products });
+  }
 });
 
 export default router;
