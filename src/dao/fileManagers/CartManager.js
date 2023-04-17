@@ -61,13 +61,17 @@ export default class CartManager {
   };
 
   // Funcion para agregar un producto por el id al cart undicado por su id
-  updateCart = async (cartId, productId) => {
+  updateCart = async (cartId, productId, productQuantity) => {
     const cartIdInt = parseInt(cartId);
     const productIdInt = parseInt(productId);
     const carts = await this.getCarts();
     const products = await productManager.getProducts();
     let cartProductIndex;
     const cartIndex = carts.findIndex((cart) => cart._id === cartIdInt);
+
+    if(!productQuantity){
+      productQuantity = 1;
+    }
 
     if (cartIndex === -1) {
       return "Cart not found";
@@ -88,10 +92,10 @@ export default class CartManager {
         if (cartProductIndex === -1) {
           carts[cartIndex].products[carts[cartIndex].products.length] = {
             product: productIdInt,
-            quantity: 1,
+            quantity: productQuantity,
           };
         } else {
-          carts[cartIndex].products[cartProductIndex].quantity++;
+          carts[cartIndex].products[cartProductIndex].quantity += productQuantity;
         }
 
         const string = JSON.stringify(carts, null, "\t");

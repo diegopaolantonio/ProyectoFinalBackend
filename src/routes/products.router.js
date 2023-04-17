@@ -6,17 +6,42 @@ const productManager = new ProductManager();
 
 // Pedido de todos los productos y con limite
 router.get("/", async (req, res) => {
-  const limit = req.query.limit;
-  const products = await productManager.getProducts();
+  const { limit, page, query, sort } = req.query;
+  const products = await productManager.getProducts(limit, page, query, sort);
 
-  if (!limit) {
-    res.send({ products });
+  if (!products) {
+    return res
+      .status(400)
+      .send({ status: "Error", error: "Get products error" });
   } else {
-    let productsLimit = [];
-    for (let i = 0; i < limit && i < products.length; i++) {
-      productsLimit.push(products[i]);
+    console.log(products);
+    const {docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage} = products;
+    let prevLink, nextLink;
+
+    if (hasPrevPage) {
+      prevLink = `/api/products?limit=${limit}&page=${prevPage}`
+      if(query) {
+        prevLink += `&query=${query}`
+      }
+      if(sort) {
+        prevLink += `&sort=${sort}`
+      }
+    } else {
+      prevLink = null;
     }
-    res.send(productsLimit);
+    if (hasNextPage) {
+      nextLink=`/api/products?limit=${limit}&page=${nextPage}`
+      if(query) {
+        nextLink += `&query=${query}`
+      }
+      if(sort) {
+        nextLink += `&sort=${sort}`
+      }
+    } else {
+      nextLink = null;
+    }
+    const products2 = {docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink };
+    return res.send({ status: "Success", payload: products2});
   }
 });
 

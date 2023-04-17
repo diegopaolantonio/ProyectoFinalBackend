@@ -43,7 +43,9 @@ router.post("/:cid/product/:pid", async (req, res) => {
   const cid = req.params.cid;
   const pid = req.params.pid;
 
-  const carts = await cartManager.updateCart(cid, pid);
+  const { quantity } = req.body;
+
+  const carts = await cartManager.updateCart(cid, pid, quantity);
   if (!carts) {
     return res
       .status(400)
@@ -52,5 +54,32 @@ router.post("/:cid/product/:pid", async (req, res) => {
     return res.send({ carts });
   }
 });
+
+router.delete("/:cid", async (req, res) => {
+  const cid = req.params.cid;
+
+  const carts = await cartManager.deleteCart(cid  );
+  if (!carts) {
+    return res
+      .status(400)
+      .send({ status: "error", error: "Delete product in cart error" });
+  } else {
+    return res.send({ carts });
+  }
+})
+
+router.delete("/:cid/products/:pid", async (req, res) => {
+  const cid = req.params.cid;
+  const pid = req.params.pid;
+
+  const carts = await cartManager.deleteCart(cid, pid);
+  if (!carts) {
+    return res
+      .status(400)
+      .send({ status: "error", error: "Delete product in cart error" });
+  } else {
+    return res.send({ carts });
+  }
+})
 
 export default router;

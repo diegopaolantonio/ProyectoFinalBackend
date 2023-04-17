@@ -4,16 +4,55 @@ export default class ProductManager {
   constructor() {}
 
   //Funcion para obtener todos los datos del carchivo productos.json
-  getProducts = async () => {
+  getProducts = async (limit, page, query, sort) => {
+    let products;
     try {
-      const products = await productModel.find();
-      if (!products) {
-        return res
-          .status(400)
-          .send({ status: "error", error: "Get products error" });
-      } else {
-        return products;
+      if (!limit) {
+        limit = 10;
       }
+      if (!page) {
+        page = 1;
+      }
+      if (!sort) {
+        if (!query) {
+          products = await productModel.paginate(
+            {},
+            { limit: limit, page: page }
+          );
+        } else {
+          if (query === "true" || query === "false") {
+            products = await productModel.paginate(
+              { status: query },
+              { limit: limit, page: page }
+            );
+          } else {
+            products = await productModel.paginate(
+              { category: query },
+              { limit: limit, page: page }
+            );
+          }
+        }
+      } else {
+        if (!query) {
+          products = await productModel.paginate(
+            {},
+            { limit: limit, page: page, sort: { price: sort } }
+          );
+        } else {
+          if (query === "true" || query === "false") {
+            products = await productModel.paginate(
+              { status: query },
+              { limit: limit, page: page, sort: { price: sort } }
+            );
+          } else {
+            products = await productModel.paginate(
+              { category: query },
+              { limit: limit, page: page, sort: { price: sort } }
+            );
+          }
+        }
+      }
+      return products;
     } catch (error) {
       console.log(error);
     }

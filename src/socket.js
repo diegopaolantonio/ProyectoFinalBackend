@@ -17,22 +17,24 @@ socket.connect = function (httpServer) {
   io.on("connection", async (socket) => {
     console.log("Cliente conectado");
 
-    products = await productManager.getProducts();
-    io.emit("printProducts", products);
+    // products = await productManager.getProducts();
+    // io.emit("printProducts", products);
 
-    messages = await messageManager.getMessages();
-    io.emit("printMessages", messages);
+    // messages = await messageManager.getMessages();
+    // io.emit("printMessages", messages);
 
     // Agregar producto
     socket.on("addProduct", async (product) => {
       await productManager.addProduct(product);
-      io.emit("getProduct");
+      products = await productManager.getProducts();
+      io.emit("printProducts", products);
     });
 
     // Eliminar producto
     socket.on("deleteProduct", async (pid) => {
       await productManager.deleteProduct(pid);
-      io.emit("getProduct");
+      products = await productManager.getProducts();
+      io.emit("printProducts", products);
     });
 
     // Actualizar vista products
@@ -44,7 +46,8 @@ socket.connect = function (httpServer) {
     // Agregar mensaje
     socket.on("addMessage", async (message) => {
       await messageManager.addMessage(message);
-      io.emit("getMessages");
+      messages = await messageManager.getMessages();
+      io.emit("printMessages", messages);
     });
 
     // Actualizar vista messages
@@ -55,4 +58,4 @@ socket.connect = function (httpServer) {
   });
 };
 
-export { socket };
+export default socket;
