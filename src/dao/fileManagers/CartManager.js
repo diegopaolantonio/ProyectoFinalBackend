@@ -69,7 +69,7 @@ export default class CartManager {
     let cartProductIndex;
     const cartIndex = carts.findIndex((cart) => cart._id === cartIdInt);
 
-    if(!productQuantity){
+    if (!productQuantity) {
       productQuantity = 1;
     }
 
@@ -95,7 +95,8 @@ export default class CartManager {
             quantity: productQuantity,
           };
         } else {
-          carts[cartIndex].products[cartProductIndex].quantity += productQuantity;
+          carts[cartIndex].products[cartProductIndex].quantity +=
+            productQuantity;
         }
 
         const string = JSON.stringify(carts, null, "\t");

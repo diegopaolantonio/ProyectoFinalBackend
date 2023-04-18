@@ -14,34 +14,45 @@ router.get("/", async (req, res) => {
       .status(400)
       .send({ status: "Error", error: "Get products error" });
   } else {
-    const {docs, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage} = products;
+    const { docs, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage } =
+      products;
     const actualPage = products.page;
     let prevLink, nextLink;
 
     if (hasPrevPage) {
-      prevLink = `/api/products?limit=${limit}&page=${prevPage}`
-      if(query) {
-        prevLink += `&query=${query}`
+      prevLink = `/api/products?limit=${limit}&page=${prevPage}`;
+      if (query) {
+        prevLink += `&query=${query}`;
       }
-      if(sort) {
-        prevLink += `&sort=${sort}`
+      if (sort) {
+        prevLink += `&sort=${sort}`;
       }
     } else {
       prevLink = null;
     }
     if (hasNextPage) {
-      nextLink=`/api/products?limit=${limit}&page=${nextPage}`
-      if(query) {
-        nextLink += `&query=${query}`
+      nextLink = `/api/products?limit=${limit}&page=${nextPage}`;
+      if (query) {
+        nextLink += `&query=${query}`;
       }
-      if(sort) {
-        nextLink += `&sort=${sort}`
+      if (sort) {
+        nextLink += `&sort=${sort}`;
       }
     } else {
       nextLink = null;
     }
-    const products2 = {docs, totalPages, prevPage, nextPage, actualPage, hasPrevPage, hasNextPage, prevLink, nextLink };
-    return res.send({ status: "Success", payload: products2});
+    const products2 = {
+      docs,
+      totalPages,
+      prevPage,
+      nextPage,
+      actualPage,
+      hasPrevPage,
+      hasNextPage,
+      prevLink,
+      nextLink,
+    };
+    return res.send({ status: "Success", payload: products2 });
   }
 });
 

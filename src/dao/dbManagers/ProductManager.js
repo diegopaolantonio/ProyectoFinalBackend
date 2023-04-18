@@ -3,7 +3,7 @@ import { productModel } from "../models/productModel.js";
 export default class ProductManager {
   constructor() {}
 
-  //Funcion para obtener todos los datos del carchivo productos.json
+  //Funcion para obtener todos los datos del db
   getProducts = async (limit, page, query, sort) => {
     let products;
     try {
@@ -65,9 +65,6 @@ export default class ProductManager {
       if (!products) {
         return "Id not found";
       } else {
-        // if (products.length === 0) {
-        //   return "Id not found";
-        // } else {
         return products;
       }
     } catch (error) {
@@ -75,7 +72,7 @@ export default class ProductManager {
     }
   };
 
-  // Funcion para agregar un product al archivo
+  // Funcion para agregar un product al db
   addProduct = async (product) => {
     if (product.status != false) {
       product.status = true;
@@ -92,16 +89,13 @@ export default class ProductManager {
     }
   };
 
-  // Funcion para actualizar un product por el id en el archivo
+  // Funcion para actualizar un product por el id en el db
   updateProduct = async (productId, product) => {
     try {
       const updated = await productModel.updateOne({ _id: productId }, product);
       if (!updated) {
         return "Update product error";
       } else {
-        // if (updated.length === 0) {
-        //   return "Id not found";
-        // } else {
         return updated;
       }
     } catch (error) {
@@ -109,7 +103,7 @@ export default class ProductManager {
     }
   };
 
-  // Funcion para eliminar un product por el id en el archivo
+  // Funcion para eliminar un product por el id en el db
   deleteProduct = async (productId) => {
     try {
       const eliminado = await productModel.deleteOne({ _id: productId });
@@ -118,9 +112,6 @@ export default class ProductManager {
           .status(400)
           .send({ status: "error", error: "Delete product error" });
       } else {
-        // if (eliminado.length === 0) {
-        //   return "Id not found";
-        // } else {
         return eliminado;
       }
     } catch (error) {

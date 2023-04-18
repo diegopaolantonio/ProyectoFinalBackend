@@ -8,7 +8,7 @@ const cartManager = new CartManager();
 const productManager = new ProductManager();
 const messageManager = new MessageManager();
 
-// Llamado a la vista con Handlebars
+// Llamado a la vista general de products con Handlebars
 router.get("/", async (req, res) => {
   const products = await productManager.getProducts();
   let productsArray = [];
@@ -41,7 +41,7 @@ router.get("/", async (req, res) => {
   });
 });
 
-// Llamado a la vista con Handlebars
+// Llamado a la vista de products con querys con Handlebars
 router.get("/products", async (req, res) => {
   const { limit, page, query, sort } = req.query;
 
@@ -98,10 +98,7 @@ router.get("/products", async (req, res) => {
     nextLink = null;
   }
 
-  // coKCnst {cartId} = "6434c6d595f9e8d1043cb867";
-
   res.render("products", {
-    cartId: "6434c6d595f9e8d1043cb867",
     productsArray: productsArray,
     totalPages: totalPages,
     prevPage: prevPage,
@@ -114,6 +111,7 @@ router.get("/products", async (req, res) => {
   });
 });
 
+// Llamado a la vista de detalles del product
 router.get("/product/Detail/:pid", async (req, res) => {
   const pid = req.params.pid;
   let product2;
@@ -121,7 +119,7 @@ router.get("/product/Detail/:pid", async (req, res) => {
 
   product.forEach((element) => {
     product2 = element;
-  })
+  });
   const {
     _id,
     title,
@@ -144,10 +142,10 @@ router.get("/product/Detail/:pid", async (req, res) => {
     category: category,
     status: status,
     thumbnail: thumbnail,
-    cartId: "6434c6d595f9e8d1043cb867",
   });
 });
 
+// Llamado a la vista de los productos del cart
 router.get("/cart/:cid", async (req, res) => {
   const cid = req.params.cid;
   let cartId;
@@ -191,21 +189,22 @@ router.get("/cart/:cid", async (req, res) => {
   });
 });
 
+// Llamado para agregar el product con id pid en el cart con id cid, con el boton en /products y /products/detail/pid
 router.get("/:cid/product/:pid", async (req, res) => {
   const cid = req.params.cid;
   const pid = req.params.pid;
 
   const carts = await cartManager.updateCart(cid, pid);
-  const products = await productManager.getProducts();
   if (!carts) {
     return res
       .status(400)
       .send({ status: "error", error: "Add product in cart error" });
   } else {
-    return res.send({ products });
+    return res.redirect("back");
   }
 });
 
+// llamado a la vista de messages
 router.get("/messages", async (req, res) => {
   const messages = await messageManager.getMessages();
   let messageArray = [];
@@ -219,7 +218,7 @@ router.get("/messages", async (req, res) => {
   });
 });
 
-// Llamado a la vista con Socket
+// Llamado a la vista con Socket actualizados en tiempo real de products y messages
 router.get("/realtimeproducts", async (req, res) => {
   res.render("realTimeProducts", {});
 });

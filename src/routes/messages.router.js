@@ -4,6 +4,7 @@ import MessageManager from "../dao/dbManagers/MessageManager.js";
 const router = Router();
 const messageManager = new MessageManager();
 
+// Llamado para obtener los messages
 router.get("/", async (req, res) => {
   const messages = await messageManager.getMessages();
   if (!messages) {
@@ -15,6 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Llamado para agregar un nuevo message
 router.post("/", async (req, res) => {
   const message = req.body;
   const messages = await messageManager.addMessage(message);

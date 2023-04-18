@@ -55,6 +55,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
   }
 });
 
+// Llamado para eliminar todos los produscts de un cart con id cid
 router.delete("/:cid", async (req, res) => {
   const cid = req.params.cid;
 
@@ -68,6 +69,7 @@ router.delete("/:cid", async (req, res) => {
   }
 });
 
+// Llamado para eliminar un product con id pid de un cart con id cid
 router.delete("/:cid/products/:pid", async (req, res) => {
   const cid = req.params.cid;
   const pid = req.params.pid;
@@ -82,6 +84,7 @@ router.delete("/:cid/products/:pid", async (req, res) => {
   }
 });
 
+// Llamado para actualizas un cart con id cid mediante un el cuerpo del llamado
 router.put("/:cid", async (req, res) => {
   const cid = req.params.cid;
 
@@ -97,6 +100,7 @@ router.put("/:cid", async (req, res) => {
   }
 });
 
+// Llamado para actualizas el quantity de un product de un cart con id cid mediante un el cuerpo del llamado
 router.put("/:cid/products/:pid", async (req, res) => {
   const cid = req.params.cid;
   const pid = req.params.pid;

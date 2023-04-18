@@ -4,7 +4,7 @@ import { productModel } from "../models/productModel.js";
 export default class CartManager {
   constructor() {}
 
-  // Funcion para obtener los datos del archivo carrito.jason
+  // Funcion para obtener los datos del db
   getCarts = async () => {
     try {
       const carts = await cartModel.find();
@@ -34,7 +34,7 @@ export default class CartManager {
     }
   };
 
-  // Funcion para agregar un cart al arcihvo
+  // Funcion para agregar un cart al db
   addCart = async () => {
     try {
       const created = await cartModel.create({ products: [] });
@@ -48,7 +48,7 @@ export default class CartManager {
     }
   };
 
-  // Funcion para agregar un producto por el id al cart undicado por su id
+  // Funcion para agregar un producto por el id al cart indicado por su id
   updateCart = async (cartId, productId, productQuantity) => {
     let cartToUpdated;
     let elementsToUpdated = [];
@@ -113,6 +113,7 @@ export default class CartManager {
     }
   };
 
+  // Funcion para modificar los products de un cart especifico
   modifyCart = async (cartId, productsElements) => {
     let cartToModify;
 
@@ -133,7 +134,6 @@ export default class CartManager {
           } else {
             return modifyCart;
           }
-          // }
         }
       }
     } catch (error) {
@@ -141,6 +141,7 @@ export default class CartManager {
     }
   };
 
+  // Funcion para actualizar el quantity de un product especifico de un cart especifico
   modifyProductCart = async (cartId, productId, quantity) => {
     let cartToModify;
     let elementsToModify = [];
@@ -194,6 +195,7 @@ export default class CartManager {
     }
   };
 
+  // Funcion para eliminar un product de un cart si el id del product no existe vacia el cart
   deleteCart = async (cartId, productId) => {
     let cartToUpdated;
     let elementsToUpdated = [];

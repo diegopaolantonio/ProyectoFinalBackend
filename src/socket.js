@@ -17,11 +17,11 @@ socket.connect = function (httpServer) {
   io.on("connection", async (socket) => {
     console.log("Cliente conectado");
 
-    // products = await productManager.getProducts();
-    // io.emit("printProducts", products);
+    products = await productManager.getProducts();
+    io.emit("printProducts", products);
 
-    // messages = await messageManager.getMessages();
-    // io.emit("printMessages", messages);
+    messages = await messageManager.getMessages();
+    io.emit("printMessages", messages);
 
     // Agregar producto
     socket.on("addProduct", async (product) => {

@@ -3,7 +3,7 @@ import { messageModel } from "../models/messageModel.js";
 export default class MessageManager {
   constructor() {}
 
-  //Funcion para obtener todos los datos del archivo mensajes.json
+  //Funcion para obtener todos los datos del db
   getMessages = async () => {
     try {
       const messages = await messageModel.find();
@@ -17,7 +17,7 @@ export default class MessageManager {
     }
   };
 
-  // Funcion para agregar un mensaje al archivo
+  // Funcion para agregar un mensaje al db
   addMessage = async (message) => {
     try {
       const createdMessage = await messageModel.create(message);
