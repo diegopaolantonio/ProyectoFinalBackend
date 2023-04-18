@@ -14,8 +14,8 @@ router.get("/", async (req, res) => {
       .status(400)
       .send({ status: "Error", error: "Get products error" });
   } else {
-    console.log(products);
-    const {docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage} = products;
+    const {docs, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage} = products;
+    const actualPage = products.page;
     let prevLink, nextLink;
 
     if (hasPrevPage) {
@@ -40,7 +40,7 @@ router.get("/", async (req, res) => {
     } else {
       nextLink = null;
     }
-    const products2 = {docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink };
+    const products2 = {docs, totalPages, prevPage, nextPage, actualPage, hasPrevPage, hasNextPage, prevLink, nextLink };
     return res.send({ status: "Success", payload: products2});
   }
 });

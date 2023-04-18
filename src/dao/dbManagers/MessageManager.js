@@ -8,9 +8,7 @@ export default class MessageManager {
     try {
       const messages = await messageModel.find();
       if (!messages) {
-        return res
-          .status(400)
-          .send({ status: "error", error: "Get messages error" });
+        return "Get messages error";
       } else {
         return messages;
       }
@@ -24,9 +22,7 @@ export default class MessageManager {
     try {
       const createdMessage = await messageModel.create(message);
       if (!createdMessage) {
-        return res
-          .status(400)
-          .send({ status: "error", error: "Add messages error" });
+        return "Add messages error";
       } else {
         return createdMessage;
       }

@@ -63,7 +63,7 @@ export default class ProductManager {
     try {
       const products = await productModel.find({ _id: productId });
       if (!products) {
-        return res.status(400).send({ status: "error", error: "Id not found" });
+        return "Id not found";
       } else {
         // if (products.length === 0) {
         //   return "Id not found";
@@ -83,9 +83,7 @@ export default class ProductManager {
     try {
       const createdProduct = await productModel.create(product);
       if (!createdProduct) {
-        return res
-          .status(400)
-          .send({ status: "error", error: "Add product error" });
+        return "Add product error";
       } else {
         return createdProduct;
       }
@@ -99,9 +97,7 @@ export default class ProductManager {
     try {
       const updated = await productModel.updateOne({ _id: productId }, product);
       if (!updated) {
-        return res
-          .status(400)
-          .send({ status: "error", error: "Update product error" });
+        return "Update product error";
       } else {
         // if (updated.length === 0) {
         //   return "Id not found";

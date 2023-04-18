@@ -58,7 +58,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
 router.delete("/:cid", async (req, res) => {
   const cid = req.params.cid;
 
-  const carts = await cartManager.deleteCart(cid  );
+  const carts = await cartManager.deleteCart(cid);
   if (!carts) {
     return res
       .status(400)
@@ -66,7 +66,7 @@ router.delete("/:cid", async (req, res) => {
   } else {
     return res.send({ carts });
   }
-})
+});
 
 router.delete("/:cid/products/:pid", async (req, res) => {
   const cid = req.params.cid;
@@ -80,6 +80,37 @@ router.delete("/:cid/products/:pid", async (req, res) => {
   } else {
     return res.send({ carts });
   }
-})
+});
+
+router.put("/:cid", async (req, res) => {
+  const cid = req.params.cid;
+
+  const productsElements = req.body;
+
+  const carts = await cartManager.modifyCart(cid, productsElements);
+  if (!carts) {
+    return res
+      .status(400)
+      .send({ status: "error", error: "Add product in cart error" });
+  } else {
+    return res.send({ carts });
+  }
+});
+
+router.put("/:cid/products/:pid", async (req, res) => {
+  const cid = req.params.cid;
+  const pid = req.params.pid;
+
+  const { quantity } = req.body;
+
+  const carts = await cartManager.modifyProductCart(cid, pid, quantity);
+  if (!carts) {
+    return res
+      .status(400)
+      .send({ status: "error", error: "Add product in cart error" });
+  } else {
+    return res.send({ carts });
+  }
+});
 
 export default router;

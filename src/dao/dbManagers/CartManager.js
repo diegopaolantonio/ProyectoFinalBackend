@@ -9,9 +9,7 @@ export default class CartManager {
     try {
       const carts = await cartModel.find();
       if (!carts) {
-        return res
-          .status(400)
-          .send({ status: "error", error: "Get messages error" });
+        return "Get messages error";
       } else {
         return carts;
       }
@@ -23,9 +21,11 @@ export default class CartManager {
   // Funcion para obtener los datos de un cart especifico por el id
   getCartById = async (cartId) => {
     try {
-      const carts = await cartModel.find({ _id: cartId });
+      const carts = await cartModel
+        .find({ _id: cartId })
+        .populate("products.product");
       if (!carts) {
-        return res.status(400).send({ status: "error", error: "Id not found" });
+        return "Id not found";
       } else {
         return carts;
       }
@@ -39,9 +39,7 @@ export default class CartManager {
     try {
       const created = await cartModel.create({ products: [] });
       if (!created) {
-        return res
-          .status(400)
-          .send({ status: "error", error: "Add cart error" });
+        return "Add cart error";
       } else {
         return created;
       }
@@ -64,15 +62,11 @@ export default class CartManager {
     try {
       const product = await productModel.find({ _id: productId });
       if (!product) {
-        return res
-          .status(400)
-          .send({ status: "error", error: "Id product not found" });
+        return "Id product not found";
       } else {
         cartToUpdated = await cartModel.find({ _id: cartId });
         if (!cartToUpdated) {
-          return res
-            .status(400)
-            .send({ status: "error", error: "Id cart not found" });
+          return "Id cart not found";
         } else {
           cartToUpdated.forEach((element, index) => {
             elementsToUpdated = element.products;
@@ -88,7 +82,7 @@ export default class CartManager {
             };
           } else {
             cartProductsArray.forEach((element, index) => {
-              if (element === productId) {
+              if (element.toString() === productId) {
                 indexEncontrado = index;
               }
             });
@@ -108,11 +102,90 @@ export default class CartManager {
             { products: elementsToUpdated }
           );
           if (!updatedCart) {
-            return res
-              .status(400)
-              .send({ status: "error", error: "Add product in cart error" });
+            return "Add product in cart error";
           } else {
             return updatedCart;
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  modifyCart = async (cartId, productsElements) => {
+    let cartToModify;
+
+    try {
+      cartToModify = await cartModel.find({ _id: cartId });
+      if (!cartToModify) {
+        return "Id cart not found";
+      } else {
+        if (!productsElements) {
+          return "No elements to update";
+        } else {
+          const modifyCart = await cartModel.updateOne(
+            { _id: cartId },
+            { products: productsElements }
+          );
+          if (!modifyCart) {
+            return "Modify cart error";
+          } else {
+            return modifyCart;
+          }
+          // }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  modifyProductCart = async (cartId, productId, quantity) => {
+    let cartToModify;
+    let elementsToModify = [];
+    let cartProductsArray = [];
+    let indexEncontrado = -1;
+
+    try {
+      cartToModify = await cartModel.find({ _id: cartId });
+      if (!cartToModify) {
+        return "Id cart not found";
+      } else {
+        if (productId) {
+          if (!quantity) {
+            return "No quantity to update";
+          } else {
+            cartToModify.forEach((element) => {
+              elementsToModify = element.products;
+              element.products.forEach((element, index) => {
+                console.log(element.product);
+                cartProductsArray[index] = element.product;
+              });
+            });
+            if (cartProductsArray.length === 0) {
+              return "Empty cart";
+            } else {
+              cartProductsArray.forEach((element, index) => {
+                if (element.toString() === productId) {
+                  indexEncontrado = index;
+                }
+              });
+              if (indexEncontrado === -1) {
+                return "Product not found in cart";
+              } else {
+                elementsToModify[indexEncontrado].quantity = quantity;
+                const modifyCart = await cartModel.updateOne(
+                  { _id: cartId },
+                  { products: elementsToModify }
+                );
+                if (!modifyCart) {
+                  return "Modify cart error";
+                } else {
+                  return modifyCart;
+                }
+              }
+            }
           }
         }
       }
@@ -138,13 +211,13 @@ export default class CartManager {
           );
           return updatedCart;
         } else {
-
           cartToUpdated.forEach((element, index) => {
-            console.log(element);
             elementsToUpdated = element.products;
           });
 
-          const updatedProducts = elementsToUpdated.filter( (element) => element.product != productId);
+          const updatedProducts = elementsToUpdated.filter(
+            (element) => element.product != productId
+          );
           const updatedCart = await cartModel.updateOne(
             { _id: cartId },
             { products: updatedProducts }
