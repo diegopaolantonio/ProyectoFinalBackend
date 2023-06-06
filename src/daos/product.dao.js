@@ -1,18 +1,9 @@
-import { productModel } from "../models/productModel.js";
+import { productModel } from "./models/product.model.js";
 
-export default class ProductManager {
-  constructor() {}
-
-  //Funcion para obtener todos los datos del db
-  getProducts = async (limit, page, query, sort) => {
+export default class ProductDao {
+  getProducts = async function (limit, page, query, sort) {
     let products;
     try {
-      if (!limit) {
-        limit = 10;
-      }
-      if (!page) {
-        page = 1;
-      }
       if (!sort) {
         if (!query) {
           products = await productModel.paginate(
@@ -54,68 +45,43 @@ export default class ProductManager {
       }
       return products;
     } catch (error) {
-      console.log(error);
+      return null;
     }
   };
 
-  // Funcion para obtener un product especifico por el id
-  getProductById = async (productId) => {
+  getProductById = async function (productId) {
     try {
       const products = await productModel.find({ _id: productId });
-      if (!products) {
-        return "Id not found";
-      } else {
-        return products;
-      }
+      return products;
     } catch (error) {
-      console.log(error);
+      return null;
     }
   };
 
-  // Funcion para agregar un product al db
-  addProduct = async (product) => {
-    if (product.status != false) {
-      product.status = true;
-    }
+  addProduct = async function (product) {
     try {
       const createdProduct = await productModel.create(product);
-      if (!createdProduct) {
-        return "Add product error";
-      } else {
-        return createdProduct;
-      }
+      return createdProduct;
     } catch (error) {
-      console.log(error);
+      return null;
     }
   };
 
-  // Funcion para actualizar un product por el id en el db
-  updateProduct = async (productId, product) => {
+  updateProduct = async function (productId, product) {
     try {
       const updated = await productModel.updateOne({ _id: productId }, product);
-      if (!updated) {
-        return "Update product error";
-      } else {
-        return updated;
-      }
+      return updated;
     } catch (error) {
-      console.log(error);
+      return null;
     }
   };
 
-  // Funcion para eliminar un product por el id en el db
-  deleteProduct = async (productId) => {
+  deleteProduct = async function (productId) {
     try {
       const eliminado = await productModel.deleteOne({ _id: productId });
-      if (!eliminado) {
-        return res
-          .status(400)
-          .send({ status: "error", error: "Delete product error" });
-      } else {
-        return eliminado;
-      }
+      return eliminado;
     } catch (error) {
-      console.log(error);
+      return null;
     }
   };
 }

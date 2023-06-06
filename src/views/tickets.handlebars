@@ -1,0 +1,28 @@
+<br />
+<h1>Bienvenido {{user.name}}</h1>
+  <p>Edad: {{user.age}}</p>
+  <p>Email: {{user.email}}</p>
+  <p>Role: {{user.role}}</p>
+  <p>Cart: {{user.cart}}</p>
+<a href="/api/v1/sessions/logout"><button>Logout</button></a>
+    <a href="/api/v1/carts/{{user.cart}}"><button>Carrito</button></a>
+<br />
+<h2>Generar ticket:</h2>
+<a href="/api/v1/carts/{{user.cart}}/purchase"><button>Generar ticket</button></a>
+{{!-- <form id="ticket">
+    <input type="submit" / >
+</form> --}}
+<br />
+{{#each ticketsArray}}
+  <div>
+    <p>Id: {{this._id}}</p>
+    <p>Code: {{this.code}}</p>
+    <p>Purchase datetime: {{this.purchase_datetime}}</p>
+    <p type="number">Amount: {{this.amont}}</p>
+    <p>Purchaser: {{this.purchaser}}</p>
+    <br />
+  </div>
+{{/each}}
+
+{{!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/tickets.js"></script> --}}

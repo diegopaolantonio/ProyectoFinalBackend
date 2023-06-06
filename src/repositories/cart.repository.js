@@ -1,50 +1,49 @@
-import { cartModel } from "../models/cartModel.js";
-import { productModel } from "../models/productModel.js";
+import { cartDao, productDao } from "../daos/index.js";
 
-export default class CartManager {
-  constructor() {}
-
+export default class CartRepository {
+  constructor() {
+    this.cartDao = cartDao;
+    this.productDao = productDao;
+  }
   // Funcion para obtener los datos del db
   getCarts = async () => {
     try {
-      const carts = await cartModel.find();
+      const carts = await this.cartDao.getCarts();
       if (!carts) {
         return "Get messages error";
       } else {
         return carts;
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
   // Funcion para obtener los datos de un cart especifico por el id
   getCartById = async (cartId) => {
     try {
-      const carts = await cartModel
-        .find({ _id: cartId })
-        .populate("products.product");
+      const carts = await this.cartDao.getCartByIdPopulate(cartId);
       if (!carts) {
         return "Id not found";
       } else {
         return carts;
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
   // Funcion para agregar un cart al db
   addCart = async () => {
     try {
-      const created = await cartModel.create({ products: [] });
+      const created = await this.cartDao.addCart();
       if (!created) {
         return "Add cart error";
       } else {
         return created;
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -60,11 +59,11 @@ export default class CartManager {
     }
 
     try {
-      const product = await productModel.find({ _id: productId });
+      const product = await this.productDao.getProductById(productId);
       if (!product) {
         return "Id product not found";
       } else {
-        cartToUpdated = await cartModel.find({ _id: cartId });
+        cartToUpdated = await this.cartDao.getCartById(cartId);
         if (!cartToUpdated) {
           return "Id cart not found";
         } else {
@@ -97,9 +96,9 @@ export default class CartManager {
             }
           }
 
-          const updatedCart = await cartModel.updateOne(
-            { _id: cartId },
-            { products: elementsToUpdated }
+          const updatedCart = await this.cartDao.updateProductsInCart(
+            cartId,
+            elementsToUpdated
           );
           if (!updatedCart) {
             return "Add product in cart error";
@@ -109,7 +108,7 @@ export default class CartManager {
         }
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -118,16 +117,16 @@ export default class CartManager {
     let cartToModify;
 
     try {
-      cartToModify = await cartModel.find({ _id: cartId });
+      cartToModify = await this.cartDao.getCartById(cartId);
       if (!cartToModify) {
         return "Id cart not found";
       } else {
         if (!productsElements) {
           return "No elements to update";
         } else {
-          const modifyCart = await cartModel.updateOne(
-            { _id: cartId },
-            { products: productsElements }
+          const modifyCart = await this.cartDao.updateProductsInCart(
+            cartId,
+            productsElements
           );
           if (!modifyCart) {
             return "Modify cart error";
@@ -137,7 +136,7 @@ export default class CartManager {
         }
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -149,7 +148,7 @@ export default class CartManager {
     let indexEncontrado = -1;
 
     try {
-      cartToModify = await cartModel.find({ _id: cartId });
+      cartToModify = await this.cartDao.getProductById(cartId);
       if (!cartToModify) {
         return "Id cart not found";
       } else {
@@ -160,7 +159,6 @@ export default class CartManager {
             cartToModify.forEach((element) => {
               elementsToModify = element.products;
               element.products.forEach((element, index) => {
-                console.log(element.product);
                 cartProductsArray[index] = element.product;
               });
             });
@@ -176,9 +174,9 @@ export default class CartManager {
                 return "Product not found in cart";
               } else {
                 elementsToModify[indexEncontrado].quantity = quantity;
-                const modifyCart = await cartModel.updateOne(
-                  { _id: cartId },
-                  { products: elementsToModify }
+                const modifyCart = await this.cartDao.updateProductsInCart(
+                  cartId,
+                  elementsToModify
                 );
                 if (!modifyCart) {
                   return "Modify cart error";
@@ -191,7 +189,7 @@ export default class CartManager {
         }
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -199,17 +197,17 @@ export default class CartManager {
   deleteCart = async (cartId, productId) => {
     let cartToUpdated;
     let elementsToUpdated = [];
-    let updatedProducts = [];
+    // let updatedProducts = [];
 
     try {
-      cartToUpdated = await cartModel.find({ _id: cartId });
+      cartToUpdated = await this.cartDao.getCartById(cartId);
       if (!cartToUpdated) {
         return "Id cart not found";
       } else {
         if (!productId) {
-          const updatedCart = await cartModel.updateOne(
-            { _id: cartId },
-            { products: [] }
+          const updatedCart = await this.cartDao.updateProductsInCart(
+            cartId,
+            []
           );
           return updatedCart;
         } else {
@@ -220,9 +218,9 @@ export default class CartManager {
           const updatedProducts = elementsToUpdated.filter(
             (element) => element.product != productId
           );
-          const updatedCart = await cartModel.updateOne(
-            { _id: cartId },
-            { products: updatedProducts }
+          const updatedCart = await this.cartDao.updateProductsInCart(
+            cartId,
+            updatedProducts
           );
           if (!updatedCart) {
             return "Delete product in cart error";
@@ -232,7 +230,7 @@ export default class CartManager {
         }
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 }
