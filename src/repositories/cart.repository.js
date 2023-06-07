@@ -148,12 +148,12 @@ export default class CartRepository {
     let indexEncontrado = -1;
 
     try {
-      cartToModify = await this.cartDao.getProductById(cartId);
+      cartToModify = await this.cartDao.getCartById(cartId);
       if (!cartToModify) {
         return "Id cart not found";
       } else {
         if (productId) {
-          if (!quantity) {
+          if (quantity < 0) {
             return "No quantity to update";
           } else {
             cartToModify.forEach((element) => {
@@ -218,6 +218,7 @@ export default class CartRepository {
           const updatedProducts = elementsToUpdated.filter(
             (element) => element.product != productId
           );
+
           const updatedCart = await this.cartDao.updateProductsInCart(
             cartId,
             updatedProducts

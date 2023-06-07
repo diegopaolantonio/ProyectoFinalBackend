@@ -1,6 +1,12 @@
-import { cartService, ticketService } from "../services/index.js";
+import {
+  cartService,
+  productService,
+  ticketService,
+} from "../services/index.js";
 import { responder } from "../traits/Responder.js";
 import ticketDto from "../daos/dtos/ticket.dto.js";
+
+import { calculateAmount } from "../middlewares/calculateAmount.js";
 
 export async function getCarts(req, res) {
   try {
@@ -143,17 +149,19 @@ export async function updateQuantityProductInCart(req, res) {
 
 export async function createTicket(req, res) {
   try {
-      const email = req.session.user.email;
-      const cid = req.session.user.cart;
-      const totalOrder = 0;
-      const order = new ticketDto(totalOrder, email);
-      const createdTicket = await ticketService.createTicket(cid, order);
-      if(createdTicket && createdTicket.error) {
-          return responder.errorResponse(res, createTicket.error, 400);
-      } else {
-          return responder.successResponse(res, createdTicket);
-      }
+    const email = req.session.user.email;
+    const cid = req.session.user.cart;
+
+    const amount = await calculateAmount(cid);
+
+    const order = new ticketDto(amount, email);
+    const createdTicket = await ticketService.createTicket(cid, order);
+    if (createdTicket && createdTicket.error) {
+      return responder.errorResponse(res, createdTicket.error, 400);
+    } else {
+      return responder.successResponse(res, createdTicket);
+    }
   } catch (error) {
-      return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message);
   }
 }
