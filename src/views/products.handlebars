@@ -1,23 +1,27 @@
-<br />
+{{!-- <br /> --}}
 <h1>Bienvenido {{name}}</h1>
 <p>email: {{email}}</p>
 <p>Edad: {{age}}</p>
 <p>Cart: {{cart}}</p>
 <p>Role: {{role}}</p>
+<a href="/cart/{{cart}}"><button>Ver carrito</button></a>
+<br />
+<br />
 <a href="/api/v1/sessions/logout"><button>Logout</button></a>
+
 <br />
 <h2>Productos:</h2>
 {{#each productsArray}}
   <div>
-    <p>Id: {{this._id}}</p>
+    <br />
+    <h3>Id: {{this._id}}</h3>
     <p>Title: {{this.title}}</p>
     <p>Category: {{this.category}}</p>
     <p>Status: {{this.status}}</p>
-    <br />
-    <a href="/api/v1/{{cart}}/product/{{this._id}}"><button>Agregar a
-        carrito</button></a>
-    <br />
-    <br />
+    {{!-- <br /> --}}
+    {{!-- <a href="/api/v1/carts/{{this.cart}}/product/{{this._id}}"><button>Agregar a
+        carrito</button></a> --}}
+    {{!-- <br /> --}}
     <a href="/product/detail/{{this._id}}"><button>Detalle</button></a>
     <br />
   </div>

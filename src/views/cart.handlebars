@@ -1,10 +1,11 @@
 <br />
 <h1>Cart Id: {{cartId}}</h1>
+<a href="/api/v1/carts/{{cartId}}/purchase"><button>Generar ticket</button></a>
 <div>
   <h2>Producto:</h2>
   {{#each cartProducts}}
     <div>
-      <p>Product Id: {{this._id}}</p>
+      <h3>Product Id: {{this._id}}</h3>
       <p>Title: {{this.title}}</p>
       <p>Description: {{this.description}}</p>
       <p>Price: {{this.price}}</p>

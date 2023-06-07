@@ -60,6 +60,7 @@ export async function getProducts(req, res) {
         category,
         status,
         thumbnail,
+        cart,
       };
     });
     const { totalPages, prevPage, nextPage, hasPrevPage, hasNextPage } =

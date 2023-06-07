@@ -100,7 +100,7 @@ export async function deleteProductInCart(req, res) {
 export async function updateProductInCart(req, res) {
   try {
     const cid = req.params.cid;
-
+console.log(req.session.user.cart);
     if (req.session.user.cart === cid) {
       const productsElements = req.body;
 

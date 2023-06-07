@@ -58,6 +58,8 @@ export default class CartRepository {
       productQuantity = 1;
     }
 
+    productQuantity = Number(productQuantity);
+
     try {
       const product = await this.productDao.getProductById(productId);
       if (!product) {
@@ -92,6 +94,8 @@ export default class CartRepository {
               };
               elementsToUpdated.push(newProduct);
             } else {
+              console.log(elementsToUpdated[indexEncontrado].quantity);
+              console.log(productQuantity);
               elementsToUpdated[indexEncontrado].quantity += productQuantity;
             }
           }
@@ -214,10 +218,13 @@ export default class CartRepository {
           cartToUpdated.forEach((element, index) => {
             elementsToUpdated = element.products;
           });
-
-          const updatedProducts = elementsToUpdated.filter(
-            (element) => element.product != productId
-          );
+          const updatedProducts = elementsToUpdated.filter((element) => {
+            element.product != productId;
+            console.log(element.product);
+            console.log(productId);
+            console.log(element.product != productId);
+          });
+          console.log(updatedProducts);
 
           const updatedCart = await this.cartDao.updateProductsInCart(
             cartId,

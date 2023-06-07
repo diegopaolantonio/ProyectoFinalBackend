@@ -41,10 +41,12 @@ export default class CartDao {
 
   updateProductsInCart = async function (cartId, products) {
     try {
+      // console.log(products);
       const updatedCart = await cartModel.updateOne(
         { _id: cartId },
         { products: products }
       );
+      // console.log(updatedCart);
       return updatedCart;
     } catch (error) {
       return null;
