@@ -12,7 +12,6 @@ export default class TicketDao {
 
   getTicketById = async function (tid) {
     try {
-      console.log(tid);
       const ticket = await ticketModel.findOne({ _id: tid });
       return ticket;
     } catch (error) {

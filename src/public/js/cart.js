@@ -8,6 +8,54 @@ form.addEventListener("submit", async (e) => {
 
   data.forEach((value, key) => (obj[key] = value));
 
+  let response = await fetch(`/api/v1/carts/${obj.cid}/purchase`, {
+    method: "POST",
+    body: "",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (
+    response.status === 400 ||
+    response.status === 401 ||
+    response.status === 500
+  ) {
+    Swal.fire({
+      icon: "error",
+      title: "Ticket not created",
+      confirmButtonText: "Ok",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        location.reload();
+      }
+    });
+  }
+
+  result = await response.json();
+
+  if (result.status === "Success") {
+    Swal.fire({
+      icon: "success",
+      title: "Ticket created",
+      text: `${JSON.stringify(result.payload)}`,
+      confirmButtonText: "Ok",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        location.reload();
+      }
+    });
+  }
+});
+
+form.addEventListener("reset", async (e) => {
+  e.preventDefault();
+
+  const data = new FormData(form);
+  const obj = {};
+
+  data.forEach((value, key) => (obj[key] = value));
+
   let response = await fetch(`/api/v1/carts/${obj.cid}`, {
     method: "DELETE",
     headers: {
@@ -36,7 +84,7 @@ form.addEventListener("submit", async (e) => {
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: `Empty cart`,
+      title: "Empty cart",
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {

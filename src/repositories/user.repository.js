@@ -33,11 +33,7 @@ export default class UserRepository {
   createUser = async (newUser) => {
     try {
       const createdUser = await this.userDao.createUser(newUser);
-      // if (!createdUser) {
-      //   return "Add user error";
-      // } else {
-        return createdUser;
-      // }
+      return createdUser;
     } catch (error) {
       throw new Error(error);
     }

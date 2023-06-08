@@ -47,11 +47,7 @@ export default class ProductRepository {
     }
     try {
       const createdProduct = await this.productDao.addProduct(product);
-      // if (!createdProduct) {
-      //   return "Add product error";
-      // } else {
-        return createdProduct;
-      // }
+      return createdProduct;
     } catch (error) {
       throw new Error(error);
     }
@@ -61,11 +57,7 @@ export default class ProductRepository {
   updateProduct = async (productId, product) => {
     try {
       const updated = await this.productDao.updateProduct(productId, product);
-      // if (!updated) {
-      //   return "Update product error";
-      // } else {
-        return updated;
-      // }
+      return updated;
     } catch (error) {
       throw new Error(error);
     }
@@ -75,11 +67,7 @@ export default class ProductRepository {
   deleteProduct = async (productId) => {
     try {
       const eliminado = await this.productDao.deleteProduct(productId);
-      // if (!eliminado) {
-      //   return "Delete product error";
-      // } else {
-        return eliminado;
-      // }
+      return eliminado;
     } catch (error) {
       throw new Error(error);
     }

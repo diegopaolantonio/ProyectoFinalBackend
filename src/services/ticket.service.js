@@ -4,7 +4,7 @@ import {
   ticketRepository,
 } from "../repositories/index.js";
 
-export default class TSicketService {
+export default class TicketService {
   constructor() {
     this.ticketRepository = ticketRepository;
   }

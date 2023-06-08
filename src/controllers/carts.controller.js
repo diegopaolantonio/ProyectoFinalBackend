@@ -100,7 +100,6 @@ export async function deleteProductInCart(req, res) {
 export async function updateProductInCart(req, res) {
   try {
     const cid = req.params.cid;
-    console.log(req.session.user.cart);
     if (req.session.user.cart === cid) {
       const productsElements = req.body;
 
@@ -152,7 +151,12 @@ export async function createTicket(req, res) {
     const email = req.session.user.email;
     const cid = req.session.user.cart;
 
-    const amount = await calculateAmount(cid);
+    const {
+      amount,
+      productsAdded,
+      productsNotAdded,
+      productsNotAddedQuantity,
+    } = await calculateAmount(cid);
 
     var datetime = new Date();
     var purchase_datetime = datetime.toLocaleString();
@@ -160,21 +164,24 @@ export async function createTicket(req, res) {
     const order = new ticketDto(amount, email, purchase_datetime);
     const createdTicket = await ticketService.createTicket(cid, order);
 
-    const cart = await cartService.getCartById(cid);
+    await cartService.deleteCart(cid);
 
-    let unsoldProducts = [];
-
-    cart.forEach((element) => {
-      element.products.forEach((element, index) => {
-        unsoldProducts[index] = element.product._id;
-        unsoldProducts.error = "Productos sin Stock";
-      });
+    productsNotAdded.forEach(async (e, i) => {
+      await cartService.addProductInCart(cid, e, productsNotAddedQuantity[i]);
     });
 
-    if (unsoldProducts && unsoldProducts.error) {
-      return responder.errorResponse(res, unsoldProducts, 400);
+    let result = {
+      createdTicket,
+      productsNotAdded,
+    };
+    if (!productsAdded.length) {
+      result.error = "Productos sin Stock";
+    }
+
+    if (result && result.error) {
+      return responder.errorResponse(res, result.error, 400);
     } else {
-      return responder.successResponse(res, createdTicket);
+      return responder.successResponse(res, result);
     }
   } catch (error) {
     return responder.errorResponse(res, error.message);

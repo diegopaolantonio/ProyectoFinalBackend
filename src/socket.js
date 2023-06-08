@@ -42,8 +42,7 @@ socket.connect = function (httpServer) {
 
     // Agregar mensaje
     socket.on("addMessage", async (message) => {
-      const diego = await messageRepository.createMessage(message);
-      console.log(diego);
+      await messageRepository.createMessage(message);
       messages = await messageRepository.getMessages();
       io.emit("printMessages", messages);
     });

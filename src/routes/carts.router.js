@@ -22,6 +22,6 @@ router.delete("/:cid", roleCartOwner, deleteCart); // Llamado para eliminar todo
 router.delete("/:cid/products/:pid", roleCartOwner, deleteProductInCart); // Llamado para eliminar un product con id pid de un cart con id cid
 router.put("/:cid", roleCartOwner, updateProductInCart); // Llamado para actualizas un cart con id cid mediante un el cuerpo del llamado
 router.put("/:cid/products/:pid", roleCartOwner, updateQuantityProductInCart); // Llamado para actualizas el quantity de un product de un cart con id cid mediante un el cuerpo del llamado
-router.get("/:cid/purchase", createTicket);
+router.post("/:cid/purchase", createTicket);
 
 export default router;
