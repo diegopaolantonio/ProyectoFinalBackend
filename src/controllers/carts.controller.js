@@ -154,10 +154,26 @@ export async function createTicket(req, res) {
 
     const amount = await calculateAmount(cid);
 
-    const order = new ticketDto(amount, email);
+    var datetime = new Date(); 
+    var purchase_datetime = datetime.toLocaleString();
+
+    const order = new ticketDto(amount, email, purchase_datetime);
     const createdTicket = await ticketService.createTicket(cid, order);
-    if (createdTicket && createdTicket.error) {
-      return responder.errorResponse(res, createdTicket.error, 400);
+
+    console.log(createdTicket);
+    const cart = await cartService.getCartById(cid);
+
+    let unsoldProducts = [];
+
+    cart.forEach((element) => {
+      element.products.forEach((element, index) => {
+        unsoldProducts[index] = element.product._id;
+        unsoldProducts.error = "Productos sin Stock"
+      })
+    })
+
+    if (unsoldProducts && unsoldProducts.error) {
+      return responder.errorResponse(res, unsoldProducts, 400);
     } else {
       return responder.successResponse(res, createdTicket);
     }

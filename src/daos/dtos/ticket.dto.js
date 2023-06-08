@@ -1,7 +1,7 @@
 export default class ticketDto {
-  constructor(amount, purchaser) {
+  constructor(amount, purchaser, purchase_datetime) {
     this.code = Date.now() + Math.floor(Math.random() + 1000 + 1);
-    this.purchase_datetime = Date.now();
+    this.purchase_datetime = purchase_datetime;
     this.amount = amount;
     this.purchaser = purchaser;
   }

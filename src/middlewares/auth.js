@@ -30,4 +30,14 @@ function roleAdmin(req, res, next) {
   next();
 }
 
-export { checkLogged, checkSession, roleUser, roleAdmin };
+function roleCartOwner(req, res, next) {
+  console.log(JSON.stringify(req.session.user.cart));
+  console.log(JSON.stringify(req.params.cid));
+  if (JSON.stringify(req.session.user.cart) != JSON.stringify(req.params.cid)) {
+    return res.redirect("/");
+  }
+  next();
+}
+
+
+export { checkLogged, checkSession, roleUser, roleAdmin, roleCartOwner };

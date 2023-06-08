@@ -5,8 +5,6 @@ form.addEventListener("submit", async (e) => {
 
   let response = await fetch(`/api/v1/carts/${req.session.user.cart}/purchase`, {
     method: "POST",
-    // body: {},
-    // JSON.stringify({}),
     headers: {
       "Content-Type": "application/json",
     },

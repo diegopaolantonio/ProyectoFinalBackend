@@ -10,7 +10,6 @@ form.addEventListener("submit", async (e) => {
 
   let response = await fetch(`/api/v1/carts/${obj.cid}`, {
     method: "DELETE",
-    // body: JSON.stringify(obj),
     headers: {
       "Content-Type": "application/json",
     },
@@ -19,7 +18,7 @@ form.addEventListener("submit", async (e) => {
   if (response.status === 400 || response.status === 401 || response.status === 500) {
     Swal.fire({
       icon: "error",
-      title: "Product not deleted",
+      title: "Cart not emptied",
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -33,7 +32,7 @@ form.addEventListener("submit", async (e) => {
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: `Deleted product`,
+      title: `Empty cart`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
