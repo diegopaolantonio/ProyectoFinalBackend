@@ -218,12 +218,7 @@ export default class CartRepository {
           cartToUpdated.forEach((element, index) => {
             elementsToUpdated = element.products;
           });
-          const updatedProducts = elementsToUpdated.filter((element) => {
-            element.product != productId;
-            console.log(element.product);
-            console.log(productId);
-            console.log(element.product != productId);
-          });
+          const updatedProducts = elementsToUpdated.filter((element) => JSON.stringify(element.product) != JSON.stringify(productId));
           console.log(updatedProducts);
 
           const updatedCart = await this.cartDao.updateProductsInCart(

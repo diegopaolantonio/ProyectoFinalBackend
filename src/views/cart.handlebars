@@ -1,6 +1,13 @@
 <br />
-<h1>Cart Id: {{cartId}}</h1>
+<form id="cartForm">
+<input type="hidden" name="cid" value="{{cartId}}">Cart Id: {{cartId}}</input>
+<br />
+<br />
 <a href="/api/v1/carts/{{cartId}}/purchase"><button>Generar ticket</button></a>
+<br />
+<br />
+<button type="submit">Vaciar carrito</button>
+</form>
 <div>
   <h2>Producto:</h2>
   {{#each cartProducts}}
@@ -16,6 +23,9 @@
       <p>Thumbnail: {{this.thumbnail}}</p>
       <p>Quantity: {{this.quantity}}</p>
       <br />
+      <a href="/product/detail/{{this._id}}"><button>Detalle del producto</button></a>
     </div>
   {{/each}}
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/cart.js"></script>

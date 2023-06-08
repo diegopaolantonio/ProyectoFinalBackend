@@ -1,4 +1,4 @@
-const form = document.getElementById("productForm");
+const form = document.getElementById("cartForm");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -8,9 +8,9 @@ form.addEventListener("submit", async (e) => {
 
   data.forEach((value, key) => (obj[key] = value));
 
-  let response = await fetch(`/api/v1/carts/${obj.cid}/product/${obj.pid}`, {
-    method: "POST",
-    body: JSON.stringify(obj),
+  let response = await fetch(`/api/v1/carts/${obj.cid}`, {
+    method: "DELETE",
+    // body: JSON.stringify(obj),
     headers: {
       "Content-Type": "application/json",
     },
@@ -19,7 +19,7 @@ form.addEventListener("submit", async (e) => {
   if (response.status === 400 || response.status === 401 || response.status === 500) {
     Swal.fire({
       icon: "error",
-      title: "Product not added",
+      title: "Product not deleted",
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -33,7 +33,7 @@ form.addEventListener("submit", async (e) => {
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: `Added product`,
+      title: `Deleted product`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
