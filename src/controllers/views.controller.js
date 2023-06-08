@@ -2,7 +2,7 @@ import {
   cartService,
   messageService,
   productService,
-  ticketService
+  ticketService,
 } from "../services/index.js";
 import profileDto from "../daos/dtos/profile.dto.js";
 import { responder } from "../traits/Responder.js";
@@ -11,7 +11,7 @@ export function getLogin(req, res) {
   try {
     res.render("login");
   } catch (error) {
-    return responder.errorResponse(res, error.message)
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -19,7 +19,7 @@ export function getRegister(req, res) {
   try {
     res.render("register");
   } catch (error) {
-    return responder.errorResponse(res, error.message)
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -28,7 +28,7 @@ export function getProfile(req, res) {
     const user = new profileDto(req.session.user);
     res.render("profile", { user: user });
   } catch (error) {
-    return responder.errorResponse(res, error.message)
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -253,27 +253,25 @@ export async function getMessages(req, res) {
   }
 }
 
-
-export async function getTickets (req, res) {
+export async function getTickets(req, res) {
   try {
     let ticketsArray = [];
-      const tickets = await ticketService.getTickets();
-        const user = new profileDto(req.session.user);
-        tickets.forEach((e, index) => {
-          const _id = e._id;
-          const code = e.code;
-          const purchase_datetime = e.purchase_datetime;
-          const amount = e.amount;
-          const purchaser = e.purchaser
+    const tickets = await ticketService.getTickets();
+    const user = new profileDto(req.session.user);
+    tickets.forEach((e, index) => {
+      const _id = e._id;
+      const code = e.code;
+      const purchase_datetime = e.purchase_datetime;
+      const amount = e.amount;
+      const purchaser = e.purchaser;
 
-          ticketsArray[index] = {_id, code, purchase_datetime, amount, purchaser}
-        })
-        res.render("tickets", { user: user, ticketsArray: ticketsArray });
+      ticketsArray[index] = { _id, code, purchase_datetime, amount, purchaser };
+    });
+    res.render("tickets", { user: user, ticketsArray: ticketsArray });
   } catch (error) {
-      return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message);
   }
 }
-
 
 export function realTimeProducts(req, res) {
   try {

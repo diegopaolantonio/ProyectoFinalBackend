@@ -67,8 +67,6 @@ export default class CartService {
 
   deleteProductInCart = async (cid, pid) => {
     try {
-      // console.log(cid);
-      // console.log(pid);
       const carts = await this.cartRepository.deleteCart(cid, pid);
       if (!carts) {
         return { error: "Delete products in cart error" };

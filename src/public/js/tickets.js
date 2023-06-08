@@ -3,12 +3,15 @@ const form = document.getElementById("ticket");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  let response = await fetch(`/api/v1/carts/${req.session.user.cart}/purchase`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  let response = await fetch(
+    `/api/v1/carts/${req.session.user.cart}/purchase`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   if (response.status === 401 || response.status === 500) {
     Swal.fire({

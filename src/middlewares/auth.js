@@ -39,5 +39,4 @@ function roleCartOwner(req, res, next) {
   next();
 }
 
-
 export { checkLogged, checkSession, roleUser, roleAdmin, roleCartOwner };

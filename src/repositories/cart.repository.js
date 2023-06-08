@@ -9,11 +9,11 @@ export default class CartRepository {
   getCarts = async () => {
     try {
       const carts = await this.cartDao.getCarts();
-      if (!carts) {
-        return "Get messages error";
-      } else {
+      // if (!carts) {
+      //   return "Get messages error";
+      // } else {
         return carts;
-      }
+      // }
     } catch (error) {
       throw new Error(error);
     }
@@ -23,11 +23,11 @@ export default class CartRepository {
   getCartById = async (cartId) => {
     try {
       const carts = await this.cartDao.getCartByIdPopulate(cartId);
-      if (!carts) {
-        return "Id not found";
-      } else {
+      // if (!carts) {
+      //   return "Id not found";
+      // } else {
         return carts;
-      }
+      // }
     } catch (error) {
       throw new Error(error);
     }
@@ -37,11 +37,11 @@ export default class CartRepository {
   addCart = async () => {
     try {
       const created = await this.cartDao.addCart();
-      if (!created) {
-        return "Add cart error";
-      } else {
+      // if (!created) {
+      //   return "Add cart error";
+      // } else {
         return created;
-      }
+      // }
     } catch (error) {
       throw new Error(error);
     }
@@ -104,11 +104,11 @@ export default class CartRepository {
             cartId,
             elementsToUpdated
           );
-          if (!updatedCart) {
-            return "Add product in cart error";
-          } else {
+          // if (!updatedCart) {
+          //   return "Add product in cart error";
+          // } else {
             return updatedCart;
-          }
+          // }
         }
       }
     } catch (error) {
@@ -132,11 +132,11 @@ export default class CartRepository {
             cartId,
             productsElements
           );
-          if (!modifyCart) {
-            return "Modify cart error";
-          } else {
+          // if (!modifyCart) {
+          //   return "Modify cart error";
+          // } else {
             return modifyCart;
-          }
+          // }
         }
       }
     } catch (error) {
@@ -182,11 +182,11 @@ export default class CartRepository {
                   cartId,
                   elementsToModify
                 );
-                if (!modifyCart) {
-                  return "Modify cart error";
-                } else {
+                // if (!modifyCart) {
+                //   return "Modify cart error";
+                // } else {
                   return modifyCart;
-                }
+                // }
               }
             }
           }
@@ -201,7 +201,6 @@ export default class CartRepository {
   deleteCart = async (cartId, productId) => {
     let cartToUpdated;
     let elementsToUpdated = [];
-    // let updatedProducts = [];
 
     try {
       cartToUpdated = await this.cartDao.getCartById(cartId);
@@ -218,18 +217,21 @@ export default class CartRepository {
           cartToUpdated.forEach((element, index) => {
             elementsToUpdated = element.products;
           });
-          const updatedProducts = elementsToUpdated.filter((element) => JSON.stringify(element.product) != JSON.stringify(productId));
+          const updatedProducts = elementsToUpdated.filter(
+            (element) =>
+              JSON.stringify(element.product) != JSON.stringify(productId)
+          );
           console.log(updatedProducts);
 
           const updatedCart = await this.cartDao.updateProductsInCart(
             cartId,
             updatedProducts
           );
-          if (!updatedCart) {
-            return "Delete product in cart error";
-          } else {
+          // if (!updatedCart) {
+          //   return "Delete product in cart error";
+          // } else {
             return updatedCart;
-          }
+          // }
         }
       }
     } catch (error) {

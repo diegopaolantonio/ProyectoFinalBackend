@@ -7,12 +7,7 @@ import database from "./mongo.js";
 import config from "./config.js";
 import morgan from "morgan";
 import passport from "passport";
-import sessionsRouter from "./routes/sessions.router.js";
-import messagesRouter from "./routes/messages.router.js";
-import productsRouter from "./routes/products.router.js";
-import cartsRouter from "./routes/carts.router.js";
-import ticketsRouter from "./routes/tickets.router.js";
-import viewsRouter from "./routes/views.router.js";
+import { routerApi } from "./routes/index.js";
 import __dirname from "./utils.js";
 import initializePassport from "./auth/passport.js";
 
@@ -56,9 +51,4 @@ const httpServer = app.listen(8080, () => {
 socket.connect(httpServer);
 
 // Routes
-app.use("/", viewsRouter);
-app.use("/api/v1/carts", cartsRouter);
-app.use("/api/v1/messages", messagesRouter);
-app.use("/api/v1/products", productsRouter);
-app.use("/api/v1/tickets", ticketsRouter);
-app.use("/api/v1/sessions", sessionsRouter);
+routerApi(app);

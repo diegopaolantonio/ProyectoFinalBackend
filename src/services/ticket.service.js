@@ -37,51 +37,8 @@ export default class TSicketService {
 
   createTicket = async (cid, order) => {
     try {
-
-
-
-
-
-      // let amount = 0;
-      // let quantityInCart;
-      // let product;
-      // let productStock;
-
-      // const cart = await cartRepository.getCartById(cid);
-
-      // cart.forEach( async (element) => {
-        
-      //   await element.products.forEach( async (element, index) => {
-      //     const pid = element.product._id;
-      //     product = await productRepository.getProductById(pid);
-
-      //     product.forEach((element, index) => {
-      //       productStock = element.stock;
-      //     });
-
-      //     console.log(element.product.price);
-          
-      //     if (product.quantity < productStock) {
-      //       amount += element.product.price * element.quantity;
-      //       quantityInCart = productStock - element.quantity;
-      //     } else {
-      //       amount += element.product.price * productStock;
-      //       quantityInCart = 0;
-      //     }
-          
-      //     await cartRepository.modifyProductCart(cid, pid, quantityInCart)
-
-      //   });
-
-      //   order.amount = amount;
-
-      // });
-
-
-
-      
-      
       const createdTicket = await this.ticketRepository.createTicket(order);
+
       if (!createdTicket) {
         return { error: "Ticket not created" };
       } else {

@@ -25,35 +25,21 @@ export async function calculateAmount(cid) {
 
       productQuantity[index] = element.product.stock - element.quantity;
       updatedCart = await cartService.deleteProductInCart(cid, pid[index]);
-      // console.log(updatedCart);
-
-      // updatedCart = await cartService.updateQuantityProductInCart(
-      //   cid,
-      //   pid[index],
-      //   productQuantity[index]
-      //   );
-
-      // } else {
-      //   amount += element.product.price * element.product.stock;
-      //   quantityInCart = 0;
-        
-      //   updatedCart = await cartService.deleteProductInCart(cid, pid[index]);
 
       let product = await productService.getProductById(pid[index]);
-      
+
       let product_1 = [];
       product.forEach(async (e) => {
         product_1[index] = e;
         product_1[index].stock = quantityInCart;
-        
+
         const updatedProduct = await productService.updateProduct(
           pid[index],
           product_1[index]
-          );
-          // console.log(updatedProduct);
-        });
-      }
+        );
       });
+    }
+  });
 
   return amount;
 }

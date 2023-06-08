@@ -16,7 +16,11 @@ form.addEventListener("submit", async (e) => {
     },
   });
 
-  if (response.status === 400 || response.status === 401 || response.status === 500) {
+  if (
+    response.status === 400 ||
+    response.status === 401 ||
+    response.status === 500
+  ) {
     Swal.fire({
       icon: "error",
       title: "Product not added",
