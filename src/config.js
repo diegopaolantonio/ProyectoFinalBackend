@@ -14,6 +14,10 @@ const config = {
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
   callbackUrl: process.env.GITHUB_CALLBACK_URL,
+  nodemailerService: process.env.NODEMAILER_SERVICE,
+  nodemailerPort: process.env.NODEMAILER_PORT,
+  nodemailerUser: process.env.NODEMAILER_USER,
+  nodemailerPassword: process.env.NODEMAILER_PASSWORD,
 };
 
 export default config;

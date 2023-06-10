@@ -38,7 +38,16 @@ form.addEventListener("submit", async (e) => {
     Swal.fire({
       icon: "success",
       title: "Ticket created",
-      text: `${JSON.stringify(result.payload)}`,
+      html: `
+      <p>Codigo: ${result.payload.createdTicket.code}</p>
+      <p>Fecha: ${result.payload.createdTicket.purchase_datetime}</p>
+      <p>Monto: ${result.payload.createdTicket.amount}</p>
+      <p>Comprador: ${result.payload.createdTicket.purchaser}</p>
+      <h2>Ids de los productos comprados:</h2>
+      <p>${result.payload.productsAdded}</p>
+      <h2>Ids de los productos que no pudieron procesarse por falta de stock:</h2>
+      <p>${result.payload.productsNotAdded}</p>
+      `,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
