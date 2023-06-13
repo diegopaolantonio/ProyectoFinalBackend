@@ -17,7 +17,7 @@ export async function getTickets(req, res) {
 export async function getTicketById(req, res) {
   try {
     const tid = req.params.tid;
-    const ticket = await ticketService.getTicketByid(tid);
+    const ticket = await ticketService.getTicketById(tid);
     if (ticket && ticket.error) {
       return responder.errorResponse(res, ticket.error, 400);
     } else {

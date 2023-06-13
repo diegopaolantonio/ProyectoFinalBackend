@@ -6,6 +6,7 @@ import {
 } from "../services/index.js";
 import profileDto from "../daos/dtos/profile.dto.js";
 import { responder } from "../traits/Responder.js";
+import { generateProducts } from "../faker.js";
 
 export function getLogin(req, res) {
   try {
@@ -287,6 +288,24 @@ export function realTimeChat(req, res) {
     res.render("realTimeChat", {
       user: user.name,
     });
+  } catch (error) {
+    return responder.errorResponse(res, error.message);
+  }
+}
+
+export function mockingProducts(req, res){
+  try {
+    const quantity = 100;
+    const products = [];
+
+    for(let i = 0; i < quantity; i++) {
+      products[i] = generateProducts(i);
+    }
+
+    res.render("mocking", {
+      productsArray: products,
+    });
+
   } catch (error) {
     return responder.errorResponse(res, error.message);
   }

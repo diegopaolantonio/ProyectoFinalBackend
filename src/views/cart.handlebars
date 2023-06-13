@@ -4,13 +4,12 @@
 <br />
 <br />
 <input type="submit" value="Generar ticket"/ >
-{{!-- <a href="/api/v1/carts/{{cartId}}/purchase">Generar ticket</a> --}}
 <br />
 <br />
 <input type="reset" value="Vaciar carrito"/ >
 </form>
 <div>
-  <h2>Producto:</h2>
+  <h1>Productos en carrito:</h1>
   {{#each cartProducts}}
     <div>
       <h3>Product Id: {{this._id}}</h3>
