@@ -8,7 +8,7 @@ export default class MessageRepository {
   getMessages = async () => {
     try {
       const messages = await this.messageDao.getMessages();
-        return messages;
+      return messages;
     } catch (error) {
       throw new Error(error);
     }
@@ -18,7 +18,7 @@ export default class MessageRepository {
   createMessage = async (message) => {
     try {
       const createdMessage = await this.messageDao.createMessage(message);
-        return createdMessage;
+      return createdMessage;
     } catch (error) {
       throw new Error(error);
     }

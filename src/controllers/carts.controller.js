@@ -8,30 +8,57 @@ import { responder } from "../traits/Responder.js";
 import ticketDto from "../daos/dtos/ticket.dto.js";
 import transport from "../middlewares/nodemailer.js";
 
+import CustomError from "../errors/costumError.js";
+import {
+  ErrorsName,
+  ErrorsCause,
+  ErrorsMessage,
+} from "../errors/error.enum.js";
+
 export async function getCarts(req, res) {
   try {
     const carts = await cartService.getCarts();
     if (carts && carts.error) {
-      return responder.errorResponse(res, carts.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.GETCARTS_ERROR_MESSAGE,
+        cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, carts.error, 400);
     } else {
       return responder.successResponse(res, carts);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.GETCARTS_ERROR_MESSAGE,
+      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
 export async function getCartsById(req, res) {
   try {
     const cid = req.params.cid;
-    const products = await cartService.getCartById(cid);
-    if (products && products.error) {
-      return responder.errorResponse(res, products.error, 400);
+    const carts = await cartService.getCartById(cid);
+    if (carts && carts.error) {
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE,
+        cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, carts.error, 400);
     } else {
-      return responder.successResponse(res, products);
+      return responder.successResponse(res, carts);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE,
+      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -39,12 +66,22 @@ export async function createCart(req, res) {
   try {
     const carts = await cartService.createCart();
     if (carts && carts.error) {
-      return responder.errorResponse(res, products.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.GETCARTS_ERROR_MESSAGE,
+        cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, products.error, 400);
     } else {
       return responder.successResponse(res, carts);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.CREATECARTS_ERROR_MESSAGE,
+      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -57,12 +94,22 @@ export async function addProductInCart(req, res) {
 
     const carts = await cartService.addProductInCart(cid, pid, quantity);
     if (carts && carts.error) {
-      return responder.errorResponse(res, products.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.ADDPRODUCTINCARTS_ERROR_MESSAGE,
+        cause: ErrorsCause.ADDPRODUCTINCARTS_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, products.error, 400);
     } else {
       return responder.successResponse(res, carts);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.ADDPRODUCTINCARTS_ERROR_MESSAGE,
+      cause: ErrorsCause.ADDPRODUCTINCARTS_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -72,12 +119,22 @@ export async function deleteCart(req, res) {
 
     const carts = await cartService.deleteCart(cid);
     if (carts && carts.error) {
-      return responder.errorResponse(res, products.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+        cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, products.error, 400);
     } else {
       return responder.successResponse(res, carts);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -88,12 +145,22 @@ export async function deleteProductInCart(req, res) {
 
     const carts = await cartService.deleteProductInCart(cid, pid);
     if (carts && carts.error) {
-      return responder.errorResponse(res, products.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+        cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, products.error, 400);
     } else {
       return responder.successResponse(res, carts);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -108,15 +175,30 @@ export async function updateProductInCart(req, res) {
         productsElements
       );
       if (carts && carts.error) {
-        return responder.errorResponse(res, products.error, 400);
+        return CustomError.generateCustomError({
+          name: ErrorsName.CARTS_ERROR_NAME,
+          message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+          cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+        });
+        // return responder.errorResponse(res, products.error, 400);
       } else {
         return responder.successResponse(res, carts);
       }
     } else {
-      return responder.errorResponse(res, "unauthorized", 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.UTHORIZATION_ERROR_MESSAGE,
+        cause: ErrorsCause.UTHORIZATION_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, "unauthorized", 400);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -134,15 +216,30 @@ export async function updateQuantityProductInCart(req, res) {
         quantity
       );
       if (carts && carts.error) {
-        return responder.errorResponse(res, products.error, 400);
+        return CustomError.generateCustomError({
+          name: ErrorsName.CARTS_ERROR_NAME,
+          message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+          cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+        });
+        // return responder.errorResponse(res, products.error, 400);
       } else {
         return responder.successResponse(res, carts);
       }
     } else {
-      return responder.errorResponse(res, "unauthorized", 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.AUTHORIZATION_ERROR_MESSAGE,
+        cause: ErrorsCause.UTHORIZATION_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, "unauthorized", 400);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -235,11 +332,21 @@ export async function createTicket(req, res) {
     }
 
     if (result && result.error) {
-      return responder.errorResponse(res, result.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.TICKET_ERROR_MESSAGE,
+        cause: ErrorsCause.TICKET_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, result.error, 400);
     } else {
       return responder.successResponse(res, result);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.TICKET_ERROR_MESSAGE,
+      cause: ErrorsCause.TICKET_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }

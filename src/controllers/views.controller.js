@@ -12,7 +12,12 @@ export function getLogin(req, res) {
   try {
     res.render("login");
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.VIEWS_ERROR_NAME,
+      message: ErrorsMessage.PAGE_ERROR_MESSAGE,
+      cause: ErrorsCause.PAGE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -20,7 +25,12 @@ export function getRegister(req, res) {
   try {
     res.render("register");
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.VIEWS_ERROR_NAME,
+      message: ErrorsMessage.PAGE_ERROR_MESSAGE,
+      cause: ErrorsCause.PAGE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -29,7 +39,12 @@ export function getProfile(req, res) {
     const user = new profileDto(req.session.user);
     res.render("profile", { user: user });
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.VIEWS_ERROR_NAME,
+      message: ErrorsMessage.PAGE_ERROR_MESSAGE,
+      cause: ErrorsCause.PAGE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -109,7 +124,12 @@ export async function getProducts(req, res) {
       nextLink: nextLink,
     });
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.PRODUCTS_ERROR_NAME,
+      message: ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE,
+      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -153,7 +173,12 @@ export async function getProductById(req, res) {
       thumbnail: thumbnail,
     });
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.PRODUCTS_ERROR_NAME,
+      message: ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE,
+      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -205,7 +230,12 @@ export async function getCartById(req, res) {
       cartId: cartId,
     });
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE,
+      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -215,25 +245,32 @@ export async function updateCart(req, res) {
     const pid = req.params.pid;
 
     if (req.session.user.cart === cid) {
-      return responder.errorResponse(
-        res,
-        (error.message = "Unauthorized"),
-        401
-      );
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.UTHORIZATION_ERROR_MESSAGE,
+        cause: ErrorsCause.UTHORIZATION_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, (error.message = "Unauthorized"), 401);
     }
 
     const carts = await cartService.updateCart(cid, pid);
     if (!carts) {
-      return responder.errorResponse(
-        res,
-        (products.error = "Add product in cart error"),
-        400
-      );
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+        cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, (products.error = "Add product in cart error"), 400);
     } else {
       return res.redirect("back");
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -250,7 +287,12 @@ export async function getMessages(req, res) {
       messagesArray: messageArray,
     });
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.MESSAGES_ERROR_NAME,
+      message: ErrorsMessage.GETMESSAGES_ERROR_MESSAGE,
+      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -270,7 +312,12 @@ export async function getTickets(req, res) {
     });
     res.render("tickets", { user: user, ticketsArray: ticketsArray });
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.TICKETS_ERROR_NAME,
+      message: ErrorsMessage.GETTICKETS_ERROR_MESSAGE,
+      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -278,7 +325,12 @@ export function realTimeProducts(req, res) {
   try {
     res.render("realTimeProducts", {});
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.CARTS_ERROR_NAME,
+      message: ErrorsMessage.GETCARTS_ERROR_MESSAGE,
+      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -289,24 +341,33 @@ export function realTimeChat(req, res) {
       user: user.name,
     });
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.MESSAGES_ERROR_NAME,
+      message: ErrorsMessage.GETMESSAGES_ERROR_MESSAGE,
+      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
-export function mockingProducts(req, res){
+export function mockingProducts(req, res) {
   try {
     const quantity = 100;
     const products = [];
 
-    for(let i = 0; i < quantity; i++) {
+    for (let i = 0; i < quantity; i++) {
       products[i] = generateProducts(i);
     }
 
     res.render("mocking", {
       productsArray: products,
     });
-
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.MOCKING_ERROR_NAME,
+      message: ErrorsMessage.MOCKING_ERROR_MESSAGE,
+      cause: ErrorsCause.MOCKING_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }

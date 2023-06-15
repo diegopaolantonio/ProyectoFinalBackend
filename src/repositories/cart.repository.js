@@ -51,11 +51,11 @@ export default class CartRepository {
     try {
       const product = await this.productDao.getProductById(productId);
       if (!product) {
-        return "Id product not found";
+        return null; // "Id product not found";
       } else {
         cartToUpdated = await this.cartDao.getCartById(cartId);
         if (!cartToUpdated) {
-          return "Id cart not found";
+          return null; // "Id cart not found";
         } else {
           cartToUpdated.forEach((element, index) => {
             elementsToUpdated = element.products;
@@ -105,10 +105,10 @@ export default class CartRepository {
     try {
       cartToModify = await this.cartDao.getCartById(cartId);
       if (!cartToModify) {
-        return "Id cart not found";
+        return null; // "Id cart not found";
       } else {
         if (!productsElements) {
-          return "No elements to update";
+          return null; // "No elements to update";
         } else {
           const modifyCart = await this.cartDao.updateProductsInCart(
             cartId,
@@ -132,11 +132,11 @@ export default class CartRepository {
     try {
       cartToModify = await this.cartDao.getCartById(cartId);
       if (!cartToModify) {
-        return "Id cart not found";
+        return null; // "Id cart not found";
       } else {
         if (productId) {
           if (quantity < 0) {
-            return "No quantity to update";
+            return null; // "No quantity to update";
           } else {
             cartToModify.forEach((element) => {
               elementsToModify = element.products;
@@ -145,7 +145,7 @@ export default class CartRepository {
               });
             });
             if (cartProductsArray.length === 0) {
-              return "Empty cart";
+              return null; // "Empty cart";
             } else {
               cartProductsArray.forEach((element, index) => {
                 if (element.toString() === productId) {
@@ -153,7 +153,7 @@ export default class CartRepository {
                 }
               });
               if (indexEncontrado === -1) {
-                return "Product not found in cart";
+                return null; // "Product not found in cart";
               } else {
                 elementsToModify[indexEncontrado].quantity = quantity;
                 const modifyCart = await this.cartDao.updateProductsInCart(
@@ -179,7 +179,7 @@ export default class CartRepository {
     try {
       cartToUpdated = await this.cartDao.getCartById(cartId);
       if (!cartToUpdated) {
-        return "Id cart not found";
+        return null; // "Id cart not found";
       } else {
         if (!productId) {
           const updatedCart = await this.cartDao.updateProductsInCart(

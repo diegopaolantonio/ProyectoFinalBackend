@@ -31,7 +31,7 @@ export default class ProductRepository {
     try {
       const products = await this.productDao.getProductById(productId);
       if (!products) {
-        return "Id not found";
+        return null; //"Id not found";
       } else {
         return products;
       }

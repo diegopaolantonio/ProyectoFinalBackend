@@ -1,13 +1,25 @@
 import { productService } from "../services/index.js";
 import { responder } from "../traits/Responder.js";
 
+import CustomError from "../errors/costumError.js";
+import {
+  ErrorsName,
+  ErrorsCause,
+  ErrorsMessage,
+} from "../errors/error.enum.js";
+
 export async function getProducts(req, res) {
   try {
     const { limit, page, query, sort } = req.query;
     const products = await productService.getProducts(limit, page, query, sort);
 
     if (products && products.error) {
-      return responder.errorResponse(res, products.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.PRODUCTS_ERROR_NAME,
+        message: ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE,
+        cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, products.error, 400);
     } else {
       const { docs, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage } =
         products;
@@ -50,7 +62,12 @@ export async function getProducts(req, res) {
       return responder.successResponse(res, products2);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.PRODUCTS_ERROR_NAME,
+      message: ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE,
+      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -59,12 +76,22 @@ export async function getProductById(req, res) {
     const pid = req.params.pid;
     const product = await productService.getProductById(pid);
     if (product && product.error) {
-      return responder.errorResponse(res, product.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.PRODUCTS_ERROR_NAME,
+        message: ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE,
+        cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, product.error, 400);
     } else {
       return responder.successResponse(res, product);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.PRODUCTS_ERROR_NAME,
+      message: ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE,
+      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -73,12 +100,22 @@ export async function addProduct(req, res) {
     const product = req.body;
     const products = await productService.addProduct(product);
     if (products && products.error) {
-      return responder.errorResponse(res, products.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.PRODUCTS_ERROR_NAME,
+        message: ErrorsMessage.ADDPRODUCT_ERROR_MESSAGE,
+        cause: ErrorsCause.ADDPRODUCT_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, products.error, 400);
     } else {
       return responder.successResponse(res, products);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.PRODUCTS_ERROR_NAME,
+      message: ErrorsMessage.ADDPRODUCT_ERROR_MESSAGE,
+      cause: ErrorsCause.ADDPRODUCT_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -88,12 +125,22 @@ export async function updateProduct(req, res) {
     const updateProduct = req.body;
     const products = await productService.updateProduct(pid, updateProduct);
     if (products && products.error) {
-      return responder.errorResponse(res, products.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.PRODUCTS_ERROR_NAME,
+        message: ErrorsMessage.UPDATEPRODUCT_ERROR_MESSAGE,
+        cause: ErrorsCause.UPDATEPRODUCT_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, products.error, 400);
     } else {
       return responder.successResponse(res, products);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.PRODUCTS_ERROR_NAME,
+      message: ErrorsMessage.UPDATEPRODUCT_ERROR_MESSAGE,
+      cause: ErrorsCause.UPDATEPRODUCT_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }
 
@@ -102,11 +149,21 @@ export async function deleteProduct(req, res) {
     const pid = req.params.pid;
     const products = await productService.deleteProduct(pid);
     if (products && products.error) {
-      return responder.errorResponse(res, products.error, 400);
+      return CustomError.generateCustomError({
+        name: ErrorsName.PRODUCTS_ERROR_NAME,
+        message: ErrorsMessage.DELETE_ERROR_MESSAGE,
+        cause: ErrorsCause.DELETE_ERROR_CAUSE,
+      });
+      // return responder.errorResponse(res, products.error, 400);
     } else {
       return responder.successResponse(res, products);
     }
   } catch (error) {
-    return responder.errorResponse(res, error.message);
+    return CustomError.generateCustomError({
+      name: ErrorsName.PRODUCTS_ERROR_NAME,
+      message: ErrorsMessage.DELETE_ERROR_MESSAGE,
+      cause: ErrorsCause.DELETE_ERROR_CAUSE,
+    });
+    // return responder.errorResponse(res, error.message);
   }
 }

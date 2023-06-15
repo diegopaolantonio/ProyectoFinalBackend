@@ -19,11 +19,11 @@ export default class CartService {
 
   getCartById = async (cid) => {
     try {
-      const products = await this.cartRepository.getCartById(cid);
-      if (!products) {
+      const carts = await this.cartRepository.getCartById(cid);
+      if (!carts) {
         return { error: "Id not found" };
       }
-      return products;
+      return carts;
     } catch (error) {
       throw new Error(error);
     }
