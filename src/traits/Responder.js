@@ -6,7 +6,10 @@ class Responder {
   };
 
   errorResponse = (res, error, status = 500) => {
-    res.status(status).send({ status: "Error", error: error });
+    res.status(status).send({
+      status: "Error",
+      error: error,
+    });
   };
 }
 

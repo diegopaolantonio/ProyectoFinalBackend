@@ -7,17 +7,13 @@ import {
 import profileDto from "../daos/dtos/profile.dto.js";
 import { responder } from "../traits/Responder.js";
 import { generateProducts } from "../faker.js";
+import CustomError from "../errors/customError.js";
 
 export function getLogin(req, res) {
   try {
     res.render("login");
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.VIEWS_ERROR_NAME,
-    //   message: ErrorsMessage.PAGE_ERROR_MESSAGE,
-    //   cause: ErrorsCause.PAGE_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -25,12 +21,7 @@ export function getRegister(req, res) {
   try {
     res.render("register");
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.VIEWS_ERROR_NAME,
-    //   message: ErrorsMessage.PAGE_ERROR_MESSAGE,
-    //   cause: ErrorsCause.PAGE_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -39,12 +30,7 @@ export function getProfile(req, res) {
     const user = new profileDto(req.session.user);
     res.render("profile", { user: user });
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.VIEWS_ERROR_NAME,
-    //   message: ErrorsMessage.PAGE_ERROR_MESSAGE,
-    //   cause: ErrorsCause.PAGE_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -129,12 +115,7 @@ export async function getProducts(req, res) {
       nextLink: nextLink,
     });
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.PRODUCTS_ERROR_NAME,
-    //   message: ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE,
-    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -178,12 +159,7 @@ export async function getProductById(req, res) {
       thumbnail: thumbnail,
     });
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.PRODUCTS_ERROR_NAME,
-    //   message: ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE,
-    //   cause: ErrorsCause.GETBYID_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -235,12 +211,7 @@ export async function getCartById(req, res) {
       cartId: cartId,
     });
   } catch (error) {
-    // // return CustomError.generateCustomError({
-    // //   name: ErrorsName.CARTS_ERROR_NAME,
-    // //   message: ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE,
-    // //   cause: ErrorsCause.GETBYID_ERROR_CAUSE,
-    // // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -250,12 +221,12 @@ export async function updateCart(req, res) {
     const pid = req.params.pid;
 
     if (req.session.user.cart === cid) {
-      // return CustomError.generateCustomError({
-      //   name: ErrorsName.CARTS_ERROR_NAME,
-      //   message: ErrorsMessage.UTHORIZATION_ERROR_MESSAGE,
-      //   cause: ErrorsCause.UTHORIZATION_ERROR_CAUSE,
-      // });
-      return responder.errorResponse(res, (error.message = "Unauthorized"), 401);
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.UTHORIZATION_ERROR_MESSAGE,
+        cause: ErrorsCause.UTHORIZATION_ERROR_CAUSE,
+        status: 401,
+      });
     }
 
     const carts = await cartService.updateCart(cid, pid);
@@ -264,18 +235,13 @@ export async function updateCart(req, res) {
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
         cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+        status: 400,
       });
-      // return responder.errorResponse(res, (products.error = "Add product in cart error"), 400);
     } else {
       return res.redirect("back");
     }
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.CARTS_ERROR_NAME,
-    //   message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
-    //   cause: ErrorsCause.GETBYID_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -292,12 +258,7 @@ export async function getMessages(req, res) {
       messagesArray: messageArray,
     });
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.MESSAGES_ERROR_NAME,
-    //   message: ErrorsMessage.GETMESSAGES_ERROR_MESSAGE,
-    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -317,12 +278,7 @@ export async function getTickets(req, res) {
     });
     res.render("tickets", { user: user, ticketsArray: ticketsArray });
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.TICKETS_ERROR_NAME,
-    //   message: ErrorsMessage.GETTICKETS_ERROR_MESSAGE,
-    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -330,12 +286,7 @@ export function realTimeProducts(req, res) {
   try {
     res.render("realTimeProducts", {});
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.CARTS_ERROR_NAME,
-    //   message: ErrorsMessage.GETCARTS_ERROR_MESSAGE,
-    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -346,12 +297,7 @@ export function realTimeChat(req, res) {
       user: user.name,
     });
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.MESSAGES_ERROR_NAME,
-    //   message: ErrorsMessage.GETMESSAGES_ERROR_MESSAGE,
-    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }
 
@@ -368,11 +314,6 @@ export function mockingProducts(req, res) {
       productsArray: products,
     });
   } catch (error) {
-    // return CustomError.generateCustomError({
-    //   name: ErrorsName.MOCKING_ERROR_NAME,
-    //   message: ErrorsMessage.MOCKING_ERROR_MESSAGE,
-    //   cause: ErrorsCause.MOCKING_ERROR_CAUSE,
-    // });
-    return responder.errorResponse(res, error.message);
+    return responder.errorResponse(res, error.message, error.status);
   }
 }

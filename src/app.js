@@ -10,7 +10,6 @@ import passport from "passport";
 import { routerApi } from "./routes/index.js";
 import __dirname from "./utils.js";
 import initializePassport from "./auth/passport.js";
-import { errorMiddleware } from "./errors/error.middleware.js";
 
 // Inicializacion
 const app = express();
@@ -43,8 +42,6 @@ app.set("view engine", "handlebars");
 
 // Conexion a Database
 database.connect();
-
-app.use(errorMiddleware);
 
 // Servidor
 const httpServer = app.listen(8080, () => {
