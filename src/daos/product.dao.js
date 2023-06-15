@@ -4,6 +4,12 @@ export default class ProductDao {
   getProducts = async function (limit, page, query, sort) {
     let products;
     try {
+      if (!limit || typeof limit != Number) {
+        limit = 10;
+      }
+      if (!page) {
+        page = 1;
+      }
       if (!sort) {
         if (!query) {
           products = await productModel.paginate(

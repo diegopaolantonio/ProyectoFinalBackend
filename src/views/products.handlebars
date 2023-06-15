@@ -3,8 +3,10 @@
 <p>Edad: {{age}}</p>
 <p>Cart: {{cart}}</p>
 <p>Role: {{role}}</p>
-<a href="/cart/{{cart}}"><button>Ver carrito</button></a>
-<br />
+{{#if cart}}
+  <a href="/cart/{{cart}}"><button>Ver carrito</button></a>
+  <br />
+{{/if}}
 <br />
 <a href="/api/v1/sessions/logout"><button>Logout</button></a>
 

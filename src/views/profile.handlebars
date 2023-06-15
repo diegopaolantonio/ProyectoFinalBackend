@@ -5,4 +5,14 @@
   <p>Email: {{user.email}}</p>
   <p>Role: {{user.role}}</p>
   <p>Cart: {{user.cart}}</p>
+  {{#if user.cart}}
+    <a href="/cart/{{user.cart}}"><button>Ver carrito</button></a>
+    <br />
+  {{/if}}
+  <br />
+  <a href="/products"><button>Ver productos</button></a>
+  <br />
+  <br />
+  <a href="/api/v1/sessions/logout"><button>Logout</button></a>
+
 </div>

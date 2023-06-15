@@ -8,12 +8,6 @@ export default class ProductRepository {
   //Funcion para obtener todos los datos del db
   getProducts = async (limit, page, query, sort) => {
     try {
-      if (!limit) {
-        limit = 10;
-      }
-      if (!page) {
-        page = 1;
-      }
       const products = await this.productDao.getProducts(
         limit,
         page,

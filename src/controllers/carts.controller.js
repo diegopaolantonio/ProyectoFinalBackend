@@ -304,7 +304,7 @@ export async function createTicket(req, res) {
       productsNotAdded,
     };
     if (!productsAdded.length) {
-      result.error = "Productos sin Stock";
+      result = "Ticker no generado, ningun producto seleccionado tiene Stock";
     } else {
       await transport.sendMail({
         from: config.nodemailerUser,
