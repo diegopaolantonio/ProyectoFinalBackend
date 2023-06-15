@@ -1,11 +1,13 @@
 <div>
   <h1>Datos del perfil</h1>
   <p>Nombre y apellido: {{user.name}}</p>
-  <p>Edad: {{user.age}}</p>
+  {{#if user.cart}}
+    <p>Edad: {{user.age}}</p>
+  {{/if}}
   <p>Email: {{user.email}}</p>
   <p>Role: {{user.role}}</p>
-  <p>Cart: {{user.cart}}</p>
   {{#if user.cart}}
+    <p>Cart: {{user.cart}}</p>
     <a href="/cart/{{user.cart}}"><button>Ver carrito</button></a>
     <br />
   {{/if}}

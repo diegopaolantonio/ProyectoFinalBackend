@@ -4,7 +4,10 @@ export default class ProductDao {
   getProducts = async function (limit, page, query, sort) {
     let products;
     try {
-      if (!limit || typeof limit != Number) {
+      if(limit != "realTime") {
+      limit = parseInt(limit);
+      page = parseInt(page);
+      if (!limit || typeof limit != "number") {
         limit = 10;
       }
       if (!page) {
@@ -49,6 +52,9 @@ export default class ProductDao {
           }
         }
       }
+    } else {
+      products = await productModel.find();
+    }
       return products;
     } catch (error) {
       return null;

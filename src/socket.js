@@ -14,7 +14,7 @@ socket.connect = function (httpServer) {
   io.on("connection", async (socket) => {
     console.log("Cliente conectado");
 
-    products = await productRepository.getProducts();
+    products = await productRepository.getProducts("realTime");
     io.emit("printProducts", products);
 
     messages = await messageRepository.getMessages();
@@ -23,20 +23,21 @@ socket.connect = function (httpServer) {
     // Agregar producto
     socket.on("addProduct", async (product) => {
       await productRepository.addProduct(product);
-      products = await productRepository.getProducts();
+      products = await productRepository.getProducts("realTime");
+      console.log(products);
       io.emit("printProducts", products);
     });
 
     // Eliminar producto
     socket.on("deleteProduct", async (pid) => {
       await productRepository.deleteProduct(pid);
-      products = await productRepository.getProducts();
+      products = await productRepository.getProducts("realTime");
       io.emit("printProducts", products);
     });
 
     // Actualizar vista products
     socket.on("getProduct", async () => {
-      products = await productRepository.getProducts();
+      products = await productRepository.getProducts("realTime");
       io.emit("printProducts", products);
     });
 

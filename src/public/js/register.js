@@ -49,7 +49,7 @@ form.addEventListener("submit", async (e) => {
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
-        location.reload();
+        location.href = "/login";
       }
     });
   }

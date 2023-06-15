@@ -42,9 +42,10 @@ addBox.addEventListener("click", () => {
 
 // Funcion para imprimir en pantalla los datos del array con los productos
 socket.on("printProducts", (data) => {
-  realTime.innerHTML = "";
+  console.log(data.docs);
+  realTimeProducts.innerHTML = "";
   data.forEach((element) => {
-    realTime.innerHTML += `<tr>
+    realTimeProducts.innerHTML += `<tr>
              <p>Id: ${element._id}</p>
              <p>Title: ${element.title}</p>
              <p>Description: ${element.description}</p>

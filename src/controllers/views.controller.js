@@ -12,12 +12,12 @@ export function getLogin(req, res) {
   try {
     res.render("login");
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.VIEWS_ERROR_NAME,
-      message: ErrorsMessage.PAGE_ERROR_MESSAGE,
-      cause: ErrorsCause.PAGE_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.VIEWS_ERROR_NAME,
+    //   message: ErrorsMessage.PAGE_ERROR_MESSAGE,
+    //   cause: ErrorsCause.PAGE_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -25,12 +25,12 @@ export function getRegister(req, res) {
   try {
     res.render("register");
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.VIEWS_ERROR_NAME,
-      message: ErrorsMessage.PAGE_ERROR_MESSAGE,
-      cause: ErrorsCause.PAGE_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.VIEWS_ERROR_NAME,
+    //   message: ErrorsMessage.PAGE_ERROR_MESSAGE,
+    //   cause: ErrorsCause.PAGE_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -39,12 +39,12 @@ export function getProfile(req, res) {
     const user = new profileDto(req.session.user);
     res.render("profile", { user: user });
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.VIEWS_ERROR_NAME,
-      message: ErrorsMessage.PAGE_ERROR_MESSAGE,
-      cause: ErrorsCause.PAGE_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.VIEWS_ERROR_NAME,
+    //   message: ErrorsMessage.PAGE_ERROR_MESSAGE,
+    //   cause: ErrorsCause.PAGE_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -53,6 +53,11 @@ export async function getProducts(req, res) {
     const { limit, page, query, sort } = req.query;
     const { first_name, last_name, email, age, cart, role } = req.session.user;
     const products = await productService.getProducts(limit, page, query, sort);
+
+    let limit_2 = parseInt(limit);
+    if (!limit_2 || typeof limit_2 != "number") {
+      limit_2 = 10;
+    }
 
     let productsArray = [];
     products.docs.forEach((element, index) => {
@@ -85,7 +90,7 @@ export async function getProducts(req, res) {
     let prevLink, nextLink;
 
     if (hasPrevPage) {
-      prevLink = `/products?limit=${limit}&page=${prevPage}`;
+      prevLink = `/products?limit=${limit_2}&page=${prevPage}`;
       if (query) {
         prevLink += `&query=${query}`;
       }
@@ -96,7 +101,7 @@ export async function getProducts(req, res) {
       prevLink = null;
     }
     if (hasNextPage) {
-      nextLink = `/products?limit=${limit}&page=${nextPage}`;
+      nextLink = `/products?limit=${limit_2}&page=${nextPage}`;
       if (query) {
         nextLink += `&query=${query}`;
       }
@@ -124,12 +129,12 @@ export async function getProducts(req, res) {
       nextLink: nextLink,
     });
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.PRODUCTS_ERROR_NAME,
-      message: ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE,
-      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.PRODUCTS_ERROR_NAME,
+    //   message: ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE,
+    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -173,12 +178,12 @@ export async function getProductById(req, res) {
       thumbnail: thumbnail,
     });
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.PRODUCTS_ERROR_NAME,
-      message: ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE,
-      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.PRODUCTS_ERROR_NAME,
+    //   message: ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE,
+    //   cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -230,12 +235,12 @@ export async function getCartById(req, res) {
       cartId: cartId,
     });
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.CARTS_ERROR_NAME,
-      message: ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE,
-      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // // return CustomError.generateCustomError({
+    // //   name: ErrorsName.CARTS_ERROR_NAME,
+    // //   message: ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE,
+    // //   cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    // // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -245,12 +250,12 @@ export async function updateCart(req, res) {
     const pid = req.params.pid;
 
     if (req.session.user.cart === cid) {
-      return CustomError.generateCustomError({
-        name: ErrorsName.CARTS_ERROR_NAME,
-        message: ErrorsMessage.UTHORIZATION_ERROR_MESSAGE,
-        cause: ErrorsCause.UTHORIZATION_ERROR_CAUSE,
-      });
-      // return responder.errorResponse(res, (error.message = "Unauthorized"), 401);
+      // return CustomError.generateCustomError({
+      //   name: ErrorsName.CARTS_ERROR_NAME,
+      //   message: ErrorsMessage.UTHORIZATION_ERROR_MESSAGE,
+      //   cause: ErrorsCause.UTHORIZATION_ERROR_CAUSE,
+      // });
+      return responder.errorResponse(res, (error.message = "Unauthorized"), 401);
     }
 
     const carts = await cartService.updateCart(cid, pid);
@@ -265,12 +270,12 @@ export async function updateCart(req, res) {
       return res.redirect("back");
     }
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.CARTS_ERROR_NAME,
-      message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
-      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.CARTS_ERROR_NAME,
+    //   message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+    //   cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -287,12 +292,12 @@ export async function getMessages(req, res) {
       messagesArray: messageArray,
     });
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.MESSAGES_ERROR_NAME,
-      message: ErrorsMessage.GETMESSAGES_ERROR_MESSAGE,
-      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.MESSAGES_ERROR_NAME,
+    //   message: ErrorsMessage.GETMESSAGES_ERROR_MESSAGE,
+    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -312,12 +317,12 @@ export async function getTickets(req, res) {
     });
     res.render("tickets", { user: user, ticketsArray: ticketsArray });
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.TICKETS_ERROR_NAME,
-      message: ErrorsMessage.GETTICKETS_ERROR_MESSAGE,
-      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.TICKETS_ERROR_NAME,
+    //   message: ErrorsMessage.GETTICKETS_ERROR_MESSAGE,
+    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -325,12 +330,12 @@ export function realTimeProducts(req, res) {
   try {
     res.render("realTimeProducts", {});
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.CARTS_ERROR_NAME,
-      message: ErrorsMessage.GETCARTS_ERROR_MESSAGE,
-      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.CARTS_ERROR_NAME,
+    //   message: ErrorsMessage.GETCARTS_ERROR_MESSAGE,
+    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -341,12 +346,12 @@ export function realTimeChat(req, res) {
       user: user.name,
     });
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.MESSAGES_ERROR_NAME,
-      message: ErrorsMessage.GETMESSAGES_ERROR_MESSAGE,
-      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.MESSAGES_ERROR_NAME,
+    //   message: ErrorsMessage.GETMESSAGES_ERROR_MESSAGE,
+    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -363,11 +368,11 @@ export function mockingProducts(req, res) {
       productsArray: products,
     });
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.MOCKING_ERROR_NAME,
-      message: ErrorsMessage.MOCKING_ERROR_MESSAGE,
-      cause: ErrorsCause.MOCKING_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.MOCKING_ERROR_NAME,
+    //   message: ErrorsMessage.MOCKING_ERROR_MESSAGE,
+    //   cause: ErrorsCause.MOCKING_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }

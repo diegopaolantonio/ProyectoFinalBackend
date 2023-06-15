@@ -33,7 +33,7 @@ router.get("/:cid/product/:pid", roleCartOwner, updateCart); // Llamado para agr
 router.get("/messages", checkSession, getMessages); // llamado a la vista de messages
 router.get("/tickets", checkSession, getTickets); // Llamado a la vista de tickets
 router.get("/mockingproducts", mockingProducts);
-router.get("/realtimeproducts", realTimeProducts); // Llamado a la vista con Socket actualizados en tiempo real de products , roleAdmin
+router.get("/realtimeproducts", roleAdmin, realTimeProducts); // Llamado a la vista con Socket actualizados en tiempo real de products 
 router.get("/realtimechat", roleUser, realTimeChat); // Llamado a la vista con Socket actualizados en tiempo real de messages
 
 export default router;

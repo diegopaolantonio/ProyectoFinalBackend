@@ -62,12 +62,12 @@ export async function getProducts(req, res) {
       return responder.successResponse(res, products2);
     }
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.PRODUCTS_ERROR_NAME,
-      message: ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE,
-      cause: ErrorsCause.DATABASE_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.PRODUCTS_ERROR_NAME,
+    //   message: ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE,
+    //   cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -86,12 +86,12 @@ export async function getProductById(req, res) {
       return responder.successResponse(res, product);
     }
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.PRODUCTS_ERROR_NAME,
-      message: ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE,
-      cause: ErrorsCause.GETBYID_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.PRODUCTS_ERROR_NAME,
+    //   message: ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE,
+    //   cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -110,12 +110,12 @@ export async function addProduct(req, res) {
       return responder.successResponse(res, products);
     }
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.PRODUCTS_ERROR_NAME,
-      message: ErrorsMessage.ADDPRODUCT_ERROR_MESSAGE,
-      cause: ErrorsCause.ADDPRODUCT_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.PRODUCTS_ERROR_NAME,
+    //   message: ErrorsMessage.ADDPRODUCT_ERROR_MESSAGE,
+    //   cause: ErrorsCause.ADDPRODUCT_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -135,12 +135,12 @@ export async function updateProduct(req, res) {
       return responder.successResponse(res, products);
     }
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.PRODUCTS_ERROR_NAME,
-      message: ErrorsMessage.UPDATEPRODUCT_ERROR_MESSAGE,
-      cause: ErrorsCause.UPDATEPRODUCT_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.PRODUCTS_ERROR_NAME,
+    //   message: ErrorsMessage.UPDATEPRODUCT_ERROR_MESSAGE,
+    //   cause: ErrorsCause.UPDATEPRODUCT_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }
 
@@ -159,11 +159,11 @@ export async function deleteProduct(req, res) {
       return responder.successResponse(res, products);
     }
   } catch (error) {
-    return CustomError.generateCustomError({
-      name: ErrorsName.PRODUCTS_ERROR_NAME,
-      message: ErrorsMessage.DELETE_ERROR_MESSAGE,
-      cause: ErrorsCause.DELETE_ERROR_CAUSE,
-    });
-    // return responder.errorResponse(res, error.message);
+    // return CustomError.generateCustomError({
+    //   name: ErrorsName.PRODUCTS_ERROR_NAME,
+    //   message: ErrorsMessage.DELETE_ERROR_MESSAGE,
+    //   cause: ErrorsCause.DELETE_ERROR_CAUSE,
+    // });
+    return responder.errorResponse(res, error.message);
   }
 }

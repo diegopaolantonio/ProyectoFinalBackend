@@ -1,33 +1,42 @@
-<form id="productForm">
-<h1>Bienvenido {{name}}</h1>
-<p>email: {{email}}</p>
-<p>Edad: {{age}}</p>
-<p>Role: {{role}}</p>
-<input type="hidden" name="cid" value="{{cart}}">Cart: {{cart}}</input>
-<br />
-<br />
-<a href="/cart/{{cart}}">Ver carrito</a>
-<br />
-<br />
-<a href="/api/v1/sessions/logout">Logout</a>
-<br />
-<br />
-<h2>Detalle de Producto:</h2>
 <div>
-  <input type="hidden" name="pid" value="{{_id}}">id: {{_id}}</input>
-  <p>Title: {{title}}</p>
-  <p>Description: {{description}}</p>
-  <p>Price: {{price}}</p>
-  <p>Code: {{code}}</p>
-  <p>Stock: {{stock}}</p>
-  <p>Category: {{category}}</p>
-  <p>Status: {{status}}</p>
-  <p>Thumbnail: {{thumbnail}}</p>
-  <p>Cantidad: <input name="quantity"></input></p>
-  <br />
-  <input type="submit" / >
-  <br />
+  <h1>Bienvenido {{name}}</h1>
+  <form id="productForm">
+    <p>email: {{email}}</p>
+    {{#if cart}}
+    <p>Edad: {{age}}</p>
+    {{/if}}
+    <p>Role: {{role}}</p>
+    {{#if cart}}
+    <input type="hidden" name="cid" value="{{cart}}">Cart: {{cart}}</input>
+    <br />
+    <br />
+      <a href="/cart/{{cart}}">Ver carrito</a>
+      <br />
+      <br />
+    {{/if}}
+    <a href="/api/v1/sessions/logout">Logout</a>
+    <br />
+    <br />
+    <h2>Detalle de Producto:</h2>
+    <div>
+      <input type="hidden" name="pid" value="{{_id}}">id: {{_id}}</input>
+      <p>Title: {{title}}</p>
+      <p>Description: {{description}}</p>
+      <p>Price: {{price}}</p>
+      <p>Code: {{code}}</p>
+      <p>Stock: {{stock}}</p>
+      <p>Category: {{category}}</p>
+      <p>Status: {{status}}</p>
+      <p>Thumbnail: {{thumbnail}}</p>
+      {{#if cart}}
+        <p>Cantidad: <input type="number" name="quantity"></input></p>
+        <br />
+        <input type="submit"> </input>
+        <br />
+      {{/if}}
+    </div>
+  </form>
 </div>
-</form>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/product.js"></script>
