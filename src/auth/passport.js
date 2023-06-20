@@ -1,10 +1,12 @@
 import passport from "passport";
 import local from "passport-local";
 import { userService, cartService } from "../services/index.js";
-import { createHash, isValidPassword } from "../utils.js";
+import { createHash, isValidPassword } from "../utilis/bcrypt.js";
 import { ObjectId } from "mongodb";
 import GitHubStrategy from "passport-github2";
 import config from "../config.js";
+
+// console.log(process.argv.slice(2));
 
 const LocalStrategy = local.Strategy;
 

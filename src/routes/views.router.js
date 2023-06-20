@@ -19,6 +19,7 @@ import {
   realTimeProducts,
   realTimeChat,
   mockingProducts,
+  loggerTest,
 } from "../controllers/views.controller.js";
 
 const router = Router();
@@ -35,5 +36,6 @@ router.get("/tickets", checkSession, getTickets); // Llamado a la vista de ticke
 router.get("/mockingproducts", mockingProducts);
 router.get("/realtimeproducts", roleAdmin, realTimeProducts); // Llamado a la vista con Socket actualizados en tiempo real de products 
 router.get("/realtimechat", roleUser, realTimeChat); // Llamado a la vista con Socket actualizados en tiempo real de messages
+router.get("/loggerTest", loggerTest);
 
 export default router;

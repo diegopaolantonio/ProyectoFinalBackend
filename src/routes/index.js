@@ -6,10 +6,12 @@ import ticketsRouter from "./tickets.router.js";
 import viewsRouter from "./views.router.js";
 import { Router } from "express";
 import { errorMiddleware } from "../errors/error.middleware.js";
+import { addHttpLogger } from "../utilis/logger.js";
 
 export function routerApi(app) {
   const router = Router();
 
+  app.use(addHttpLogger);
   app.use("/", viewsRouter);
   app.use("/api/v1", router);
   app.use(errorMiddleware);

@@ -1,8 +1,4 @@
-import {
-  productRepository,
-  cartRepository,
-  ticketRepository,
-} from "../repositories/index.js";
+import { ticketRepository } from "../repositories/index.js";
 
 export default class TicketService {
   constructor() {

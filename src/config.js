@@ -3,6 +3,14 @@ import dotenv from "dotenv";
 // Configuracion dotenv
 dotenv.config();
 
+let data = [];
+process.argv.slice(2).forEach((element, index) => {
+  data[index] = element;
+});
+
+const environment = data[0];
+const port = data[1];
+
 const config = {
   dbName: process.env.DB_NAME,
   dbUser: process.env.DB_USER,
@@ -18,6 +26,8 @@ const config = {
   nodemailerPort: process.env.NODEMAILER_PORT,
   nodemailerUser: process.env.NODEMAILER_USER,
   nodemailerPassword: process.env.NODEMAILER_PASSWORD,
+  port: port,
+  environment: environment, // process.env.DEV_MODE,
 };
 
 export default config;
