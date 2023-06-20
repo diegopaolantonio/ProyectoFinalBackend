@@ -8,7 +8,7 @@ import profileDto from "../daos/dtos/profile.dto.js";
 import { responder } from "../traits/Responder.js";
 import { generateProducts } from "../faker.js";
 import CustomError from "../errors/customError.js";
-import { addFatalLogger, addErrorLogger, addWarningLogger, addInfoLogger, addHttpLogger, addDebugLogger } from "../utilis/logger.js"
+import { logger } from "../utilis/logger.js"
 
 export function getLogin(req, res) {
   try {
@@ -321,13 +321,12 @@ export function mockingProducts(req, res) {
 
 export function loggerTest(req, res, next) {
   try {
-    // addLogger(req, res);
-    addFatalLogger(req, res, next);
-    addErrorLogger(req, res, next);
-    addWarningLogger(req, res, next);
-    addInfoLogger(req, res, next);
-    addHttpLogger(req, res, next);
-    addDebugLogger(req, res, next);
+    logger.fatal("Fatal log test");
+    logger.error("Error log test");
+    logger.warning("Warning log test");
+    logger.info("Info log test");
+    logger.http("HTTP log test");
+    logger.debug("Debug log test");
 
   res.send("Logger test completed")
   } catch (error) {

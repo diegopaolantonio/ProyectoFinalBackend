@@ -6,8 +6,6 @@ import { ObjectId } from "mongodb";
 import GitHubStrategy from "passport-github2";
 import config from "../config.js";
 
-// console.log(process.argv.slice(2));
-
 const LocalStrategy = local.Strategy;
 
 const { adminEmail, adminPassword, clientID, clientSecret, callbackUrl } =
@@ -24,7 +22,6 @@ const initializePassport = () => {
 
           let user = await userService.getUserByEmail({ email: username });
           if (user) {
-            console.log("User already exists");
             return done(null, false);
           }
 

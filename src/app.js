@@ -9,6 +9,7 @@ import passport from "passport";
 import { routerApi } from "./routes/index.js";
 import __dirname from "./utilis/dirname.js";
 import initializePassport from "./auth/passport.js";
+import { logger } from "./utilis/logger.js";
 
 // Inicializacion
 const app = express();
@@ -43,7 +44,7 @@ database.connect();
 
 // Servidor
 const httpServer = app.listen(`${config.port}`, () => {
-  console.log(`Server on port ${config.port}`);
+  logger.debug(`Server on port ${config.port}`);
 });
 
 socket.connect(httpServer);

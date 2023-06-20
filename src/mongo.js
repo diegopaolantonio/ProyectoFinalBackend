@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import config from "./config.js";
+import { logger } from "./utilis/logger.js";
 
 const { dbUrl } = config;
 
@@ -8,7 +9,7 @@ const database = {
     try {
       await mongoose.connect(dbUrl);
     } catch (error) {
-      console.log(error);
+      logger.fatal(`${error}`);
     }
   },
 };

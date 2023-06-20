@@ -1,8 +1,10 @@
 import { responder } from "../traits/Responder.js";
 import CustomError from "../errors/customError.js";
+import { logger } from "../utilis/logger.js";
 
 export async function postRegister(req, res) {
   try {
+    logger.info(`User register success`)
     return res.send({ status: "Success", message: "User registered" });
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
@@ -11,6 +13,7 @@ export async function postRegister(req, res) {
 
 export async function getFailRegister(req, res) {
   try {
+    logger.error(`${ErrorsName.SESSION_ERROR_NAME} - ${ErrorsMessage.USERREGISTER_ERROR_MESSAGE} - ${ErrorsCause.USERREGISTER_ERROR_CAUSE}`)
     return CustomError.generateCustomError({
       name: ErrorsName.SESSION_ERROR_NAME,
       message: ErrorsMessage.USERREGISTER_ERROR_MESSAGE,
@@ -25,6 +28,7 @@ export async function getFailRegister(req, res) {
 export async function postLogin(req, res) {
   try {
     if (!req.user) {
+      logger.error(`${ErrorsName.SESSION_ERROR_NAME} - ${ErrorsMessage.UTHORIZATION_ERROR_MESSAGE} - ${ErrorsCause.UTHORIZATION_ERROR_CAUSE}`)
       return CustomError.generateCustomError({
         name: ErrorsName.SESSION_ERROR_NAME,
         message: ErrorsMessage.UTHORIZATION_ERROR_MESSAGE,
@@ -40,6 +44,7 @@ export async function postLogin(req, res) {
       cart: req.user.cart,
       role: req.user.role,
     };
+    logger.info(`User login ${req.session.user.email} success`)
     return responder.successResponse(res, req.user);
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
@@ -48,6 +53,7 @@ export async function postLogin(req, res) {
 
 export async function getFailLogin(req, res) {
   try {
+    logger.warning(`${ErrorsName.SESSION_ERROR_NAME} - ${ErrorsMessage.USERLOGIN_ERROR_MESSAGE} - ${ErrorsCause.USERLOGIN_ERROR_CAUSE}`)
     return CustomError.generateCustomError({
       name: ErrorsName.SESSION_ERROR_NAME,
       message: ErrorsMessage.USERLOGIN_ERROR_MESSAGE,
@@ -62,6 +68,7 @@ export async function getFailLogin(req, res) {
 export async function getCurrent(req, res) {
   try {
     if (!req.session.user) {
+      logger.warning(`${ErrorsName.SESSION_ERROR_NAME} - ${ErrorsMessage.USERLOGIN_ERROR_MESSAGE} - ${ErrorsCause.USERLOGIN_ERROR_CAUSE}`)
       return CustomError.generateCustomError({
         name: ErrorsName.SESSION_ERROR_NAME,
         message: ErrorsMessage.USERLOGIN_ERROR_MESSAGE,
@@ -69,6 +76,7 @@ export async function getCurrent(req, res) {
         status: 400,
       });
     }
+    logger.info(`User logged success`)
     res.send({ status: "User logged", payload: req.session.user });
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);

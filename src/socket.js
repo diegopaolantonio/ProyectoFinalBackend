@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import { productRepository, messageRepository } from "./repositories/index.js";
+import { logger } from "./utilis/logger.js";
 
 const socket = {};
 let products;
@@ -12,7 +13,7 @@ socket.connect = function (httpServer) {
 
   //Conexion con el servidor
   io.on("connection", async (socket) => {
-    console.log("Cliente conectado");
+    logger.debug("Cliente conectado");
 
     products = await productRepository.getProducts("realTime");
     io.emit("printProducts", products);
@@ -24,7 +25,6 @@ socket.connect = function (httpServer) {
     socket.on("addProduct", async (product) => {
       await productRepository.addProduct(product);
       products = await productRepository.getProducts("realTime");
-      console.log(products);
       io.emit("printProducts", products);
     });
 

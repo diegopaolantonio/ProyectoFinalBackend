@@ -14,6 +14,7 @@ export async function getProducts(req, res) {
     const products = await productService.getProducts(limit, page, query, sort);
 
     if (products && products.error) {
+      logger.fatal(`${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`)
       return CustomError.generateCustomError({
         name: ErrorsName.PRODUCTS_ERROR_NAME,
         message: ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE,
@@ -59,6 +60,7 @@ export async function getProducts(req, res) {
         prevLink,
         nextLink,
       };
+      logger.info(`Get products success`)
       return responder.successResponse(res, products2);
     }
   } catch (error) {
@@ -71,6 +73,7 @@ export async function getProductById(req, res) {
     const pid = req.params.pid;
     const product = await productService.getProductById(pid);
     if (product && product.error) {
+      logger.warning(`${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`)
       return CustomError.generateCustomError({
         name: ErrorsName.PRODUCTS_ERROR_NAME,
         message: ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE,
@@ -78,6 +81,7 @@ export async function getProductById(req, res) {
         status: 400,
       });
     } else {
+      logger.info(`Get product ${pid} success`)
       return responder.successResponse(res, product);
     }
   } catch (error) {
@@ -90,6 +94,7 @@ export async function addProduct(req, res) {
     const product = req.body;
     const products = await productService.addProduct(product);
     if (products && products.error) {
+      logger.error(`${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.ADDPRODUCT_ERROR_MESSAGE} - ${ErrorsCause.ADDPRODUCT_ERROR_CAUSE}`)
       return CustomError.generateCustomError({
         name: ErrorsName.PRODUCTS_ERROR_NAME,
         message: ErrorsMessage.ADDPRODUCT_ERROR_MESSAGE,
@@ -97,6 +102,7 @@ export async function addProduct(req, res) {
         status: 400,
       });
     } else {
+      logger.info(`Add product success`)
       return responder.successResponse(res, products);
     }
   } catch (error) {
@@ -110,6 +116,7 @@ export async function updateProduct(req, res) {
     const updateProduct = req.body;
     const products = await productService.updateProduct(pid, updateProduct);
     if (products && products.error) {
+      logger.warning(`${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.UPDATEPRODUCT_ERROR_MESSAGE} - ${ErrorsCause.UPDATEPRODUCT_ERROR_CAUSE}`)
       return CustomError.generateCustomError({
         name: ErrorsName.PRODUCTS_ERROR_NAME,
         message: ErrorsMessage.UPDATEPRODUCT_ERROR_MESSAGE,
@@ -117,6 +124,7 @@ export async function updateProduct(req, res) {
         status: 400,
       });
     } else {
+      logger.info(`Update product ${pid} success`)
       return responder.successResponse(res, products);
     }
   } catch (error) {
@@ -129,13 +137,15 @@ export async function deleteProduct(req, res) {
     const pid = req.params.pid;
     const products = await productService.deleteProduct(pid);
     if (products && products.error) {
+      logger.warning(`${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.DELETEPRODUCT_ERROR_MESSAGE} - ${ErrorsCause.DELETE_ERROR_CAUSE}`)
       return CustomError.generateCustomError({
         name: ErrorsName.PRODUCTS_ERROR_NAME,
-        message: ErrorsMessage.DELETE_ERROR_MESSAGE,
+        message: ErrorsMessage.DELETEPRODUCT_ERROR_MESSAGE,
         cause: ErrorsCause.DELETE_ERROR_CAUSE,
         status: 400,
       });
     } else {
+      logger.info(`Delete product ${pid} success`)
       return responder.successResponse(res, products);
     }
   } catch (error) {

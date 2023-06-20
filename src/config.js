@@ -3,11 +3,15 @@ import dotenv from "dotenv";
 // Configuracion dotenv
 dotenv.config();
 
+// Extrae el tipo de entorno y el puerto del script de start seleccionado:
+// environment: "development" o "production"
+// port:        "8080"        o "5000"
+// "start:dev": "nodemon ./src/app.js development 8080",
+// "start:prod": "nodemon ./src/app.js production 5000",
 let data = [];
 process.argv.slice(2).forEach((element, index) => {
   data[index] = element;
 });
-
 const environment = data[0];
 const port = data[1];
 
@@ -27,7 +31,7 @@ const config = {
   nodemailerUser: process.env.NODEMAILER_USER,
   nodemailerPassword: process.env.NODEMAILER_PASSWORD,
   port: port,
-  environment: environment, // process.env.DEV_MODE,
+  environment: environment,
 };
 
 export default config;
