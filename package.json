@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start:dev": "nodemon ./src/app.js development 8080",
-    "start:prod": "nodemon ./src/app.js production 5000",
+    "start:prod": "nodemon ./src/app.js production 8080",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

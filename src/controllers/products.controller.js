@@ -1,5 +1,6 @@
 import { productService } from "../services/index.js";
 import { responder } from "../traits/Responder.js";
+import { logger } from "../utilis/logger.js";
 
 import {
   ErrorsName,
@@ -14,7 +15,9 @@ export async function getProducts(req, res) {
     const products = await productService.getProducts(limit, page, query, sort);
 
     if (products && products.error) {
-      logger.fatal(`${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`)
+      logger.fatal(
+        `${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.PRODUCTS_ERROR_NAME,
         message: ErrorsMessage.GETPRODUCTS_ERROR_MESSAGE,
@@ -60,7 +63,7 @@ export async function getProducts(req, res) {
         prevLink,
         nextLink,
       };
-      logger.info(`Get products success`)
+      logger.info(`Get products success`);
       return responder.successResponse(res, products2);
     }
   } catch (error) {
@@ -73,7 +76,9 @@ export async function getProductById(req, res) {
     const pid = req.params.pid;
     const product = await productService.getProductById(pid);
     if (product && product.error) {
-      logger.warning(`${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`)
+      logger.warning(
+        `${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.PRODUCTS_ERROR_NAME,
         message: ErrorsMessage.GETPRODUCTSBYID_ERROR_MESSAGE,
@@ -81,7 +86,7 @@ export async function getProductById(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Get product ${pid} success`)
+      logger.info(`Get product ${pid} success`);
       return responder.successResponse(res, product);
     }
   } catch (error) {
@@ -91,10 +96,18 @@ export async function getProductById(req, res) {
 
 export async function addProduct(req, res) {
   try {
-    const product = req.body;
+    let product = req.body;
+    if (req.session.user.role === "premium") {
+      product.owner = req.session.user.email;
+    } else {
+      product.owner = "admin";
+    }
+
     const products = await productService.addProduct(product);
     if (products && products.error) {
-      logger.error(`${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.ADDPRODUCT_ERROR_MESSAGE} - ${ErrorsCause.ADDPRODUCT_ERROR_CAUSE}`)
+      logger.error(
+        `${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.ADDPRODUCT_ERROR_MESSAGE} - ${ErrorsCause.ADDPRODUCT_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.PRODUCTS_ERROR_NAME,
         message: ErrorsMessage.ADDPRODUCT_ERROR_MESSAGE,
@@ -102,7 +115,8 @@ export async function addProduct(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Add product success`)
+      logger.info("Add product success")
+      console.log("object");
       return responder.successResponse(res, products);
     }
   } catch (error) {
@@ -116,7 +130,9 @@ export async function updateProduct(req, res) {
     const updateProduct = req.body;
     const products = await productService.updateProduct(pid, updateProduct);
     if (products && products.error) {
-      logger.warning(`${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.UPDATEPRODUCT_ERROR_MESSAGE} - ${ErrorsCause.UPDATEPRODUCT_ERROR_CAUSE}`)
+      logger.warning(
+        `${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.UPDATEPRODUCT_ERROR_MESSAGE} - ${ErrorsCause.UPDATEPRODUCT_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.PRODUCTS_ERROR_NAME,
         message: ErrorsMessage.UPDATEPRODUCT_ERROR_MESSAGE,
@@ -124,7 +140,7 @@ export async function updateProduct(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Update product ${pid} success`)
+      logger.info(`Update product ${pid} success`);
       return responder.successResponse(res, products);
     }
   } catch (error) {
@@ -135,18 +151,37 @@ export async function updateProduct(req, res) {
 export async function deleteProduct(req, res) {
   try {
     const pid = req.params.pid;
-    const products = await productService.deleteProduct(pid);
-    if (products && products.error) {
-      logger.warning(`${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.DELETEPRODUCT_ERROR_MESSAGE} - ${ErrorsCause.DELETE_ERROR_CAUSE}`)
+    const product = await productService.getProductById(pid);
+    if (
+      (req.session.user.role === "premium" &&
+        req.session.user.email === product.owner) ||
+      req.session.user.role === "admin"
+    ) {
+      const products = await productService.deleteProduct(pid);
+      if (products && products.error) {
+        logger.warning(
+          `${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.DELETEPRODUCT_ERROR_MESSAGE} - ${ErrorsCause.DELETE_ERROR_CAUSE}`
+        );
+        return CustomError.generateCustomError({
+          name: ErrorsName.PRODUCTS_ERROR_NAME,
+          message: ErrorsMessage.DELETEPRODUCT_ERROR_MESSAGE,
+          cause: ErrorsCause.DELETE_ERROR_CAUSE,
+          status: 400,
+        });
+      } else {
+        logger.info(`Delete product ${pid} success`);
+        return responder.successResponse(res, products);
+      }
+    } else {
+      logger.warning(
+        `${ErrorsName.PRODUCTS_ERROR_NAME} - ${ErrorsMessage.DELETEPRODUCT_ERROR_MESSAGE} - ${ErrorsCause.DELETE_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.PRODUCTS_ERROR_NAME,
         message: ErrorsMessage.DELETEPRODUCT_ERROR_MESSAGE,
         cause: ErrorsCause.DELETE_ERROR_CAUSE,
         status: 400,
       });
-    } else {
-      logger.info(`Delete product ${pid} success`)
-      return responder.successResponse(res, products);
     }
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);

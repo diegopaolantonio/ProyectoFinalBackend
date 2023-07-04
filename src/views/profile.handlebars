@@ -1,4 +1,6 @@
 <div>
+  <form id="profileForm">
+
   <h1>Datos del perfil</h1>
   <p>Nombre y apellido: {{user.name}}</p>
   {{#if user.cart}}
@@ -10,7 +12,12 @@
     <p>Cart: {{user.cart}}</p>
     <a href="/cart/{{user.cart}}"><button>Ver carrito</button></a>
     <br />
+    <br />
+    <input type="hidden" name="uid" value="{{user._id}}"></input>
+    <input type="submit" value="Cambiar rol"></input>
+    <br />
   {{/if}}
+  </form>
   <br />
   <a href="/products"><button>Ver productos</button></a>
   <br />
@@ -18,3 +25,6 @@
   <a href="/api/v1/sessions/logout"><button>Logout</button></a>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/profile.js"></script>

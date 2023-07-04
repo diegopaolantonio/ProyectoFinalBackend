@@ -12,6 +12,7 @@ import {
   getProfile,
   getProducts,
   getProductById,
+  addProduct,
   getCartById,
   updateCart,
   getMessages,
@@ -29,6 +30,7 @@ router.get("/register", checkLogged, getRegister); // Llamado a la vista para un
 router.get("/", checkSession, getProfile); // Llamado a la vista para hacer login que remplaza la vista que originalmente tenia con products
 router.get("/products", checkSession, getProducts); // Llamado a la vista de products con querys con Handlebars
 router.get("/product/Detail/:pid", checkSession, getProductById); // Llamado a la vista de detalles del product
+router.get("/addproduct", roleAdmin, addProduct)
 router.get("/cart/:cid", roleCartOwner, getCartById); // Llamado a la vista de los productos del cart
 router.get("/:cid/product/:pid", roleCartOwner, updateCart); // Llamado para agregar el product con id pid en el cart con id cid, con el boton en /products y /products/detail/pid
 router.get("/messages", checkSession, getMessages); // llamado a la vista de messages

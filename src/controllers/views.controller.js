@@ -3,12 +3,13 @@ import {
   messageService,
   productService,
   ticketService,
+  userService,
 } from "../services/index.js";
 import profileDto from "../daos/dtos/profile.dto.js";
 import { responder } from "../traits/Responder.js";
 import { generateProducts } from "../faker.js";
 import CustomError from "../errors/customError.js";
-import { logger } from "../utilis/logger.js"
+import { logger } from "../utilis/logger.js";
 
 export function getLogin(req, res) {
   try {
@@ -26,9 +27,12 @@ export function getRegister(req, res) {
   }
 }
 
-export function getProfile(req, res) {
+export async function getProfile(req, res) {
   try {
-    const user = new profileDto(req.session.user);
+    let user = new profileDto(req.session.user);
+    const { email } = user;
+    const { _id } = await userService.getUserByEmail({ email });
+    user._id = _id;
     res.render("profile", { user: user });
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
@@ -56,6 +60,7 @@ export async function getProducts(req, res) {
       const stock = element.stock;
       const category = element.category;
       const status = element.status;
+      const owner = element.owner;
       const thumbnail = element.thumbnail;
 
       productsArray[index] = {
@@ -67,6 +72,7 @@ export async function getProducts(req, res) {
         stock,
         category,
         status,
+        owner,
         thumbnail,
         cart,
       };
@@ -139,8 +145,16 @@ export async function getProductById(req, res) {
       stock,
       category,
       status,
+      owner,
       thumbnail,
     } = product2;
+
+    if (
+      req.session.user.role === "premium" &&
+      req.session.user.email === owner
+    ) {
+      const userPremiumIsOwner = true;
+    }
 
     const name = `${first_name} ${last_name}`;
     res.render("detail", {
@@ -157,8 +171,18 @@ export async function getProductById(req, res) {
       stock: stock,
       category: category,
       status: status,
+      owner: owner,
       thumbnail: thumbnail,
+      userPremiumIsOwner: userPremiumIsOwner,
     });
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function addProduct(req, res) {
+  try {
+    res.render("addproduct");
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
   }
@@ -186,6 +210,7 @@ export async function getCartById(req, res) {
           stock,
           category,
           status,
+          owner,
           thumbnail,
         } = product;
         cartProducts[index] = {
@@ -197,6 +222,7 @@ export async function getCartById(req, res) {
           stock,
           category,
           status,
+          owner,
           thumbnail,
           quantity,
         };
@@ -328,7 +354,7 @@ export function loggerTest(req, res, next) {
     logger.http("HTTP log test");
     logger.debug("Debug log test");
 
-  res.send("Logger test completed")
+    res.send("Logger test completed");
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
   }

@@ -27,12 +27,15 @@
       <p>Stock: {{stock}}</p>
       <p>Category: {{category}}</p>
       <p>Status: {{status}}</p>
+      <p>Owner: {{owner}}</p>
       <p>Thumbnail: {{thumbnail}}</p>
+      {{#if userPremiumIsOwner}}
       {{#if cart}}
         <p>Cantidad: <input type="number" name="quantity"></input></p>
         <br />
         <input type="submit"> </input>
         <br />
+      {{/if}}
       {{/if}}
     </div>
   </form>

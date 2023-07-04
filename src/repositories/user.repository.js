@@ -5,6 +5,15 @@ export default class UserRepository {
     this.userDao = userDao;
   }
 
+  getUsers = async () => {
+    try {
+      const users = await this.userDao.getUsers();
+      return users;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   // Funcion para obtener un user especifico por email
   getUserByEmail = async (email) => {
     try {
@@ -38,4 +47,22 @@ export default class UserRepository {
       throw new Error(error);
     }
   };
+
+  updateUser = async (id, updateUser) => {
+    try {
+      const user = await this.userDao.updateUser(id, updateUser);
+      return user;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  deleteUser = async (id) => {
+    try {
+      const user = await this.userDao.deleteUser(id);
+      return user;
+    } catch (error) {
+      throw new Error(error);
+    }
+  } 
 }

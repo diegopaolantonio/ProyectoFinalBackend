@@ -53,6 +53,7 @@ socket.on("printProducts", (data) => {
              <p>Stock: ${element.stock}</p>
              <p>Category: ${element.category}</p>
              <p>Status: ${element.status}</p>
+             <p>Owner: ${element.owner}</p>
              <p>Thumbnail: ${element.thumbnail}</p>
              </tr><br/>`;
   });
