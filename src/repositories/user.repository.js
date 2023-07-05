@@ -12,7 +12,7 @@ export default class UserRepository {
     } catch (error) {
       throw new Error(error);
     }
-  }
+  };
 
   // Funcion para obtener un user especifico por email
   getUserByEmail = async (email) => {
@@ -64,5 +64,5 @@ export default class UserRepository {
     } catch (error) {
       throw new Error(error);
     }
-  } 
+  };
 }

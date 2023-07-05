@@ -18,8 +18,12 @@
     <br />
   {{/if}}
   </form>
-  <br />
   <a href="/products"><button>Ver productos</button></a>
+  {{#if premium}}
+  <br />
+  <br />
+  <a href="/addProduct"><button>Crear o borrar productos</button></a>
+  {{/if}}
   <br />
   <br />
   <a href="/api/v1/sessions/logout"><button>Logout</button></a>

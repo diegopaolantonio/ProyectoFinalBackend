@@ -1,4 +1,4 @@
-const form = document.getElementById("profileForm");
+const form = document.getElementById("restoreForm");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -8,8 +8,8 @@ form.addEventListener("submit", async (e) => {
 
   data.forEach((value, key) => (obj[key] = value));
 
-  let response = await fetch(`/api/v1/users/premium/${obj.uid}`, {
-    method: "PUT",
+  let response = await fetch(`/api/v1/users/restorePassword/${obj.email}`, {
+    method: "POST",
     body: JSON.stringify(obj),
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +23,7 @@ form.addEventListener("submit", async (e) => {
   ) {
     Swal.fire({
       icon: "error",
-      title: `Role not changed`,
+      title: `Fallo pedido de restauracion de password`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -37,11 +37,11 @@ form.addEventListener("submit", async (e) => {
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: `Role changed`,
+      title: `Pedido de restauracion de password exitoso`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
-        location.reload();
+        location.href = "/login";
       }
     });
   }

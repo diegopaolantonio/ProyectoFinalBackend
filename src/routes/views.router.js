@@ -21,6 +21,8 @@ import {
   realTimeChat,
   mockingProducts,
   loggerTest,
+  restorePasswordRequest,
+  restorePassword,
 } from "../controllers/views.controller.js";
 
 const router = Router();
@@ -30,14 +32,16 @@ router.get("/register", checkLogged, getRegister); // Llamado a la vista para un
 router.get("/", checkSession, getProfile); // Llamado a la vista para hacer login que remplaza la vista que originalmente tenia con products
 router.get("/products", checkSession, getProducts); // Llamado a la vista de products con querys con Handlebars
 router.get("/product/Detail/:pid", checkSession, getProductById); // Llamado a la vista de detalles del product
-router.get("/addproduct", roleAdmin, addProduct)
+router.get("/addproduct", roleAdmin, addProduct);
 router.get("/cart/:cid", roleCartOwner, getCartById); // Llamado a la vista de los productos del cart
 router.get("/:cid/product/:pid", roleCartOwner, updateCart); // Llamado para agregar el product con id pid en el cart con id cid, con el boton en /products y /products/detail/pid
 router.get("/messages", checkSession, getMessages); // llamado a la vista de messages
 router.get("/tickets", checkSession, getTickets); // Llamado a la vista de tickets
 router.get("/mockingproducts", mockingProducts);
-router.get("/realtimeproducts", roleAdmin, realTimeProducts); // Llamado a la vista con Socket actualizados en tiempo real de products 
+router.get("/realtimeproducts", roleAdmin, realTimeProducts); // Llamado a la vista con Socket actualizados en tiempo real de products
 router.get("/realtimechat", roleUser, realTimeChat); // Llamado a la vista con Socket actualizados en tiempo real de messages
 router.get("/loggerTest", loggerTest);
+router.get("/restorePasswordRequest", checkLogged, restorePasswordRequest);
+router.get("/restorePassword/:rid", checkLogged, restorePassword);
 
 export default router;

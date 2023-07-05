@@ -6,6 +6,8 @@ export const ErrorsName = {
   VIEWS_ERROR_NAME: "Views Error",
   MOCKING_ERROR_NAME: "Mocking Error",
   SESSION_ERROR_NAME: "Session Error",
+  RESTORE_ERROR_NAME: "Restore Password Error",
+  USERS_ERROR_NAME: "Users error",
 };
 
 export const ErrorsMessage = {
@@ -31,6 +33,13 @@ export const ErrorsMessage = {
   USERLOGIN_ERROR_MESSAGE: "User not logged",
   USERLOGOUT_ERROR_MESSAGE: "User not logout",
   GITHUB_ERROR_MESSAGE: "Can't log user with GiyHub credentials",
+  RESTORE_REQUEST_ERROR_MESSAGE: "Can't restore user password",
+  UPDATEROLE_ERROR_MESSAGE: "Can't change user role",
+  DELETEUSER_ERROR_MESSAGE: "Can't delete user",
+  UPDATEUSER_ERROR_MESSAGE: "Update user error",
+  CREATEUSER_ERROR_MESSAGE: "Create user error",
+  GETUSERBYID_ERROR_MESSAGE: "User does not exist",
+  GETUSERS_ERROR_MESSAGE: "Users collection not found",
 };
 
 export const ErrorsCause = {
@@ -48,4 +57,12 @@ export const ErrorsCause = {
   USERLOGIN_ERROR_CAUSE: "Invalid user data",
   USERLOGOUT_ERROR_CAUSE: "Logout fail",
   GITHUB_ERROR_CAUSE: "Invalid credentials or connection error",
+  RESTORE_REQUEST_NEW_PASSWORD_ERROR_CAUSE: "New password can't be the same",
+  RESTORE_REQUEST_PASSWORDS_ERROR_CAUSE: "Passwords not equals",
+  RESTORE_REQUEST_EMAIL_ERROR_CAUSE: "Email does not match",
+  RESTORE_REQUEST_ERROR_CAUSE: "Email not found",
+  UPDATEROLE_ERROR_CAUSE: "User not found",
+  DELETE_ERROR_CAUSE: "Delete error",
+  UPDATEUSER_ERROR_CAUSE: "Id not found or params error",
+  CREATEUSER_ERROR_CAUSE: "User params error",
 };

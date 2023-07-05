@@ -4,6 +4,7 @@ import {
   productService,
   ticketService,
   userService,
+  restoreService,
 } from "../services/index.js";
 import profileDto from "../daos/dtos/profile.dto.js";
 import { responder } from "../traits/Responder.js";
@@ -30,10 +31,17 @@ export function getRegister(req, res) {
 export async function getProfile(req, res) {
   try {
     let user = new profileDto(req.session.user);
-    const { email } = user;
+    const { email, role } = user;
+    let premium = false;
     const { _id } = await userService.getUserByEmail({ email });
+    if (role === "premium") {
+      premium = true;
+    }
     user._id = _id;
-    res.render("profile", { user: user });
+    res.render("profile", {
+      user: user,
+      premium: premium,
+    });
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
   }
@@ -130,6 +138,7 @@ export async function getProductById(req, res) {
   try {
     const pid = req.params.pid;
     let product2;
+    let userPremiumNotOwner = null;
     const product = await productService.getProductById(pid);
     const { first_name, last_name, email, age, cart, role } = req.session.user;
 
@@ -149,12 +158,15 @@ export async function getProductById(req, res) {
       thumbnail,
     } = product2;
 
-    if (
-      req.session.user.role === "premium" &&
-      req.session.user.email === owner
-    ) {
-      const userPremiumIsOwner = true;
+    console.log(req.session.user.role);
+    console.log("premium");
+    console.log(req.session.user.email);
+    console.log(owner);
+
+    if (req.session.user.email != owner) {
+      userPremiumNotOwner = true;
     }
+    console.log(userPremiumNotOwner);
 
     const name = `${first_name} ${last_name}`;
     res.render("detail", {
@@ -173,7 +185,7 @@ export async function getProductById(req, res) {
       status: status,
       owner: owner,
       thumbnail: thumbnail,
-      userPremiumIsOwner: userPremiumIsOwner,
+      userPremiumNotOwner: userPremiumNotOwner,
     });
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
@@ -355,6 +367,40 @@ export function loggerTest(req, res, next) {
     logger.debug("Debug log test");
 
     res.send("Logger test completed");
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function restorePasswordRequest(req, res) {
+  try {
+    res.render("restoreRequest", {
+      restoreExpired: false,
+    });
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function restorePassword(req, res) {
+  try {
+    const rid = req.params.rid;
+
+    const restore = await restoreService.getRestoreById(rid);
+
+    if (restore.expirateDate > Date.now()) {
+      res.render("restore", {
+        rid: rid,
+        restore: restore,
+        restoreExpired: false,
+      });
+    } else {
+      await restoreService.deleteRestoreByEmail(restore.email);
+      res.render("restoreRequest", {
+        rid: rid,
+        restoreExpired: true,
+      });
+    }
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
   }

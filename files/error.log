@@ -1,0 +1,9 @@
+info: User login paolantonio.diego@gmail.com success {"timestamp":"2023-07-05 03:46:57:4657"}
+info: Restore request id 64a511f1f2d1b31de1b54a94 send to paolantonio.diego@gmail.com success {"timestamp":"2023-07-05 03:47:15:4715"}
+info: Password restored success {"timestamp":"2023-07-05 03:47:53:4753"}
+info: User login paolantonio.diego@gmail.com success {"timestamp":"2023-07-05 03:48:06:486"}
+info: Restore request id 64a51236f2d1b31de1b54aa4 send to paolantonio.diego@gmail.com success {"timestamp":"2023-07-05 03:48:25:4825"}
+info: Restore request id 64a51292f2d1b31de1b54aab send to paolantonio.diego@gmail.com success {"timestamp":"2023-07-05 03:49:57:4957"}
+warning: Restore Password Error - Can't restore user password - New password can't be the same {"timestamp":"2023-07-05 03:50:22:5022"}
+info: Password restored success {"timestamp":"2023-07-05 03:50:48:5048"}
+info: User login paolantonio.diego@gmail.com success {"timestamp":"2023-07-05 03:51:01:511"}

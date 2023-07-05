@@ -2,10 +2,10 @@ const form = document.getElementById("productForm");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  
+
   const data = new FormData(form);
   const obj = {};
-  
+
   data.forEach((value, key) => (obj[key] = value));
 
   let response = await fetch("/api/v1/products", {
@@ -16,7 +16,11 @@ form.addEventListener("submit", async (e) => {
     },
   });
 
-  if (response.status === 400 || response.status === 401 || response.status === 500) {
+  if (
+    response.status === 400 ||
+    response.status === 401 ||
+    response.status === 500
+  ) {
     Swal.fire({
       icon: "error",
       title: `Producto no creado`,
@@ -45,10 +49,10 @@ form.addEventListener("submit", async (e) => {
 
 form.addEventListener("reset", async (e) => {
   e.preventDefault();
-  
+
   const data = new FormData(form);
   const obj = {};
-  
+
   data.forEach((value, key) => (obj[key] = value));
 
   let response = await fetch(`/api/v1/products/${obj.pid}`, {
@@ -58,7 +62,11 @@ form.addEventListener("reset", async (e) => {
     // },
   });
 
-  if (response.status === 400 || response.status === 401 || response.status === 500) {
+  if (
+    response.status === 400 ||
+    response.status === 401 ||
+    response.status === 500
+  ) {
     Swal.fire({
       icon: "error",
       title: `Debe ser el Owner para eliminar el producto`,

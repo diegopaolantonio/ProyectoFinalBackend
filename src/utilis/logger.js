@@ -27,7 +27,7 @@ const devLogger = winston.createLogger({
     new winston.transports.Console({
       level: "debug",
       format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms'}),
+        winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
         winston.format.colorize({ colors: customLevel.colors }),
         winston.format.simple()
       ),
@@ -41,7 +41,7 @@ const prodLogger = winston.createLogger({
     new winston.transports.Console({
       level: "info",
       format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms'}),
+        winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
         winston.format.colorize({ colors: customLevel.colors }),
         winston.format.simple()
       ),
@@ -50,9 +50,9 @@ const prodLogger = winston.createLogger({
       filename: `${__dirname}/../../files/error.log`,
       level: "info",
       format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms'}),
+        winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
         winston.format.simple()
-    ),
+      ),
     }),
   ],
 });

@@ -115,7 +115,7 @@ export async function addProduct(req, res) {
         status: 400,
       });
     } else {
-      logger.info("Add product success")
+      logger.info("Add product success");
       console.log("object");
       return responder.successResponse(res, products);
     }

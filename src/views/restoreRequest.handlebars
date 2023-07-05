@@ -1,0 +1,13 @@
+<div>
+  <form id="restoreRequestForm">
+    <h1>Restablecer contraseña</h1>
+    {{#if restoreExpired}}
+      <h2>Enlace de restauracion expirado, genere uno nuevamente.</h2>
+    {{/if}}
+    <p>Email: <input type="email" name="email" /></p>
+    <input type="submit" value="Restablecer" />
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/restoreRequest.js"></script>

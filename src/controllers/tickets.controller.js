@@ -13,7 +13,9 @@ export async function getTickets(req, res) {
   try {
     const tickets = await ticketService.getTickets();
     if (tickets && tickets.error) {
-      logger.fatal(`${ErrorsName.TICKETS_ERROR_NAME} - ${ErrorsMessage.GETTICKETS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`)
+      logger.fatal(
+        `${ErrorsName.TICKETS_ERROR_NAME} - ${ErrorsMessage.GETTICKETS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.TICKETS_ERROR_NAME,
         message: ErrorsMessage.GETTICKETS_ERROR_MESSAGE,
@@ -21,7 +23,7 @@ export async function getTickets(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Get tickets success`)
+      logger.info(`Get tickets success`);
       return responder.successResponse(res, tickets);
     }
   } catch (error) {
@@ -34,7 +36,9 @@ export async function getTicketById(req, res) {
     const tid = req.params.tid;
     const ticket = await ticketService.getTicketById(tid);
     if (ticket && ticket.error) {
-      logger.warning(`${ErrorsName.TICKETS_ERROR_NAME} - ${ErrorsMessage.GETTICKETSBYID_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`)
+      logger.warning(
+        `${ErrorsName.TICKETS_ERROR_NAME} - ${ErrorsMessage.GETTICKETSBYID_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.TICKETS_ERROR_NAME,
         message: ErrorsMessage.GETTICKETSBYID_ERROR_MESSAGE,
@@ -42,7 +46,7 @@ export async function getTicketById(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Get ticket ${tid} success`)
+      logger.info(`Get ticket ${tid} success`);
       return responder.successResponse(res, ticket);
     }
   } catch (error) {

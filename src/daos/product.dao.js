@@ -4,57 +4,57 @@ export default class ProductDao {
   getProducts = async function (limit, page, query, sort) {
     let products;
     try {
-      if(limit != "realTime") {
-      limit = parseInt(limit);
-      page = parseInt(page);
-      if (!limit || typeof limit != "number") {
-        limit = 10;
-      }
-      if (!page) {
-        page = 1;
-      }
-      if (!sort) {
-        if (!query) {
-          products = await productModel.paginate(
-            {},
-            { limit: limit, page: page }
-          );
-        } else {
-          if (query === "true" || query === "false") {
+      if (limit != "realTime") {
+        limit = parseInt(limit);
+        page = parseInt(page);
+        if (!limit || typeof limit != "number") {
+          limit = 10;
+        }
+        if (!page) {
+          page = 1;
+        }
+        if (!sort) {
+          if (!query) {
             products = await productModel.paginate(
-              { status: query },
+              {},
               { limit: limit, page: page }
             );
           } else {
+            if (query === "true" || query === "false") {
+              products = await productModel.paginate(
+                { status: query },
+                { limit: limit, page: page }
+              );
+            } else {
+              products = await productModel.paginate(
+                { category: query },
+                { limit: limit, page: page }
+              );
+            }
+          }
+        } else {
+          if (!query) {
             products = await productModel.paginate(
-              { category: query },
-              { limit: limit, page: page }
+              {},
+              { limit: limit, page: page, sort: { price: sort } }
             );
+          } else {
+            if (query === "true" || query === "false") {
+              products = await productModel.paginate(
+                { status: query },
+                { limit: limit, page: page, sort: { price: sort } }
+              );
+            } else {
+              products = await productModel.paginate(
+                { category: query },
+                { limit: limit, page: page, sort: { price: sort } }
+              );
+            }
           }
         }
       } else {
-        if (!query) {
-          products = await productModel.paginate(
-            {},
-            { limit: limit, page: page, sort: { price: sort } }
-          );
-        } else {
-          if (query === "true" || query === "false") {
-            products = await productModel.paginate(
-              { status: query },
-              { limit: limit, page: page, sort: { price: sort } }
-            );
-          } else {
-            products = await productModel.paginate(
-              { category: query },
-              { limit: limit, page: page, sort: { price: sort } }
-            );
-          }
-        }
+        products = await productModel.find();
       }
-    } else {
-      products = await productModel.find();
-    }
       return products;
     } catch (error) {
       return null;

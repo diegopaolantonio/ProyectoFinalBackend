@@ -3,13 +3,13 @@
   <form id="productForm">
     <p>email: {{email}}</p>
     {{#if cart}}
-    <p>Edad: {{age}}</p>
+      <p>Edad: {{age}}</p>
     {{/if}}
     <p>Role: {{role}}</p>
     {{#if cart}}
-    <input type="hidden" name="cid" value="{{cart}}">Cart: {{cart}}</input>
-    <br />
-    <br />
+      <p>Cart: {{cart}}<input type="hidden" name="cid" value="{{cart}}" /></p>
+      <br />
+      <br />
       <a href="/cart/{{cart}}">Ver carrito</a>
       <br />
       <br />
@@ -19,7 +19,7 @@
     <br />
     <h2>Detalle de Producto:</h2>
     <div>
-      <input type="hidden" name="pid" value="{{_id}}">id: {{_id}}</input>
+      <p>id: {{_id}}<input type="hidden" name="pid" value="{{_id}}" /></p>
       <p>Title: {{title}}</p>
       <p>Description: {{description}}</p>
       <p>Price: {{price}}</p>
@@ -29,13 +29,13 @@
       <p>Status: {{status}}</p>
       <p>Owner: {{owner}}</p>
       <p>Thumbnail: {{thumbnail}}</p>
-      {{#if userPremiumIsOwner}}
-      {{#if cart}}
-        <p>Cantidad: <input type="number" name="quantity"></input></p>
-        <br />
-        <input type="submit"> </input>
-        <br />
-      {{/if}}
+      {{#if userPremiumNotOwner}}
+        {{#if cart}}
+          <p>Cantidad: <input type="number" name="quantity" /></p>
+          <br />
+          <input type="submit" />
+          <br />
+        {{/if}}
       {{/if}}
     </div>
   </form>

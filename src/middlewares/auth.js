@@ -23,7 +23,10 @@ function roleAdmin(req, res, next) {
   if (!req.session.user) {
     return res.redirect("/login");
   } else {
-    if (req.session.user.role != "admin" && req.session.user.role != "premium") {
+    if (
+      req.session.user.role != "admin" &&
+      req.session.user.role != "premium"
+    ) {
       return res.redirect("/");
     }
   }

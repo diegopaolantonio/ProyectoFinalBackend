@@ -20,7 +20,9 @@ export async function getCarts(req, res) {
   try {
     const carts = await cartService.getCarts();
     if (carts && carts.error) {
-      logger.fatal(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.GETCARTS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`)
+      logger.fatal(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.GETCARTS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.GETCARTS_ERROR_MESSAGE,
@@ -28,7 +30,7 @@ export async function getCarts(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Get Carts success`)
+      logger.info(`Get Carts success`);
       return responder.successResponse(res, carts);
     }
   } catch (error) {
@@ -41,7 +43,9 @@ export async function getCartsById(req, res) {
     const cid = req.params.cid;
     const carts = await cartService.getCartById(cid);
     if (carts && carts.error) {
-      logger.error(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE} - ${ErrorsCause.DATABASGETBYID_ERROR_CAUSEE_ERROR_CAUSE}`)
+      logger.error(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE} - ${ErrorsCause.DATABASGETBYID_ERROR_CAUSEE_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE,
@@ -49,7 +53,7 @@ export async function getCartsById(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Get Cart ${cid} success`)
+      logger.info(`Get Cart ${cid} success`);
       return responder.successResponse(res, carts);
     }
   } catch (error) {
@@ -61,7 +65,9 @@ export async function createCart(req, res) {
   try {
     const carts = await cartService.createCart();
     if (carts && carts.error) {
-      logger.fatal(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.GETCARTS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`)
+      logger.fatal(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.GETCARTS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.GETCARTS_ERROR_MESSAGE,
@@ -69,7 +75,7 @@ export async function createCart(req, res) {
         status: 400,
       });
     } else {
-      logger.info("Create Cart success")
+      logger.info("Create Cart success");
       return responder.successResponse(res, carts);
     }
   } catch (error) {
@@ -86,7 +92,9 @@ export async function addProductInCart(req, res) {
 
     const carts = await cartService.addProductInCart(cid, pid, quantity);
     if (carts && carts.error) {
-      logger.warning(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.ADDPRODUCTINCARTS_ERROR_MESSAGE} - ${ErrorsCause.ADDPRODUCTINCARTS_ERROR_CAUSE}`)
+      logger.warning(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.ADDPRODUCTINCARTS_ERROR_MESSAGE} - ${ErrorsCause.ADDPRODUCTINCARTS_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.ADDPRODUCTINCARTS_ERROR_MESSAGE,
@@ -94,7 +102,7 @@ export async function addProductInCart(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Add product ${pid} in cart ${cid} success`)
+      logger.info(`Add product ${pid} in cart ${cid} success`);
       return responder.successResponse(res, carts);
     }
   } catch (error) {
@@ -108,7 +116,9 @@ export async function deleteCart(req, res) {
 
     const carts = await cartService.deleteCart(cid);
     if (carts && carts.error) {
-      logger.warning(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`)
+      logger.warning(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
@@ -116,7 +126,7 @@ export async function deleteCart(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Delet products in cart ${cid} success`)
+      logger.info(`Delet products in cart ${cid} success`);
       return responder.successResponse(res, carts);
     }
   } catch (error) {
@@ -131,7 +141,9 @@ export async function deleteProductInCart(req, res) {
 
     const carts = await cartService.deleteProductInCart(cid, pid);
     if (carts && carts.error) {
-      logger.warning(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`)
+      logger.warning(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
@@ -139,7 +151,7 @@ export async function deleteProductInCart(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Delete product ${pid} in cart ${cid} success`)
+      logger.info(`Delete product ${pid} in cart ${cid} success`);
       return responder.successResponse(res, carts);
     }
   } catch (error) {
@@ -158,7 +170,9 @@ export async function updateProductInCart(req, res) {
         productsElements
       );
       if (carts && carts.error) {
-        logger.warning(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`)
+        logger.warning(
+          `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
+        );
         return CustomError.generateCustomError({
           name: ErrorsName.CARTS_ERROR_NAME,
           message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
@@ -166,11 +180,13 @@ export async function updateProductInCart(req, res) {
           status: 400,
         });
       } else {
-        logger.info(`Update products in cart ${cid} success`)
+        logger.info(`Update products in cart ${cid} success`);
         return responder.successResponse(res, carts);
       }
     } else {
-      logger.warning(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UTHORIZATION_ERROR_MESSAGE} - ${ErrorsCause.UTHORIZATION_ERROR_CAUSE}`)
+      logger.warning(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UTHORIZATION_ERROR_MESSAGE} - ${ErrorsCause.UTHORIZATION_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.UTHORIZATION_ERROR_MESSAGE,
@@ -197,7 +213,9 @@ export async function updateQuantityProductInCart(req, res) {
         quantity
       );
       if (carts && carts.error) {
-        logger.fatal(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`)
+        logger.fatal(
+          `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
+        );
         return CustomError.generateCustomError({
           name: ErrorsName.CARTS_ERROR_NAME,
           message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
@@ -205,11 +223,15 @@ export async function updateQuantityProductInCart(req, res) {
           status: 400,
         });
       } else {
-        logger.info(`Update quantity ${quantity} product ${pid} in cart ${cid} success`)
+        logger.info(
+          `Update quantity ${quantity} product ${pid} in cart ${cid} success`
+        );
         return responder.successResponse(res, carts);
       }
     } else {
-      logger.warning(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.AUTHORIZATION_ERROR_MESSAGE} - ${ErrorsCause.UTHORIZATION_ERROR_CAUSE}`)
+      logger.warning(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.AUTHORIZATION_ERROR_MESSAGE} - ${ErrorsCause.UTHORIZATION_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.AUTHORIZATION_ERROR_MESSAGE,
@@ -312,7 +334,9 @@ export async function createTicket(req, res) {
     }
 
     if (result && result.error) {
-      logger.warning(`${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.TICKET_ERROR_MESSAGE} - ${ErrorsCause.TICKET_ERROR_CAUSE}`)
+      logger.warning(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.TICKET_ERROR_MESSAGE} - ${ErrorsCause.TICKET_ERROR_CAUSE}`
+      );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.TICKET_ERROR_MESSAGE,
@@ -320,7 +344,7 @@ export async function createTicket(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Create ticket ${result.createdTicket.code} success`)
+      logger.info(`Create ticket ${result.createdTicket.code} success`);
       return responder.successResponse(res, result);
     }
   } catch (error) {

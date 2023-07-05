@@ -8,7 +8,7 @@ export default class UserDao {
     } catch (error) {
       return null;
     }
-  }
+  };
 
   getUserByEmail = async function (email) {
     try {
@@ -53,5 +53,5 @@ export default class UserDao {
     } catch (error) {
       return null;
     }
-  }
+  };
 }
