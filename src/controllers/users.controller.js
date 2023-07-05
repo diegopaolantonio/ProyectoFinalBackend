@@ -203,7 +203,7 @@ export async function restorePasswordRequest(req, res) {
       });
     } else {
       const createDate = Date.now();
-      const expirateDate = createDate + 60000; // 3600000;
+      const expirateDate = createDate + 3600000;
       const newRestore = { email, createDate, expirateDate };
 
       const restores = await restoreService.getRestoreByEmail(email);
