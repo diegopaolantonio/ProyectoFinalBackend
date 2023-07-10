@@ -1,0 +1,197 @@
+paths:
+  /api/v1/carts/:
+    get:
+      summary: Obtiene todos los carritos. Se debe tener una sesion iniciada.
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Array de carritos recibido con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
+        "500":
+          description: Error de comunicacion con la base de datos.
+    post:
+      summary: Crear un carrito nuevo. Se crea al crear un usuario nuevo y se le asigna al usuario.
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Agrega carrito a la base de datos. Solo un usuario Admin o Premium puede agregar producto.
+        "500":
+          description: Error de comunicacion con la base de datos.
+  /api/v1/carts/{cid}/:
+    get:
+      summary: Obtiene el carrito correspondiente a id. Debe estar logueado el usuario dueño del carrito.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: carrito recibido con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
+        "500":
+          description: Error de comunicacion con la base de datos.
+    put:
+      summary: Actualiza los productos del carrito. Debe estar logueado el usuario dueño del carrito.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Actualizo los productos del carrito cid en la base de datos.
+        "500":
+          description: Error de comunicacion con la base de datos.
+    delete:
+      summary: Elimina productos del carrito. Debe estar logueado el usuario dueño del carrito.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Elimino los productos del carrito cid en la base de datos.
+        "500":
+          description: Error de comunicacion con la base de datos.
+  /api/v1/carts/{cid}/products/{pid}/:
+    put:
+      summary: Actualice la cantidad del product correspontiente al pid del carrito cid, con el contenido el body. Debe estar logueado el usuario dueño del carrito.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito.
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Actualizo el producto pid del carrito cid en la base de datos.
+        "500":
+          description: Error de comunicacion con la base de datos.
+    post:
+      summary: Agrega un nuevo producto (pid) al carrito cid. Debe estar logueado el usuario dueño del carrito.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito.
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Agrega el producto pid del carrito cid en la base de datos.
+        "500":
+          description: Error de comunicacion con la base de datos.
+    delete:
+      summary: Eliminar el producto pid del carrito cid. Debe estar logueado el usuario dueño del carrito.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito.
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Elimino el producto pid del carrito cid en la base de datos.
+        "500":
+          description: Error de comunicacion con la base de datos.
+
+  /api/v1/carts/{cid}/purcase/:
+    post:
+      summary: Crea ticket con el contenido del productos del carrito cid. los productos que no tengan stock igual o superior a la cantidad pedida no se agregaran al ticket, y los que se agreguen se eliminan del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Agrega ticket a la base de datos con exito.
+        "500":
+          description: Error de comunicacion con la base de datos.
+
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo.
+        products:
+          type: array
+          description: productos agregados al carrito, indicando el id del producto y la cantidad deseada.
+          items:
+            $ref: "#components/schemas/Product"
+      example:
+        _id: ObjectId("a5sd46as54fd6sad46f4s6df4s")
+        products:
+          product: ObjectId("s5a46dfas4df6asdfasdf45asf")
+          quantity: 2
+    Product:
+      type: object
+      properties:
+        product:
+          type: ObjectId
+          description: Id del producto agregado al carrito.
+        quantity:
+          type: Number
+          description: Cantidad del producto agregado al carrito.
+      example:
+        product: ObjectId("s5a46dfas4df6asdfasdf45asf")
+        quantity: 2

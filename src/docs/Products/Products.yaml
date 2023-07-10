@@ -1,0 +1,197 @@
+paths:
+  /api/v1/products/:
+    get:
+      summary: Obtiene todos los productos, se debe tener una sesion iniciada para esto.
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Array de productos recibido con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Error de comunicacion con la base de datos.
+    post:
+      summary: Agrega producto a la base de datos. Solo un usuario Admin o Premium puede agregar producto.
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/postProduct"
+      responses:
+        "200":
+          description: Producto agregado.
+        "500":
+          description: Error de comunicacion con la base de datos.
+  /api/v1/products/{pid}:
+    get:
+      summary: Obtiene el producto correspondiente a id. Se debe tener una sesion iniciada para esto.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto a buscar.
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: Productos recibido con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Error de comunicacion con la base de datos.
+    put:
+      summary: Actualiza producto existente correspondiente al id. Solo un usuario Admin o Premium puede actualizar un producto.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto a actualizar.
+          schema:
+            $type: String 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/postProduct"
+      responses:
+        "200":
+          description: Producto actualizado con exito.
+        "500":
+          description: Error de comunicacion con la base de datos.
+    delete:
+      summary: Elimina producto existente correspondiente al id. Solo un usuario Admin o Premium puede eliminar un producto.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto a eliminar.
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: Producto eliminado con exito.
+        "500":
+          description: Error de comunicacion con la base de datos.
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo.
+        title:
+          type: String
+          required: true
+          description: Titulo que describe la el producto.
+        description:
+          type: String
+          required: true
+          description: Descripcion del producto.
+        price:
+          type: Number
+          required: true
+          description: Precio del producto.
+        code:
+          type: String
+          required: true
+          unique: true
+          description: Codigo del producto. Es un campo con valor unico.
+        stock:
+          type: Number
+          required: true
+          description: Cantidad de producto en existencia.
+        category:
+          type: String
+          required: true
+          description: Categoria a la que pertenece el producto.
+        status:
+          type: String
+          required: true
+          description: Estado del producto.
+        owner:
+          type: String
+          description: Este campo contiene el valor "admin" o el email del creador del producto.
+        thumbnail:
+          type: String
+          description: Direccion de la foto del producto.
+      example:
+        _id: ObjectId("s5a46dfas4df6asdfasdf45asf")
+        title: PLC Schneider M221
+        description: PLC con 8 Input 8 Output, comunicacion Ethernet
+        price: 100
+        code: SchneiderM221
+        stock: 87
+        category: PLC
+        status: true
+        owner: admin
+        thumbnail: /asdf546a4sd5f.png
+  requestBodies:
+    postProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          required: true
+          description: Titulo que describe la el producto.
+        description:
+          type: String
+          required: true
+          description: Descripcion del producto.
+        price:
+          type: Number
+          required: true
+          description: Precio del producto.
+        code:
+          type: String
+          required: true
+          unique: true
+          description: Codigo del producto. Es un campo con valor unico.
+        stock:
+          type: Number
+          required: true
+          description: Cantidad de producto en existencia.
+        category:
+          type: String
+          required: true
+          description: Categoria a la que pertenece el producto.
+        status:
+          type: String
+          required: true
+          description: Estado del producto.
+        owner:
+          type: String
+          description: Este campo contiene el valor "admin" o el email del creador del producto.
+        thumbnail:
+          type: String
+          description: Direccion de la foto del producto.
+      example:
+        title: PLC Schneider M221
+        description: PLC con 8 Input 8 Output, comunicacion Ethernet
+        price: 100
+        code: SchneiderM221
+        stock: 87
+        category: PLC
+        status: true
+        owner: userPremium@correo.com
+        thumbnail: /asdf546a4sd5f.png

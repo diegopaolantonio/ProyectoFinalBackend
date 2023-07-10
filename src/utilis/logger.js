@@ -1,5 +1,5 @@
 import winston from "winston";
-import __dirname from "./dirname.js";
+import __dirname from "../dirname.js";
 import config from "../config.js";
 
 const customLevel = {
@@ -47,7 +47,7 @@ const prodLogger = winston.createLogger({
       ),
     }),
     new winston.transports.File({
-      filename: `${__dirname}/../../files/error.log`,
+      filename: `${__dirname}/../files/error.log`,
       level: "info",
       format: winston.format.combine(
         winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),

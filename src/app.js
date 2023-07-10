@@ -7,7 +7,7 @@ import database from "./mongo.js";
 import config from "./config.js";
 import passport from "passport";
 import { routerApi } from "./routes/index.js";
-import __dirname from "./utilis/dirname.js";
+import __dirname from "./dirname.js";
 import initializePassport from "./auth/passport.js";
 import { logger } from "./utilis/logger.js";
 
@@ -18,7 +18,7 @@ const { dbUrl, sessionSecret } = config;
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/", express.static(`${__dirname}/../public`));
+app.use("/", express.static(`${__dirname}/public`));
 app.use(
   session({
     store: MongoStore.create({
@@ -36,7 +36,7 @@ app.use(passport.session());
 
 // Seteo de Handlebars
 app.engine("handlebars", handlebars.engine());
-app.set("views", `${__dirname}/../views`);
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
 // Conexion a Database
