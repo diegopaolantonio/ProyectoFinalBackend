@@ -22,6 +22,12 @@ paths:
       responses:
         "200":
           description: Agrega carrito a la base de datos. Solo un usuario Admin o Premium puede agregar producto.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
         "500":
           description: Error de comunicacion con la base de datos.
   /api/v1/carts/{cid}/:
@@ -61,6 +67,12 @@ paths:
       responses:
         "200":
           description: Actualizo los productos del carrito cid en la base de datos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
         "500":
           description: Error de comunicacion con la base de datos.
     delete:
@@ -100,6 +112,12 @@ paths:
       responses:
         "200":
           description: Actualizo el producto pid del carrito cid en la base de datos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
         "500":
           description: Error de comunicacion con la base de datos.
     post:
@@ -122,6 +140,12 @@ paths:
       responses:
         "200":
           description: Agrega el producto pid del carrito cid en la base de datos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
         "500":
           description: Error de comunicacion con la base de datos.
     delete:
@@ -146,7 +170,6 @@ paths:
           description: Elimino el producto pid del carrito cid en la base de datos.
         "500":
           description: Error de comunicacion con la base de datos.
-
   /api/v1/carts/{cid}/purcase/:
     post:
       summary: Crea ticket con el contenido del productos del carrito cid. los productos que no tengan stock igual o superior a la cantidad pedida no se agregaran al ticket, y los que se agreguen se eliminan del carrito
@@ -162,6 +185,12 @@ paths:
       responses:
         "200":
           description: Agrega ticket a la base de datos con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Tickets"
         "500":
           description: Error de comunicacion con la base de datos.
 
@@ -195,3 +224,27 @@ components:
       example:
         product: ObjectId("s5a46dfas4df6asdfasdf45asf")
         quantity: 2
+    Tickets:
+      type: object
+      properties:
+        code:
+          type: String
+          required: true
+          description: Codigo unico que identifica el ticket.
+        purchase_datetime:
+          type: String
+          required: true
+          description: Fecha y hora de emision del ticket.
+        amount:
+          type: Number
+          required: true
+          description: Monto total del ticket.
+        purchaser:
+          type: String
+          required: true
+          description: Email de identificacion del comprador el ticket.
+      example:
+        code: 65465484515
+        purchase_datetime: "25/5/2023 15:45:50"
+        amount: 25478
+        purchaser: nombre@correo.com
