@@ -13,6 +13,8 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Carts"
+        "400":
+          description: Error al obtener el array de carritos de la base de datos.
         "500":
           description: Error de comunicacion con la base de datos.
     post:
@@ -28,6 +30,8 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Carts"
+        "400":
+          description: Error al agregar un nuevo carrito en la base de datos.
         "500":
           description: Error de comunicacion con la base de datos.
   /api/v1/carts/{cid}/:
@@ -51,12 +55,20 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Carts"
+        "400":
+          description: Id no encontrado.
         "500":
           description: Error de comunicacion con la base de datos.
     put:
       summary: Actualiza los productos del carrito. Debe estar logueado el usuario dueño del carrito.
       tags:
         - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateProductInCart"
       parameters:
         - name: cid
           in: path
@@ -73,6 +85,10 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Carts"
+        "400":
+          description: Id no encontrado.
+        "404":
+          description: Sin autorizacion para actualizar el carrito.
         "500":
           description: Error de comunicacion con la base de datos.
     delete:
@@ -88,14 +104,22 @@ paths:
             $type: String
       responses:
         "200":
-          description: Elimino los productos del carrito cid en la base de datos.
+          description: Se eliminaron los productos del carrito cid de la base de datos.
+        "400":
+          description: Id no encontrado.
         "500":
           description: Error de comunicacion con la base de datos.
-  /api/v1/carts/{cid}/products/{pid}/:
+  /api/v1/carts/{cid}/product/{pid}/:
     put:
       summary: Actualice la cantidad del product correspontiente al pid del carrito cid, con el contenido el body. Debe estar logueado el usuario dueño del carrito.
       tags:
         - Carts
+      requestBody:
+        requered: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateQuantityProductInCart"
       parameters:
         - name: cid
           in: path
@@ -118,12 +142,22 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Carts"
+        "400":
+          description: Id no encontrado.
+        "404":
+          description: Sin autorizacion para actualizar el carrito.
         "500":
           description: Error de comunicacion con la base de datos.
     post:
       summary: Agrega un nuevo producto (pid) al carrito cid. Debe estar logueado el usuario dueño del carrito.
       tags:
         - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateQuantityProductInCart"
       parameters:
         - name: cid
           in: path
@@ -146,6 +180,8 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Carts"
+        "400":
+          description: Error al agregar el producto en el carrito.
         "500":
           description: Error de comunicacion con la base de datos.
     delete:
@@ -168,6 +204,8 @@ paths:
       responses:
         "200":
           description: Elimino el producto pid del carrito cid en la base de datos.
+        "400":
+          description: Error al eliminar el producto en el carrito.
         "500":
           description: Error de comunicacion con la base de datos.
   /api/v1/carts/{cid}/purcase/:
@@ -191,6 +229,8 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Tickets"
+        "400":
+          description: Error al generar el ticket.
         "500":
           description: Error de comunicacion con la base de datos.
 
@@ -206,24 +246,12 @@ components:
           type: array
           description: productos agregados al carrito, indicando el id del producto y la cantidad deseada.
           items:
-            $ref: "#components/schemas/Product"
+            $ref: "#components/requestBodies/updateProductInCart"
       example:
         _id: ObjectId("a5sd46as54fd6sad46f4s6df4s")
         products:
           product: ObjectId("s5a46dfas4df6asdfasdf45asf")
           quantity: 2
-    Product:
-      type: object
-      properties:
-        product:
-          type: ObjectId
-          description: Id del producto agregado al carrito.
-        quantity:
-          type: Number
-          description: Cantidad del producto agregado al carrito.
-      example:
-        product: ObjectId("s5a46dfas4df6asdfasdf45asf")
-        quantity: 2
     Tickets:
       type: object
       properties:
@@ -245,6 +273,27 @@ components:
           description: Email de identificacion del comprador el ticket.
       example:
         code: 65465484515
-        purchase_datetime: "25/5/2023 15:45:50"
+        purchase_datetime: 5/7/2023, 04:03:46
         amount: 25478
         purchaser: nombre@correo.com
+  requestBodies:
+    updateProductInCart:
+      type: object
+      properties:
+        product:
+          type: ObjectId
+          description: Id del producto agregado al carrito.
+        quantity:
+          type: Number
+          description: Cantidad del producto agregado al carrito.
+      example:
+        product: ObjectId("s5a46dfas4df6asdfasdf45asf")
+        quantity: 2
+    updateQuantityProductInCart:
+      type: object
+      propierties:
+        quantity:
+          type: Number
+          description: Cantidad del producto agregado al carrito.
+      example:
+        quantity: 2

@@ -13,6 +13,8 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Products"
+        "400":
+          description: Error al obtener el array de productos de la base de datos.
         "500":
           description: Error de comunicacion con la base de datos.
     post:
@@ -28,6 +30,14 @@ paths:
       responses:
         "200":
           description: Producto agregado.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "400":
+          description: Error al agregar producto a la base de datos.
         "500":
           description: Error de comunicacion con la base de datos.
   /api/v1/products/{pid}:
@@ -51,12 +61,20 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Products"
+        "400":
+          description: Id no encontrado.
         "500":
           description: Error de comunicacion con la base de datos.
     put:
       summary: Actualiza producto existente correspondiente al id. Solo un usuario Admin o Premium puede actualizar un producto.
       tags:
         - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/postProduct"
       parameters:
         - name: pid
           in: path
@@ -64,15 +82,17 @@ paths:
           description: Id del producto a actualizar.
           schema:
             $type: String 
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#components/requestBodies/postProduct"
       responses:
         "200":
           description: Producto actualizado con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "400":
+          description: Id no encontrado, o datos incorrectos.
         "500":
           description: Error de comunicacion con la base de datos.
     delete:
@@ -89,6 +109,10 @@ paths:
       responses:
         "200":
           description: Producto eliminado con exito.
+        "400":
+          description: Id no encontrado.
+        "404":
+          description: Sin autorizacion para elminar el producto.
         "500":
           description: Error de comunicacion con la base de datos.
 

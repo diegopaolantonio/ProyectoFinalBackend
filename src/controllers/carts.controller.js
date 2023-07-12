@@ -38,29 +38,6 @@ export async function getCarts(req, res) {
   }
 }
 
-export async function getCartsById(req, res) {
-  try {
-    const cid = req.params.cid;
-    const carts = await cartService.getCartById(cid);
-    if (carts && carts.error) {
-      logger.error(
-        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE} - ${ErrorsCause.DATABASGETBYID_ERROR_CAUSEE_ERROR_CAUSE}`
-      );
-      return CustomError.generateCustomError({
-        name: ErrorsName.CARTS_ERROR_NAME,
-        message: ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE,
-        cause: ErrorsCause.GETBYID_ERROR_CAUSE,
-        status: 400,
-      });
-    } else {
-      logger.info(`Get Cart ${cid} success`);
-      return responder.successResponse(res, carts);
-    }
-  } catch (error) {
-    return responder.errorResponse(res, error.message, error.status);
-  }
-}
-
 export async function createCart(req, res) {
   try {
     const carts = await cartService.createCart();
@@ -83,75 +60,22 @@ export async function createCart(req, res) {
   }
 }
 
-export async function addProductInCart(req, res) {
+export async function getCartsById(req, res) {
   try {
     const cid = req.params.cid;
-    const pid = req.params.pid;
-
-    const { quantity } = req.body;
-
-    const carts = await cartService.addProductInCart(cid, pid, quantity);
+    const carts = await cartService.getCartById(cid);
     if (carts && carts.error) {
-      logger.warning(
-        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.ADDPRODUCTINCARTS_ERROR_MESSAGE} - ${ErrorsCause.ADDPRODUCTINCARTS_ERROR_CAUSE}`
+      logger.error(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE} - ${ErrorsCause.DATABASGETBYID_ERROR_CAUSEE_ERROR_CAUSE}`
       );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
-        message: ErrorsMessage.ADDPRODUCTINCARTS_ERROR_MESSAGE,
-        cause: ErrorsCause.ADDPRODUCTINCARTS_ERROR_CAUSE,
-        status: 400,
-      });
-    } else {
-      logger.info(`Add product ${pid} in cart ${cid} success`);
-      return responder.successResponse(res, carts);
-    }
-  } catch (error) {
-    return responder.errorResponse(res, error.message, error.status);
-  }
-}
-
-export async function deleteCart(req, res) {
-  try {
-    const cid = req.params.cid;
-
-    const carts = await cartService.deleteCart(cid);
-    if (carts && carts.error) {
-      logger.warning(
-        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
-      );
-      return CustomError.generateCustomError({
-        name: ErrorsName.CARTS_ERROR_NAME,
-        message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+        message: ErrorsMessage.GETCARTSBYID_ERROR_MESSAGE,
         cause: ErrorsCause.GETBYID_ERROR_CAUSE,
         status: 400,
       });
     } else {
-      logger.info(`Delet products in cart ${cid} success`);
-      return responder.successResponse(res, carts);
-    }
-  } catch (error) {
-    return responder.errorResponse(res, error.message, error.status);
-  }
-}
-
-export async function deleteProductInCart(req, res) {
-  try {
-    const cid = req.params.cid;
-    const pid = req.params.pid;
-
-    const carts = await cartService.deleteProductInCart(cid, pid);
-    if (carts && carts.error) {
-      logger.warning(
-        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
-      );
-      return CustomError.generateCustomError({
-        name: ErrorsName.CARTS_ERROR_NAME,
-        message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
-        cause: ErrorsCause.GETBYID_ERROR_CAUSE,
-        status: 400,
-      });
-    } else {
-      logger.info(`Delete product ${pid} in cart ${cid} success`);
+      logger.info(`Get Cart ${cid} success`);
       return responder.successResponse(res, carts);
     }
   } catch (error) {
@@ -191,8 +115,32 @@ export async function updateProductInCart(req, res) {
         name: ErrorsName.CARTS_ERROR_NAME,
         message: ErrorsMessage.UTHORIZATION_ERROR_MESSAGE,
         cause: ErrorsCause.UTHORIZATION_ERROR_CAUSE,
+        status: 404,
+      });
+    }
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function deleteCart(req, res) {
+  try {
+    const cid = req.params.cid;
+
+    const carts = await cartService.deleteCart(cid);
+    if (carts && carts.error) {
+      logger.warning(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
+      );
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+        cause: ErrorsCause.GETBYID_ERROR_CAUSE,
         status: 400,
       });
+    } else {
+      logger.info(`Delet products in cart ${cid} success`);
+      return responder.successResponse(res, carts);
     }
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
@@ -230,14 +178,66 @@ export async function updateQuantityProductInCart(req, res) {
       }
     } else {
       logger.warning(
-        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.AUTHORIZATION_ERROR_MESSAGE} - ${ErrorsCause.UTHORIZATION_ERROR_CAUSE}`
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UTHORIZATION_ERROR_MESSAGE} - ${ErrorsCause.UTHORIZATION_ERROR_CAUSE}`
       );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
-        message: ErrorsMessage.AUTHORIZATION_ERROR_MESSAGE,
+        message: ErrorsMessage.UTHORIZATION_ERROR_MESSAGE,
         cause: ErrorsCause.UTHORIZATION_ERROR_CAUSE,
+        status: 404,
+      });
+    }
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function addProductInCart(req, res) {
+  try {
+    const cid = req.params.cid;
+    const pid = req.params.pid;
+
+    const { quantity } = req.body;
+
+    const carts = await cartService.addProductInCart(cid, pid, quantity);
+    if (carts && carts.error) {
+      logger.warning(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.ADDPRODUCTINCARTS_ERROR_MESSAGE} - ${ErrorsCause.ADDPRODUCTINCARTS_ERROR_CAUSE}`
+      );
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.ADDPRODUCTINCARTS_ERROR_MESSAGE,
+        cause: ErrorsCause.ADDPRODUCTINCARTS_ERROR_CAUSE,
         status: 400,
       });
+    } else {
+      logger.info(`Add product ${pid} in cart ${cid} success`);
+      return responder.successResponse(res, carts);
+    }
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function deleteProductInCart(req, res) {
+  try {
+    const cid = req.params.cid;
+    const pid = req.params.pid;
+
+    const carts = await cartService.deleteProductInCart(cid, pid);
+    if (carts && carts.error) {
+      logger.warning(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.UPDATECART_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
+      );
+      return CustomError.generateCustomError({
+        name: ErrorsName.CARTS_ERROR_NAME,
+        message: ErrorsMessage.UPDATECART_ERROR_MESSAGE,
+        cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+        status: 400,
+      });
+    } else {
+      logger.info(`Delete product ${pid} in cart ${cid} success`);
+      return responder.successResponse(res, carts);
     }
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
