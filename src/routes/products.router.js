@@ -17,3 +17,4 @@ router.put("/:pid", roleAdmin, updateProduct); // Actualizar los datos de un pro
 router.delete("/:pid", roleAdmin, deleteProduct); // Eliminar un product especifico por el pid (product id)
 
 export default router;
+

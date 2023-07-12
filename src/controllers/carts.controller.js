@@ -351,3 +351,4 @@ export async function createTicket(req, res) {
     return responder.errorResponse(res, error.message, error.status);
   }
 }
+

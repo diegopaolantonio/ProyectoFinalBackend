@@ -187,3 +187,4 @@ export async function deleteProduct(req, res) {
     return responder.errorResponse(res, error.message, error.status);
   }
 }
+
