@@ -18,4 +18,13 @@ export default class MessageDao {
       return null;
     }
   };
+
+  deleteMessage = async function (messageId) {
+    try {
+        const deletedMessage = await messageModel.deleteOne(messageId);
+        return deletedMessage;
+    } catch (error) {
+      return null;
+    }
+  }
 }

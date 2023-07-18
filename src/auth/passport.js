@@ -72,7 +72,7 @@ const initializePassport = () => {
               };
             }
           } else {
-            user = await userService.getUserByEmail({ email: username });
+            user = await userService.getUserByEmail(username);
             if (!user) {
               return done(null, false);
             }

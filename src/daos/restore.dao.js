@@ -37,24 +37,6 @@ export default class RestoreDao {
     }
   };
 
-  updateRestore = async function (id, updateRestore) {
-    try {
-      const result = await restoreModel.updateOne({ _id: id }, updateRestore);
-      return result;
-    } catch (error) {
-      return null;
-    }
-  };
-
-  deleteRestore = async function (id) {
-    try {
-      const result = await restoreModel.deleteOne({ _id: id });
-      return result;
-    } catch (error) {
-      return null;
-    }
-  };
-
   deleteRestoreByEmail = async function (email) {
     try {
       const result = await restoreModel.deleteOne({ email: email });

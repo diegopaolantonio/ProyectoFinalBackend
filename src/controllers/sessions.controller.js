@@ -5,7 +5,7 @@ import { logger } from "../utilis/logger.js";
 export async function postRegister(req, res) {
   try {
     logger.info(`User register success`);
-    return res.send({ status: "Success", message: "User registered" });
+    return res.send({ status: "Success", message: "User registered", payload: res.req.user });
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
   }

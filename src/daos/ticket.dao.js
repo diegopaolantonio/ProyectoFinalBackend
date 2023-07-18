@@ -27,4 +27,13 @@ export default class TicketDao {
       return null;
     }
   };
+
+  deleteTicket = async function (tid) {
+    try {
+      const deletedTicket = await ticketModel.deleteOne(tid);
+      return deletedTicket;
+    } catch (error) {
+      return null;
+    }
+  }
 }

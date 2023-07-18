@@ -31,7 +31,7 @@ export default class TicketService {
     }
   };
 
-  createTicket = async (cid, order) => {
+  createTicket = async (order) => {
     try {
       const createdTicket = await this.ticketRepository.createTicket(order);
 

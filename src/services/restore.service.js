@@ -41,27 +41,6 @@ export default class RestoreService {
     }
   };
 
-  updateRestore = async (id, updateRestore) => {
-    try {
-      const result = await this.restoreRepository.updateRestore(
-        id,
-        updateRestore
-      );
-      return result;
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
-  deleteRestore = async (id) => {
-    try {
-      const result = await this.restoreRepository.deleteRestore(id);
-      return result;
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
   deleteRestoreByEmail = async (email) => {
     try {
       const result = await this.restoreRepository.deleteRestoreByEmail(email);

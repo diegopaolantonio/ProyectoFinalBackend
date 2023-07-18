@@ -50,4 +50,13 @@ export default class CartDao {
       return null;
     }
   };
+
+  deleteCart = async function (cartId) {
+    try {
+      const deleteCart = await cartModel.deleteOne(cartId);
+      return deleteCart;
+    } catch (error) {
+      return null;
+    }
+  }
 }

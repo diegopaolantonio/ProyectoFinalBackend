@@ -52,24 +52,6 @@ export default class RestoreRepository {
     }
   };
 
-  updateRestore = async (id, updateRestore) => {
-    try {
-      const result = await this.restoreDao.updateRestore(id, updateRestore);
-      return result;
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
-  deleteRestore = async (id) => {
-    try {
-      const result = await this.restoreDao.deleteRestore(id);
-      return result;
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
   deleteRestoreByEmail = async (email) => {
     try {
       const result = await this.restoreDao.deleteRestoreByEmail(email);

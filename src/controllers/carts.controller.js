@@ -284,7 +284,7 @@ export async function createTicket(req, res) {
     var purchase_datetime = datetime.toLocaleString();
 
     const order = new ticketDto(amount, email, purchase_datetime);
-    const createdTicket = await ticketService.createTicket(cid, order);
+    const createdTicket = await ticketService.createTicket(order);
 
     await cartService.deleteCart(cid);
 
