@@ -20,7 +20,7 @@ const initializePassport = () => {
         try {
           const { first_name, last_name, age, email, role } = req.body;
 
-          let user = await userService.getUserByEmail({ email: username });
+          let user = await userService.getUserByEmail(username);
           if (user) {
             return done(null, false);
           }

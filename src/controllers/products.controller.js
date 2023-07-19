@@ -73,6 +73,7 @@ export async function getProducts(req, res) {
 
 export async function addProduct(req, res) {
   try {
+    console.log(req.session);
     let product = req.body;
     if (req.session.user.role === "premium") {
       product.owner = req.session.user.email;
@@ -93,7 +94,6 @@ export async function addProduct(req, res) {
       });
     } else {
       logger.info("Add product success");
-      console.log("object");
       return responder.successResponse(res, products);
     }
   } catch (error) {

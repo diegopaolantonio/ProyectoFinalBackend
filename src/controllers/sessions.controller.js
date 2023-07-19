@@ -1,6 +1,11 @@
 import { responder } from "../traits/Responder.js";
-import CustomError from "../errors/customError.js";
 import { logger } from "../utilis/logger.js";
+import {
+  ErrorsName,
+  ErrorsCause,
+  ErrorsMessage,
+} from "../errors/error.enum.js";
+import CustomError from "../errors/customError.js";
 
 export async function postRegister(req, res) {
   try {

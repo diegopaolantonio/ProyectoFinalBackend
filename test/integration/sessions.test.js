@@ -4,7 +4,7 @@ import supertest from "supertest";
 const expect = chai.expect;
 const requester = supertest("http://localhost:8080");
 
-describe("Set de pruebas de integracion para el modulo de sessiones", function() {
+describe("Set de pruebas de integracion para el modulo de sesiones", function() {
 
     const mockUser = {
         first_name: "Mock",
@@ -29,13 +29,9 @@ describe("Set de pruebas de integracion para el modulo de sessiones", function()
         };
 
         const result = await requester.post("/api/v1/sessions/login").send(mockLogin);
-
+        console.log(result._body);
         expect(result._body.payload).to.be.ok;
         expect(result._body.payload.email).to.be.eql(mockLogin.email);
     })
 
-    // it("GET /api/v1/current: Debe devolver los datos del usuario logueado", async function() {
-    //     const result = await requester.get("/api/v1/sessions/current")
-    //     console.log(result);
-    // })
 })

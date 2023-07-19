@@ -33,7 +33,7 @@ export async function getProfile(req, res) {
     let user = new profileDto(req.session.user);
     const { email, role } = user;
     let premium = false;
-    const { _id } = await userService.getUserByEmail({ email });
+    const { _id } = await userService.getUserByEmail( email );
     if (role === "premium") {
       premium = true;
     }
