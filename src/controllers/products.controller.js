@@ -73,7 +73,6 @@ export async function getProducts(req, res) {
 
 export async function addProduct(req, res) {
   try {
-    console.log(req.session);
     let product = req.body;
     if (req.session.user.role === "premium") {
       product.owner = req.session.user.email;
@@ -188,3 +187,24 @@ export async function deleteProduct(req, res) {
   }
 }
 
+export async function addProducts(req, res) {
+  const documentation = req.body;
+  const files = req.files;
+
+  let product = await productService.getProductById(documentation.pid);
+  if (!files.productos) {
+    return res.status(400);
+  }
+
+  if (!product.thumbnail) {
+    product[0].thumbnail[0] = null;
+  }
+
+  for (let i = 0; i < files.productos.length; i++) {
+    product[0].thumbnail[i] = `http://localhost:8080/products/${files.productos[i].filename}`;
+  }
+
+  const result = await productService.updateProduct(documentation.pid, product[0]);
+
+  return res.status(200).send({ status: "Success", payload: product[0] });
+}

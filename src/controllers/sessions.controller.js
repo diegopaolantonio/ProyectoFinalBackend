@@ -6,6 +6,7 @@ import {
   ErrorsMessage,
 } from "../errors/error.enum.js";
 import CustomError from "../errors/customError.js";
+import { userService } from "../services/index.js"
 
 export async function postRegister(req, res) {
   try {
@@ -52,7 +53,13 @@ export async function postLogin(req, res) {
       email: req.user.email,
       cart: req.user.cart,
       role: req.user.role,
+      verified_documentation: req.user.verified_documentation
     };
+
+    const user = await userService.getUserByEmail(req.session.user.email);
+    user.last_connection = Date.now();
+    await userService.updateUser(user._id, user);
+
     logger.info(`User login ${req.session.user.email} success`);
     return responder.successResponse(res, req.user);
   } catch (error) {
@@ -109,6 +116,10 @@ export async function getGithubCallback(req, res) {
 
 export async function getLogout(req, res) {
   try {
+    const user = await userService.getUserByEmail(req.session.user.email);
+    user.last_connection = Date.now();
+    await userService.updateUser(user._id, user);
+
     req.session.user = null;
     req.session.save(function (err) {
       if (err) next(err);

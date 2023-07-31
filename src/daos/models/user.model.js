@@ -31,6 +31,27 @@ const userSchema = new mongoose.Schema({
     enum: ["admin", "user", "premium"],
     default: "user",
   },
+  profile: {
+    type: String,
+  },
+  documents: {
+    type: [{
+      name: String,
+      reference: {
+        type: String,
+        enum: ["identificacion", "domicilio", "cuenta"],
+      },
+    }],
+    default: [],
+  },
+  verified_documentation: {
+    type: String,
+    enum: ["none", "partial", "complete", "profile"],
+    default: "none",
+  },
+  last_connection: {
+    type: Date,
+  },
 });
 
 const userModel = mongoose.model(userCollection, userSchema);

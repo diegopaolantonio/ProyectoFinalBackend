@@ -16,6 +16,18 @@ form.addEventListener("submit", async (e) => {
     },
   });
 
+  if (response.status === 404) {
+    Swal.fire({
+      icon: "error",
+      title: `Documentacion de usuario incompleta`,
+      confirmButtonText: "Ok",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        location.reload();
+      }
+    });
+  }
+
   if (
     response.status === 400 ||
     response.status === 401 ||

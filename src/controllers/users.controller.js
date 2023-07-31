@@ -314,3 +314,110 @@ export async function restorePassword(req, res) {
     return responder.errorResponse(res, error.message, error.status);
   }
 }
+
+export async function addDocuments(req, res) {
+  let documents = [];
+  let cont = 0;
+  let uploaded = [];
+  const documentation = req.body;
+  const files = req.files;
+
+  if (!files.identificacion && !files.domicilio && !files.cuenta) {
+    return res.status(400);
+  }
+
+  let user = await userService.getUserById(documentation.uid);
+  for (let i = 0; i < user.documents.length; i++) {
+    if (user.documents[i].reference === "identificacion") {
+      documents[0] = user.documents[i];
+    }
+    if (user.documents[i].reference === "domicilio") {
+      documents[1] = user.documents[i];
+    }
+    if (user.documents[i].reference === "cuenta") {
+      documents[2] = user.documents[i];
+    }
+  }
+
+  if (files.identificacion) {
+    documents[0] = {
+      name: `http://localhost:8080/documents/${files.identificacion[0].filename}`,
+      reference: "identificacion",
+    };
+    uploaded[cont] = documents[0].reference;
+    cont++;
+  } else {
+    if (!documents[0]) {
+      documents[0] = {
+        name: null,
+        reference: null,
+      };
+    }
+  }
+
+  if (files.domicilio) {
+    documents[1] = {
+      name: `http://localhost:8080/documents/${files.domicilio[0].filename}`,
+      reference: "domicilio",
+    };
+    uploaded[cont] = documents[1].reference;
+    cont++;
+  } else {
+    if (!documents[1]) {
+      documents[1] = {
+        name: null,
+        reference: null,
+      };
+    }
+  }
+
+  if (files.cuenta) {
+    documents[2] = {
+      name: `http://localhost:8080/documents/${files.cuenta[0].filename}`,
+      reference: "cuenta",
+    };
+    uploaded[cont] = documents[2].reference;
+    cont++;
+  } else {
+    if (!documents[2]) {
+      documents[2] = {
+        name: null,
+        reference: null,
+      };
+    }
+  }
+
+  if (documents[0].name || documents[1].name || documents[2].name) {
+    if (documents[0].name && documents[1].name && documents[2].name) {
+      user.verified_documentation = "complete";
+    } else user.verified_documentation = "partial";
+  } else user.verified_documentation = "none";
+
+  user.documents = documents;
+
+  await userService.updateUser(documentation.uid, user);
+
+  return res.status(200).send({ status: "Success", payload: uploaded });
+}
+
+export async function addProfiles(req, res) {
+  console.log("diego");
+  const documentation = req.body;
+  const files = req.files;
+  console.log(documentation);
+  console.log(files.profile);
+
+  if (!files.profile) {
+    return res.status(400);
+  }
+
+  let user = await userService.getUserById(documentation.uid);
+
+  if (files.profile) {
+    user.profile = `http://localhost:8080/profiles/${files.profile[0].filename}`;
+  }
+
+  await userService.updateUser(documentation.uid, user);
+
+  return res.status(200).send({ status: "Success", payload: user });
+}

@@ -5,7 +5,6 @@ const expect = chai.expect;
 const requester = supertest("http://localhost:8080");
 
 describe("Set de pruebas de integracion para el modulo de productos", function () {
-  
   const mockUser = {
     first_name: "Mock",
     last_name: "User",
@@ -40,8 +39,6 @@ describe("Set de pruebas de integracion para el modulo de productos", function (
     //   //            cart: '64b72eb1db87c1cf7c80f69f',
     //   role: "premium",
     // };
-
-    
 
     await requester.post("/api/v1/sessions/login").send(mockLogin);
 

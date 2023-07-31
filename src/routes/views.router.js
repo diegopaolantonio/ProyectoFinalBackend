@@ -23,6 +23,7 @@ import {
   loggerTest,
   restorePasswordRequest,
   restorePassword,
+  getDocuments,
 } from "../controllers/views.controller.js";
 
 const router = Router();
@@ -43,5 +44,7 @@ router.get("/realtimechat", roleUser, realTimeChat); // Llamado a la vista con S
 router.get("/loggerTest", loggerTest);
 router.get("/restorePasswordRequest", checkLogged, restorePasswordRequest);
 router.get("/restorePassword/:rid", checkLogged, restorePassword);
+
+router.get("/documents", checkSession, getDocuments);
 
 export default router;

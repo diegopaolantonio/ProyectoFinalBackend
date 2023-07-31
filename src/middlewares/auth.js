@@ -40,4 +40,11 @@ function roleCartOwner(req, res, next) {
   next();
 }
 
-export { checkLogged, checkSession, roleUser, roleAdmin, roleCartOwner };
+function verifyDocuments(req, res, next) {
+  if(req.user.verified_documentation != "complete" && req.user.role === "user") {
+    return res.status(404).redirect("/");
+  }
+  next();
+}
+
+export { checkLogged, checkSession, roleUser, roleAdmin, roleCartOwner, verifyDocuments };

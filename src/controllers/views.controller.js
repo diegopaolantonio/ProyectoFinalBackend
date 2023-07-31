@@ -33,11 +33,12 @@ export async function getProfile(req, res) {
     let user = new profileDto(req.session.user);
     const { email, role } = user;
     let premium = false;
-    const { _id } = await userService.getUserByEmail( email );
+    const { _id, verified_documentation } = await userService.getUserByEmail( email );
     if (role === "premium") {
       premium = true;
     }
     user._id = _id;
+    user.verified_documentation = verified_documentation;
     res.render("profile", {
       user: user,
       premium: premium,
@@ -401,6 +402,16 @@ export async function restorePassword(req, res) {
         restoreExpired: true,
       });
     }
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export function getDocuments(req, res) {
+  try {
+    res.render("documents", {
+      uid: req.user._id,
+    });
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
   }

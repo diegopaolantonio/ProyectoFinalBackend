@@ -1,0 +1,60 @@
+<div>
+  <h1>Carga documentacion:</h1>
+  <h2>Imagen de perfil:</h2>
+  <form id="profilesForm">
+    <input type="hidden" name="uid" value="{{uid}}" />
+    <label>Identificacion:</label>
+    <input type="file" name="profile" />
+    <br />
+    <br />
+    <input type="submit" value="Enviar" />
+  </form>
+  <h2>Documentacion de usuario:</h2>
+  <form id="documentsForm">
+    <input type="hidden" name="uid" value="{{uid}}" />
+    <label>Identificacion:</label>
+    <input type="file" name="identificacion" />
+    <br />
+    <br />
+    <label>Domicilio:</label>
+    <input type="file" name="domicilio" />
+    <br />
+    <br />
+    <label>Estado de cuenta:</label>
+    <input type="file" name="cuenta" />
+    <br />
+    <br />
+    <input type="submit" />
+  </form>
+  <h2>Documentacion de productos:</h2>
+  <form id="productsForm">
+    <input type="hidden" name="uid" value="{{uid}}" />
+    <label>Id del producto:</label>
+    <input type="text" name="pid" />
+    <br />
+    <br />
+    <label>Imagenes:</label>
+    <br />
+    <br />
+    <input type="file" name="productos" />
+    <br />
+    <br />
+    <input type="file" name="productos" />
+    <br />
+    <br />
+    <input type="file" name="productos" />
+    <br />
+    <br />
+    <input type="file" name="productos" />
+    <br />
+    <br />
+    <input type="file" name="productos" />
+    <br />
+    <br />
+    <input type="submit" />
+  </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/document.js"></script>
+<script src="/js/profiles.js"></script>
+<script src="/js/products.js"></script>

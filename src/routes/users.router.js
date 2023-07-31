@@ -9,8 +9,11 @@ import {
   updateRole,
   restorePasswordRequest,
   restorePassword,
+  addDocuments,
+  addProfiles,
 } from "../controllers/users.controller.js";
-import { checkLogged, roleAdmin } from "../middlewares/auth.js";
+import { checkLogged, roleAdmin, verifyDocuments } from "../middlewares/auth.js";
+import { uploadDocuments, uploadProfiles } from "../middlewares/multer.js";
 
 const router = Router();
 
@@ -20,12 +23,15 @@ router.get("/:uid", getUserById); // Pedido de un user especifico por el uid (us
 router.post("/", roleAdmin, createUser); // Agregar un nuevo user
 router.put("/:pid", roleAdmin, updateUser); // Actualizar los datos de un user epecifico por el uid (user id)
 router.delete("/:pid", roleAdmin, deleteUser); // Eliminar un user especifico por el uid (user id)
-router.put("/premium/:uid", updateRole);
+router.put("/premium/:uid", verifyDocuments, updateRole);
 router.post(
   "/restorePasswordRequest/:email",
   checkLogged,
   restorePasswordRequest
 );
 router.post("/restorePassword/:email", checkLogged, restorePassword);
+
+router.post("/:uid/documents", uploadDocuments(), addDocuments);
+router.post("/:uid/profiles", uploadProfiles(), addProfiles);
 
 export default router;

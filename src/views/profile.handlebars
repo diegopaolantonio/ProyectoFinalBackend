@@ -1,22 +1,22 @@
 <div>
   <form id="profileForm">
-
-  <h1>Datos del perfil</h1>
-  <p>Nombre y apellido: {{user.name}}</p>
-  {{#if user.cart}}
+    <h1>Datos del perfil</h1>
+    <p>Nombre y apellido: {{user.name}}</p>
+    {{#if user.cart}}
     <p>Edad: {{user.age}}</p>
-  {{/if}}
-  <p>Email: {{user.email}}</p>
-  <p>Role: {{user.role}}</p>
-  {{#if user.cart}}
+    {{/if}}
+    <p>Email: {{user.email}}</p>
+    <p>Role: {{user.role}}</p>
+    {{#if user.cart}}
     <p>Cart: {{user.cart}}</p>
     <a href="/cart/{{user.cart}}"><button>Ver carrito</button></a>
     <br />
     <br />
     <input type="hidden" name="uid" value="{{user._id}}"></input>
+    <input type="hidden" name="verified_documentation" value="{{user.verified_documentation}}"></input>
     <input type="submit" value="Cambiar rol"></input>
     <br />
-  {{/if}}
+    {{/if}}
   </form>
   <a href="/products"><button>Ver productos</button></a>
   {{#if premium}}
@@ -27,6 +27,9 @@
   <br />
   <br />
   <a href="/api/v1/sessions/logout"><button>Logout</button></a>
+  <br />
+  <br />
+  <a href="/documents"><button>Subir documentacion</button></a>
 
 </div>
 
