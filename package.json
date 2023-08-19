@@ -5,8 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start:dev": "nodemon ./src/app.js development 8080",
-    "start:prod": "nodemon ./src/app.js production 8080",
+    "start:dev": "nodemon ./src/app.js",
+    "start:prod": "node ./src/app.js",
     "test:unit": "mocha ./test/unit/*.test.js --timeout 10000",
     "test:integration": "mocha ./test/integration/*.test.js --timeout 10000"
   },

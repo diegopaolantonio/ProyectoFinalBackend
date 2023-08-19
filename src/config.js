@@ -13,12 +13,15 @@ dotenv.config();
 
 // "start:dev": "nodemon ./src/app.js development 8080",
 // "start:prod": "nodemon ./src/app.js production 5000",
-let data = [];
-process.argv.slice(2).forEach((element, index) => {
-  data[index] = element;
-});
-const environment = data[0] === "production" ? "production" : "development";
-const port = data[1] ? data[1] : "8080";
+
+// let data = [];
+// process.argv.slice(2).forEach((element, index) => {
+//   data[index] = element;
+// });
+// const environment = data[0] === "production" ? "production" : "development";
+// const port = data[1] ? data[1] : "8080";
+
+
 
 const config = {
   dbName: process.env.DB_NAME,
@@ -35,8 +38,10 @@ const config = {
   nodemailerPort: process.env.NODEMAILER_PORT,
   nodemailerUser: process.env.NODEMAILER_USER,
   nodemailerPassword: process.env.NODEMAILER_PASSWORD,
-  port: port,
-  environment: environment,
+  port: process.env.PORT || 8080,
+  environment: process.env.ENVIRONMENT || "development",
+  // port: port,
+  // environment: environment,
 };
 
 export default config;
