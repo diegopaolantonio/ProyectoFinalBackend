@@ -22,9 +22,9 @@ export async function getUsers(req, res) {
   try {
     let userFormatted = [];
     const users = await userService.getUsers();
-    users.forEach(user => {
+    users.forEach((user) => {
       userFormatted = [...userFormatted, new userDto(user)];
-    })
+    });
     if (userFormatted && userFormatted.error) {
       logger.warning(
         `${ErrorsName.USERS_ERROR_NAME} - ${ErrorsMessage.GETUSERS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`
@@ -156,7 +156,7 @@ export async function updateUser(req, res) {
   try {
     const uid = req.params.uid;
     let updateUser = req.body;
-    delete updateUser._id
+    delete updateUser._id;
 
     const users = await userService.updateUser(uid, updateUser);
     if (users && users.error) {
@@ -234,7 +234,7 @@ export async function restorePasswordRequest(req, res) {
   try {
     const email = req.params.email;
 
-    const user = await userService.getUserByEmail({ email });
+    const user = await userService.getUserByEmail({ email: email });
 
     if (!user) {
       logger.warning(
@@ -468,10 +468,11 @@ export async function updateUserDetail(req, res) {
   try {
     const userDataUploaded = req.body;
 
-    const uploadedUser = await userService.updateUser(userDataUploaded._id, userDataUploaded);
-  
+    const uploadedUser = await userService.updateUser(
+      userDataUploaded._id,
+      userDataUploaded
+    );
+
     return res.status(200).send({ status: "Success", payload: uploadedUser });
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 }
