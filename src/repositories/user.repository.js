@@ -14,6 +14,16 @@ export default class UserRepository {
     }
   };
 
+  // Funcion para eliminar los usuarios inactivos en los ultimos 2 dias.
+  deleteInactiveUser = async () => {
+    try {
+      const deletedUsers = await this.userDao.deleteInactiveUser();
+      return deletedUsers;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
   // Funcion para obtener un user especifico por email
   getUserByEmail = async (email) => {
     try {

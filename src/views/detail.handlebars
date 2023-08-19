@@ -29,13 +29,18 @@
       <p>Status: {{status}}</p>
       <p>Owner: {{owner}}</p>
       <p>Thumbnail: {{thumbnail}}</p>
-      {{#if userPremiumNotOwner}}
+      {{#if userNotAdminOrOwner}}
         {{#if cart}}
           <p>Cantidad: <input type="number" name="quantity" /></p>
           <br />
           <input type="submit" />
           <br />
         {{/if}}
+      {{/if}}
+      {{#if userAdminOrOwner}}
+          <br />
+          <input type="reset" value="Eliminar" />
+          <br />
       {{/if}}
     </div>
   </form>

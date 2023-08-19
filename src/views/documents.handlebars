@@ -3,7 +3,9 @@
   <h2>Imagen de perfil:</h2>
   <form id="profilesForm">
     <input type="hidden" name="uid" value="{{uid}}" />
-    <label>Identificacion:</label>
+    <img src={{profile}} alt="Foto de perfil" />
+    <br />
+    <br />
     <input type="file" name="profile" />
     <br />
     <br />
@@ -13,14 +15,26 @@
   <form id="documentsForm">
     <input type="hidden" name="uid" value="{{uid}}" />
     <label>Identificacion:</label>
+    {{#if documentIdentity}}
+    <button><a href={{documentIdentity}}>Ver documento cargado</a></button>
+    {{/if}}
+    <br />
     <input type="file" name="identificacion" />
     <br />
     <br />
     <label>Domicilio:</label>
+    {{#if documentHome}}
+    <button><a href={{documentHome}}>Ver documento cargado</a></button>
+    {{/if}}
+    <br />
     <input type="file" name="domicilio" />
     <br />
     <br />
     <label>Estado de cuenta:</label>
+    {{#if documentAccount}}
+    <button><a href={{documentAccount}}>Ver documento cargado</a></button>
+    {{/if}}
+    <br />
     <input type="file" name="cuenta" />
     <br />
     <br />

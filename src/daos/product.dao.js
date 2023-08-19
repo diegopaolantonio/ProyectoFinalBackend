@@ -64,7 +64,7 @@ export default class ProductDao {
   getProductById = async function (productId) {
     try {
       const products = await productModel.find({ _id: productId });
-      return products;
+      return products[0];
     } catch (error) {
       return null;
     }

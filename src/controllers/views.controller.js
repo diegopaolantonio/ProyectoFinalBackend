@@ -33,12 +33,16 @@ export async function getProfile(req, res) {
     let user = new profileDto(req.session.user);
     const { email, role } = user;
     let premium = false;
-    const { _id, verified_documentation } = await userService.getUserByEmail( email );
-    if (role === "premium") {
-      premium = true;
+    if (role != "admin") {
+      const { _id, verified_documentation } = await userService.getUserByEmail(
+        email
+      );
+      if (role === "premium") {
+        premium = true;
+      }
+      user._id = _id;
+      user.verified_documentation = verified_documentation;
     }
-    user._id = _id;
-    user.verified_documentation = verified_documentation;
     res.render("profile", {
       user: user,
       premium: premium,
@@ -138,14 +142,15 @@ export async function getProducts(req, res) {
 export async function getProductById(req, res) {
   try {
     const pid = req.params.pid;
-    let product2;
-    let userPremiumNotOwner = null;
+    // let product2;
+    let userNotAdminOrOwner = null;
+    let userAdminOrOwner = null;
     const product = await productService.getProductById(pid);
     const { first_name, last_name, email, age, cart, role } = req.session.user;
 
-    product.forEach((element) => {
-      product2 = element;
-    });
+    // product.forEach((element) => {
+    //   product2 = element;
+    // });
     const {
       _id,
       title,
@@ -157,17 +162,14 @@ export async function getProductById(req, res) {
       status,
       owner,
       thumbnail,
-    } = product2;
-
-    console.log(req.session.user.role);
-    console.log("premium");
-    console.log(req.session.user.email);
-    console.log(owner);
-
-    if (req.session.user.email != owner) {
-      userPremiumNotOwner = true;
+    // } = product2;
+    } = product;
+    if(req.session.user.email != owner) {
+      userNotAdminOrOwner = true;
     }
-    console.log(userPremiumNotOwner);
+    if(req.session.user.role === "admin" || req.session.user.email === owner) {
+      userAdminOrOwner = true;
+    }
 
     const name = `${first_name} ${last_name}`;
     res.render("detail", {
@@ -186,7 +188,8 @@ export async function getProductById(req, res) {
       status: status,
       owner: owner,
       thumbnail: thumbnail,
-      userPremiumNotOwner: userPremiumNotOwner,
+      userNotAdminOrOwner: userNotAdminOrOwner,
+      userAdminOrOwner: userAdminOrOwner,
     });
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
@@ -409,8 +412,86 @@ export async function restorePassword(req, res) {
 
 export function getDocuments(req, res) {
   try {
+    const user = req.user;
+    let documentIdentity = null;
+    let documentHome = null;
+    let documentAccount = null;
+    user.documents.forEach(documents => {
+      if(documents.reference === "identificacion") {
+        documentIdentity = documents.name;
+      }
+      if(documents.reference === "domicilio") {
+        documentHome = documents.name;
+      }
+      if(documents.reference === "cuenta") {
+        documentAccount = documents.name;
+      }
+    })
     res.render("documents", {
       uid: req.user._id,
+      profile: req.user.profile,
+      documentIdentity: documentIdentity,
+      documentHome: documentHome,
+      documentAccount: documentAccount,
+    });
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function getUsers(req, res) {
+  try {
+    let users = await userService.getUsers();
+    let newUsers = [];
+
+    users.forEach((user, index) => {
+      const { _id, first_name, last_name, email, role } = user;
+      newUsers[index] = { _id, first_name, last_name, email, role };
+    });
+    res.render("users", {
+      usersArray: newUsers,
+    });
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function getUserById(req, res) {
+  try {
+    const uidRequired = req.params.uid;
+    const user = await userService.getUserById(uidRequired);
+    let documentIdentity = null;
+    let documentHome = null;
+    let documentAccount = null;
+
+    const {_id, profile, first_name, last_name, email, age, cart, role, verified_documentation, last_connection} = user;
+
+    user.documents.forEach(documents => {
+      if(documents.reference === "identificacion") {
+        documentIdentity = documents.name;
+      }
+      if(documents.reference === "domicilio") {
+        documentHome = documents.name;
+      }
+      if(documents.reference === "cuenta") {
+        documentAccount = documents.name;
+      }
+    })
+
+    res.render("userDetail", {
+      _id: _id,
+      documentProfile: profile,
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      age: age,
+      cart: cart,
+      role: role,
+      documentIdentity: documentIdentity,
+      documentHome: documentHome,
+      documentAccount: documentAccount,
+      verified_documentation: verified_documentation,
+      last_connection: last_connection,
     });
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);

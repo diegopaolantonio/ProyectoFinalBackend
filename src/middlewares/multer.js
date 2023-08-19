@@ -30,7 +30,7 @@ export function uploadProfiles(files) {
     },
   });
 
-  const uploader = multer({ storage }).fields([{name: "profile"}]);
+  const uploader = multer({ storage }).fields([{ name: "profile" }]);
 
   return uploader;
 }
@@ -45,7 +45,7 @@ export function uploadProducts(files) {
     },
   });
 
-  const uploader = multer({ storage }).fields([{name: "productos"}]);
+  const uploader = multer({ storage }).fields([{ name: "productos" }]);
 
   return uploader;
 }

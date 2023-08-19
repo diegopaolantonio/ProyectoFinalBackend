@@ -1,4 +1,5 @@
 import { userRepository } from "../repositories/index.js";
+import { userService } from "./index.js";
 
 export default class UserService {
   constructor() {
@@ -8,6 +9,15 @@ export default class UserService {
   getUsers = async () => {
     try {
       const users = await this.userRepository.getUsers();
+      return users;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  deleteInactiveUser = async () => {
+    try {
+      const users = await this.userRepository.deleteInactiveUser();
       return users;
     } catch (error) {
       throw new Error(error);
@@ -25,8 +35,8 @@ export default class UserService {
 
   getUserById = async (id) => {
     try {
-      const user = await this.userRepository.getUserById(id);
-      return user;
+      const deletedUsers = await this.userRepository.getUserById(id);
+      return deletedUsers;
     } catch (error) {
       throw new Error(error);
     }

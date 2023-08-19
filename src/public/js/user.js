@@ -1,26 +1,23 @@
-const form = document.getElementById("documentsForm");
+const form = document.getElementById("userForm");
 
-form.addEventListener("submit", async (e) => {
+form.addEventListener("reset", async (e) => {
   e.preventDefault();
+  console.log("object");
 
-  const data = new FormData(form);
-  let obj = {};
-
-  data.forEach((value, key) => (obj[key] = value));
-
-  let response = await fetch(`/api/v1/users/${obj.uid}/documents/`, {
-    method: "POST",
-    body: data,
+  let response = await fetch(`/api/v1/users/`, {
+    method: "DELETE",
   });
+  console.log(response);
 
   if (
     response.status === 400 ||
     response.status === 401 ||
+    response.status === 404 ||
     response.status === 500
   ) {
     Swal.fire({
       icon: "error",
-      title: `Datos incompletos`,
+      title: `Can't delete users`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -29,16 +26,16 @@ form.addEventListener("submit", async (e) => {
     });
   }
 
-  result = await response.json();
+  let result = await response.json();
 
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: `Documentacion "${result.payload}" cargada correctamente`,
+      title: `Usuarios inactivos eliminados`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
-        location.href = "/documents";
+        location.reload();
       }
     });
   }

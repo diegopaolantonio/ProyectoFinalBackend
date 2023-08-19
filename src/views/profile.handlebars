@@ -9,7 +9,6 @@
     <p>Role: {{user.role}}</p>
     {{#if user.cart}}
     <p>Cart: {{user.cart}}</p>
-    <a href="/cart/{{user.cart}}"><button>Ver carrito</button></a>
     <br />
     <br />
     <input type="hidden" name="uid" value="{{user._id}}"></input>
@@ -18,6 +17,7 @@
     <br />
     {{/if}}
   </form>
+    <a href="/cart/{{user.cart}}"><button>Ver carrito</button></a>
   <a href="/products"><button>Ver productos</button></a>
   {{#if premium}}
   <br />
@@ -30,6 +30,9 @@
   <br />
   <br />
   <a href="/documents"><button>Subir documentacion</button></a>
+<br />
+  <br />
+  <a href="/users"><button>Usuarios</button></a>
 
 </div>
 

@@ -10,6 +10,29 @@ export default class UserDao {
     }
   };
 
+  deleteInactiveUser = async function () {
+    try {
+      let deletedUsers = [];
+      var currentDate = new Date();
+      var dateInMlSeconds = currentDate.getTime();
+      var subMlSeconds = 2 * 24 * 60 * 60 * 1000;
+      // 5 minutos = 5 * 60 * 1000 ( minutos * segundos/minuto * 1000 miliseg/segundo ) 
+      // 1 hora = 60 * 60 * 1000 ( minutos * segundos/minuto * 1000 miliseg/segundo ) 
+      // 2 dias = 2 * 24 * 60 * 60 * 1000 ( dias * horas/dia * minutos/hora * segundos/minuto * 1000 miliseg/segundo )
+      const dateTime = new Date(dateInMlSeconds - subMlSeconds);
+      const users = await userModel.find({last_connection: {$lt: dateTime}});
+      users.forEach( async (user, index) => {
+        console.log(user.email);
+        deletedUsers.push(user.email);
+        await userModel.deleteOne({email: user.email});
+      })
+      console.log(deletedUsers);
+      return deletedUsers;
+    } catch (error) {
+      return null;
+    }
+  }
+
   getUserByEmail = async function (email) {
     try {
       const user = await userModel.findOne({email: email});

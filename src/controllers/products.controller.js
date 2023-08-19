@@ -1,13 +1,14 @@
 import { productService } from "../services/index.js";
 import { responder } from "../traits/Responder.js";
 import { logger } from "../utilis/logger.js";
-
+import transport from "../middlewares/nodemailer.js";
 import {
   ErrorsName,
   ErrorsCause,
   ErrorsMessage,
 } from "../errors/error.enum.js";
 import CustomError from "../errors/customError.js";
+import config from "../config.js";
 
 export async function getProducts(req, res) {
   try {
@@ -151,6 +152,9 @@ export async function deleteProduct(req, res) {
   try {
     const pid = req.params.pid;
     const product = await productService.getProductById(pid);
+    console.log(req.session.user.role);
+    console.log(req.session.user.email);
+    console.log(product.owner);
     if (
       (req.session.user.role === "premium" &&
         req.session.user.email === product.owner) ||
@@ -168,6 +172,30 @@ export async function deleteProduct(req, res) {
           status: 400,
         });
       } else {
+        console.log("object");
+        console.log(product);
+        if (product.owner && (product.owner != "admin")) {
+          await transport.sendMail({
+            from: config.nodemailerUser,
+            to: product.owner,
+            subject: `Producto ${product._id} eliminado de la base de datos`,
+            html: `
+            <div>
+            <h1>Lamentamos informar que el producto ${product._id} ah sido eliminado de nuestra base de datos.</h1>
+            <h2>Datos del producto eliminado:</h2>
+            <p>title: ${product.title}</p>
+            <p>description: ${product.description}</p>
+            <p>price: ${product.price}</p>
+            <p>code: ${product.code}</p>
+            <p>stock: ${product.stock}</p>
+            <p>category: ${product.category}</p>
+            <br />
+            <br />
+            <h3>Muchas gracias por elegirnos, saludos cordiales.</h3>
+            </div>
+            `,
+          });
+        }
         logger.info(`Delete product ${pid} success`);
         return responder.successResponse(res, products);
       }
@@ -201,10 +229,15 @@ export async function addProducts(req, res) {
   }
 
   for (let i = 0; i < files.productos.length; i++) {
-    product[0].thumbnail[i] = `http://localhost:8080/products/${files.productos[i].filename}`;
+    product[0].thumbnail[
+      i
+    ] = `http://localhost:8080/products/${files.productos[i].filename}`;
   }
 
-  const result = await productService.updateProduct(documentation.pid, product[0]);
+  const result = await productService.updateProduct(
+    documentation.pid,
+    product[0]
+  );
 
   return res.status(200).send({ status: "Success", payload: product[0] });
 }

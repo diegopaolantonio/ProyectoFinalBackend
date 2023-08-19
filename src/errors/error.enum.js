@@ -40,6 +40,7 @@ export const ErrorsMessage = {
   CREATEUSER_ERROR_MESSAGE: "Create user error",
   GETUSERBYID_ERROR_MESSAGE: "User does not exist",
   GETUSERS_ERROR_MESSAGE: "Users collection not found",
+  DELETEINACTIVEUSER_ERROR_MESSAGE: "Can't delete inactive users",
 };
 
 export const ErrorsCause = {

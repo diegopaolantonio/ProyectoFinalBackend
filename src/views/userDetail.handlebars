@@ -1,0 +1,57 @@
+<div>
+  <h1>Bienvenido Admin</h1>
+  <h2>Pagina de detalle del usuario</h2>
+  <form id="userDetailForm">
+    <p>Id: <input type="hidden" name="_id" value={{_id}} />{{_id}}</p>
+    <label>Foto de perfil:</label>
+    {{#if documentProfile}}
+    <button><a href={{documentProfile}}>Ver documento cargado</a></button>
+    {{/if}}
+    <p>Nombre: <input type="text" name="first_name" value={{first_name}} /></p>
+    <p>Apellido: <input type="text" name="last_name" value={{last_name}} /></p>
+    <p>Email: <input type="text" name="email" value={{email}} /></p>
+    <p>Edad: <input type="number" name="age" value={{age}} /></p>
+    <p>Carrito: {{cart}}</p>
+    <label>Rol: {{role}} </label>
+    <select name="role" value={{role}}>
+      <option value="user">user</option>
+      <option value="premium">premium</option>
+    </select>
+    <br />
+    <br />
+    <label>Identificacion:</label>
+    {{#if documentIdentity}}
+    <button><a href={{documentIdentity}}>Ver documento cargado</a></button>
+    {{/if}}
+    <br />
+    <br />
+    <label>Domicilio:</label>
+    {{#if documentHome}}
+    <button><a href={{documentHome}}>Ver documento cargado</a></button>
+    {{/if}}
+    <br />
+    <br />
+    <label>Estado de cuenta:</label>
+    {{#if documentAccount}}
+    <button><a href={{documentAccount}}>Ver documento cargado</a></button>
+    {{/if}}
+    <br />
+    <br />
+    <label>Documentacion verificada: {{verified_documentation}} </label>
+    <select name="verified_documentation" value={{verified_documentation}}>
+      <option value="none">none</option>
+      <option value="partial">partial</option>
+      <option value="complete">complete</option>
+    </select>
+    <p>Ultima coneccion: {{last_connection}}</p>
+    <br />
+    <input type="submit" value="Actualizar" />
+    <br />
+    <br />
+    <input type="reset" value="Eliminar" />
+    <br />
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/userDetail.js"></script>

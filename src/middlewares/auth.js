@@ -4,7 +4,7 @@ function checkSession(req, res, next) {
 }
 
 function checkLogged(req, res, next) {
-  if (req.session.user) return res.redirect("/products");
+  if (req.session.user) return res.redirect("/");
   next();
 }
 
@@ -20,6 +20,17 @@ function roleUser(req, res, next) {
 }
 
 function roleAdmin(req, res, next) {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  } else {
+    if (req.session.user.role != "admin") {
+      return res.redirect("/");
+    }
+  }
+  next();
+}
+
+function rolePremium(req, res, next) {
   if (!req.session.user) {
     return res.redirect("/login");
   } else {
@@ -41,10 +52,21 @@ function roleCartOwner(req, res, next) {
 }
 
 function verifyDocuments(req, res, next) {
-  if(req.user.verified_documentation != "complete" && req.user.role === "user") {
+  if (
+    req.user.verified_documentation != "complete" &&
+    req.user.role === "user"
+  ) {
     return res.status(404).redirect("/");
   }
   next();
 }
 
-export { checkLogged, checkSession, roleUser, roleAdmin, roleCartOwner, verifyDocuments };
+export {
+  checkLogged,
+  checkSession,
+  roleUser,
+  roleAdmin,
+  rolePremium,
+  roleCartOwner,
+  verifyDocuments,
+};

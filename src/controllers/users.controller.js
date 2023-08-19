@@ -1,6 +1,8 @@
+import mongoose from "mongoose";
 import transport from "../middlewares/nodemailer.js";
 import config from "../config.js";
 import { userService, restoreService } from "../services/index.js";
+import userDto from "../daos/dtos/user.dto.js";
 import { responder } from "../traits/Responder.js";
 import { logger } from "../utilis/logger.js";
 import {
@@ -18,8 +20,12 @@ import CustomError from "../errors/customError.js";
 
 export async function getUsers(req, res) {
   try {
+    let userFormatted = [];
     const users = await userService.getUsers();
-    if (users && users.error) {
+    users.forEach(user => {
+      userFormatted = [...userFormatted, new userDto(user)];
+    })
+    if (userFormatted && userFormatted.error) {
       logger.warning(
         `${ErrorsName.USERS_ERROR_NAME} - ${ErrorsMessage.GETUSERS_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`
       );
@@ -31,7 +37,45 @@ export async function getUsers(req, res) {
       });
     } else {
       logger.info(`Get users success`);
-      return responder.successResponse(res, users);
+      return responder.successResponse(res, userFormatted);
+    }
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function deleteInactiveUser(req, res) {
+  try {
+    const deletedUsers = await userService.deleteInactiveUser();
+    deletedUsers.forEach(async (email) => {
+      await transport.sendMail({
+        from: config.nodemailerUser,
+        to: email,
+        subject: `Usuario eliminado por inactividad`,
+        html: `
+        <div>
+        <h1>Usuario eliminado por inactividad:</h1>
+        <p>Lamentamos informar que el usuario de la cuanta ${email}, a sido eliminado de nuestra base de datos por inactividad, recuerde que puede volver a registratse cuando lo desee, esperamos que pronto vuelva a elegirnos, y gozar de todos nuestros productos y beneficios.</p>
+        <br />
+        <br />
+        <h3>Muchas gracias, saludos cordiales.</h3>
+        </div>
+        `,
+      });
+    });
+    if (deletedUsers && deletedUsers.error) {
+      logger.warning(
+        `${ErrorsName.USERS_ERROR_NAME} - ${ErrorsMessage.DELETEINACTIVEUSER_ERROR_MESSAGE} - ${ErrorsCause.DATABASE_ERROR_CAUSE}`
+      );
+      return CustomError.generateCustomError({
+        name: ErrorsName.USERS_ERROR_NAME,
+        message: ErrorsMessage.DELETEINACTIVEUSER_ERROR_MESSAGE,
+        cause: ErrorsCause.DATABASE_ERROR_CAUSE,
+        status: 400,
+      });
+    } else {
+      logger.info(`Delete inactive users success`);
+      return responder.successResponse(res, deletedUsers);
     }
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
@@ -111,8 +155,10 @@ export async function createUser(req, res) {
 export async function updateUser(req, res) {
   try {
     const uid = req.params.uid;
-    const updateUser = req.body;
-    const users = await userService.updateUser(pid, updateUser);
+    let updateUser = req.body;
+    delete updateUser._id
+
+    const users = await userService.updateUser(uid, updateUser);
     if (users && users.error) {
       logger.warning(
         `${ErrorsName.USERS_ERROR_NAME} - ${ErrorsMessage.UPDATEUSER_ERROR_MESSAGE} - ${ErrorsCause.UPDATEUSER_ERROR_CAUSE}`
@@ -135,9 +181,8 @@ export async function updateUser(req, res) {
 export async function deleteUser(req, res) {
   try {
     const uid = req.params.uid;
-    const updateUser = req.body;
 
-    const users = await userService.deleteUser(uid, updateUser);
+    const users = await userService.deleteUser(uid);
     if (users && users.error) {
       logger.warning`${ErrorsName.USERS_ERROR_NAME} - ${ErrorsMessage.DELETEUSER_ERROR_MESSAGE} - ${ErrorsCause.DELETE_ERROR_CAUSE}`();
       return CustomError.generateCustomError({
@@ -148,7 +193,7 @@ export async function deleteUser(req, res) {
       });
     } else {
       logger.info(`Delete user ${uid} success`);
-      return responder.successResponse(res, products);
+      return responder.successResponse(res, users);
     }
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
@@ -401,11 +446,8 @@ export async function addDocuments(req, res) {
 }
 
 export async function addProfiles(req, res) {
-  console.log("diego");
   const documentation = req.body;
   const files = req.files;
-  console.log(documentation);
-  console.log(files.profile);
 
   if (!files.profile) {
     return res.status(400);
@@ -420,4 +462,16 @@ export async function addProfiles(req, res) {
   await userService.updateUser(documentation.uid, user);
 
   return res.status(200).send({ status: "Success", payload: user });
+}
+
+export async function updateUserDetail(req, res) {
+  try {
+    const userDataUploaded = req.body;
+
+    const uploadedUser = await userService.updateUser(userDataUploaded._id, userDataUploaded);
+  
+    return res.status(200).send({ status: "Success", payload: uploadedUser });
+  } catch (error) {
+    
+  }
 }

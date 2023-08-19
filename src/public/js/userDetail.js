@@ -1,4 +1,4 @@
-const form = document.getElementById("productForm");
+const form = document.getElementById("userDetailForm");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -8,8 +8,8 @@ form.addEventListener("submit", async (e) => {
 
   data.forEach((value, key) => (obj[key] = value));
 
-  let response = await fetch(`/api/v1/carts/${obj.cid}/product/${obj.pid}`, {
-    method: "POST",
+  let response = await fetch(`/api/v1/users/${obj._id}/detail`, {
+    method: "PUT",
     body: JSON.stringify(obj),
     headers: {
       "Content-Type": "application/json",
@@ -55,7 +55,7 @@ form.addEventListener("reset", async (e) => {
 
   data.forEach((value, key) => (obj[key] = value));
 
-  let response = await fetch(`/api/v1/products/${obj.pid}`, {
+  let response = await fetch(`/api/v1/users/${obj._id}`, {
     method: "DELETE",
   });
 
@@ -66,7 +66,7 @@ form.addEventListener("reset", async (e) => {
   ) {
     Swal.fire({
       icon: "error",
-      title: "Product not deleted",
+      title: "User not deleted",
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -80,11 +80,11 @@ form.addEventListener("reset", async (e) => {
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: `Deleted product ${obj.pid}`,
+      title: `User ${obj.email} deleted`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
-        location.href = "/products";
+        location.href = "/users";
       }
     });
   }

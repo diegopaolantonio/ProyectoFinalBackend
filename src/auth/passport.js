@@ -35,6 +35,7 @@ const initializePassport = () => {
             password: createHash(password),
             cart: userCart._id,
             role,
+            last_connection: new Date(),
           };
 
           let result = await userService.createUser(newUser);

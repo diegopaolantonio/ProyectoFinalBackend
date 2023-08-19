@@ -1,9 +1,9 @@
-const form2 = document.getElementById("productsForm");
+const form = document.getElementById("productsForm");
 
-form2.addEventListener("submit", async (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const data = new FormData(form2);
+  const data = new FormData(form);
   let obj = {};
 
   data.forEach((value, key) => (obj[key] = value));

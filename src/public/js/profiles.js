@@ -5,9 +5,7 @@ form3.addEventListener("submit", async (e) => {
 
   const data = new FormData(form3);
   let obj = {};
-console.log("profiles");
   data.forEach((value, key) => (obj[key] = value));
-  console.log(obj);
 
   let response = await fetch(`/api/v1/users/${obj.uid}/profiles/`, {
     method: "POST",
