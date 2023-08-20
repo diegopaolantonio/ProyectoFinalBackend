@@ -5,6 +5,7 @@ import sessionsRouter from "./sessions.router.js";
 import ticketsRouter from "./tickets.router.js";
 import viewsRouter from "./views.router.js";
 import usersRouter from "./users.router.js";
+import paymentsRouter from "./payments.router.js";
 import { Router } from "express";
 import { errorMiddleware } from "../errors/error.middleware.js";
 import { addHttpLogger } from "../utilis/logger.js";
@@ -41,4 +42,5 @@ export function routerApi(app) {
   router.use("/tickets", ticketsRouter);
   router.use("/sessions", sessionsRouter);
   router.use("/users", usersRouter);
+  router.use("/payments", paymentsRouter);
 }

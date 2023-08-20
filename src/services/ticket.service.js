@@ -44,4 +44,17 @@ export default class TicketService {
       throw new Error(error);
     }
   };
+
+  updateTicket = async (tid, ticket) => {
+    try {
+      const updatedTicket = await ticketRepository.updateTicket(tid, ticket);
+
+      if (!updatedTicket) {
+        return { error: "Upload ticket error" };
+      }
+      return updatedTicket;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }

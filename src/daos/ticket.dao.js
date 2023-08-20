@@ -36,4 +36,13 @@ export default class TicketDao {
       return null;
     }
   }
+
+  updateTicket = async function (tid, ticket) {
+    try {
+      const updatedTicket = await ticketModel.updateOne({ _id: tid }, ticket);
+      return updatedTicket;
+    } catch (error) {
+      return null;
+    }
+  };
 }

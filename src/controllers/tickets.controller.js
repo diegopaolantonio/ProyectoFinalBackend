@@ -53,3 +53,27 @@ export async function getTicketById(req, res) {
     return responder.errorResponse(res, error.message, error.status);
   }
 }
+
+export async function updateTicket(req, res) {
+  try {
+    const tid = req.params.tid;
+    const ticket = req.body.ticket;
+    const uploadedTicket = await ticketService.updateTicket(tid, ticket);
+    if (uploadedTicket && uploadedTicket.error) {
+      logger.warning(
+        `${ErrorsName.TICKETS_ERROR_NAME} - ${ErrorsMessage.GETTICKETSBYID_ERROR_MESSAGE} - ${ErrorsCause.GETBYID_ERROR_CAUSE}`
+      );
+      return CustomError.generateCustomError({
+        name: ErrorsName.TICKETS_ERROR_NAME,
+        message: ErrorsMessage.GETTICKETSBYID_ERROR_MESSAGE,
+        cause: ErrorsCause.GETBYID_ERROR_CAUSE,
+        status: 400,
+      });
+    } else {
+      logger.info(`Get ticket ${tid} success`);
+      return responder.successResponse(res, uploadedTicket);
+    }
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}

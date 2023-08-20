@@ -10,12 +10,14 @@ import { routerApi } from "./routes/index.js";
 import __dirname from "./dirname.js";
 import initializePassport from "./auth/passport.js";
 import { logger } from "./utilis/logger.js";
+import cors from "cors";
 
 // Inicializacion
 const app = express();
 const { dbUrl, sessionSecret } = config;
 
 // Middlewares
+app.use(cors({origin: "http://localhost:3000"}))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", express.static(`${__dirname}/public`));

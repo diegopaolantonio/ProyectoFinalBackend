@@ -19,6 +19,10 @@ const ticketSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  payment_complete: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const ticketModel = mongoose.model(ticketCollection, ticketSchema);

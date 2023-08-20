@@ -38,6 +38,7 @@ const config = {
   nodemailerPort: process.env.NODEMAILER_PORT,
   nodemailerUser: process.env.NODEMAILER_USER,
   nodemailerPassword: process.env.NODEMAILER_PASSWORD,
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   port: process.env.PORT || 8080,
   environment: process.env.ENVIRONMENT || "development",
   // port: port,

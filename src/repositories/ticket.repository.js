@@ -31,4 +31,13 @@ export default class TicketRepository {
       throw new Error(error);
     }
   };
+
+  updateTicket = async (tid, ticket) => {
+    try {
+      const updatedTicket = await ticketDao.updateTicket(tid, ticket);
+      return updatedTicket;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }

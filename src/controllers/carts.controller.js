@@ -3,12 +3,11 @@ import {
   productService,
   ticketService,
 } from "../services/index.js";
-import config from "../config.js";
-import { responder } from "../traits/Responder.js";
+// import config from "../config.js";
 import ticketDto from "../daos/dtos/ticket.dto.js";
-import transport from "../middlewares/nodemailer.js";
+// import transport from "../middlewares/nodemailer.js";
 import { logger } from "../utilis/logger.js";
-
+import { responder } from "../traits/Responder.js";
 import {
   ErrorsName,
   ErrorsCause,
@@ -304,38 +303,13 @@ export async function createTicket(req, res) {
       productsAdded,
       productsNotAdded,
     };
+
     if (!productsAdded.length) {
       result.error =
         "Ticker no generado, ningun producto seleccionado tiene Stock";
-    } else {
-      await transport.sendMail({
-        from: config.nodemailerUser,
-        to: email,
-        subject: `Compra finalizada ${result.createdTicket.code}`,
-        html: `
-        <div>
-        <h1>Datos de la compra:</h1>
-        <p>Codigo: ${result.createdTicket.code}</p>
-        <p>Fecha: ${result.createdTicket.purchase_datetime}</p>
-        <p>Monto: ${result.createdTicket.amount}</p>
-        <p>Comprador: ${result.createdTicket.purchaser}</p>
-        <br />
-        <h2>Ids de los productos comprados:</h2>
-        <p>${result.productsAdded}</p>
-        </h2>
-        <h2>Ids de los productos que no pudieron procesarse por falta de stock:</h2>
-        <p>${result.productsNotAdded}</p>
-        <br />
-        <br />
-        <h3>Muchas gracias por elegirnos, que disfrute sus productos, lo esperamos nuevamente pronto, saludos cordiales.</h3>
-        </div>
-        `,
-      });
-    }
 
-    if (result && result.error) {
-      logger.warning(
-        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.TICKET_ERROR_MESSAGE} - ${ErrorsCause.TICKET_ERROR_CAUSE}`
+    logger.warning(
+      `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.TICKET_ERROR_MESSAGE} - ${ErrorsCause.TICKET_ERROR_CAUSE}`
       );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
@@ -344,9 +318,47 @@ export async function createTicket(req, res) {
         status: 400,
       });
     } else {
-      logger.info(`Create ticket ${result.createdTicket.code} success`);
+    //   await transport.sendMail({
+    //     from: config.nodemailerUser,
+    //     to: email,
+    //     subject: `Compra finalizada ${result.createdTicket.code}`,
+    //     html: `
+    //     <div>
+    //     <h1>Datos de la compra:</h1>
+    //     <p>Codigo: ${result.createdTicket.code}</p>
+    //     <p>Fecha: ${result.createdTicket.purchase_datetime}</p>
+    //     <p>Monto: ${result.createdTicket.amount}</p>
+    //     <p>Comprador: ${result.createdTicket.purchaser}</p>
+    //     <br />
+    //     <h2>Ids de los productos comprados:</h2>
+    //     <p>${result.productsAdded}</p>
+    //     </h2>
+    //     <h2>Ids de los productos que no pudieron procesarse por falta de stock:</h2>
+    //     <p>${result.productsNotAdded}</p>
+    //     <br />
+    //     <br />
+    //     <h3>Muchas gracias por elegirnos, que disfrute sus productos, lo esperamos nuevamente pronto, saludos cordiales.</h3>
+    //     </div>
+    //     `,
+    //   });
+    logger.info(`Create ticket ${result.createdTicket.code} success`);
       return responder.successResponse(res, result);
     }
+
+    // if (result && result.error) {
+    //   logger.warning(
+    //     `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.TICKET_ERROR_MESSAGE} - ${ErrorsCause.TICKET_ERROR_CAUSE}`
+    //   );
+    //   return CustomError.generateCustomError({
+    //     name: ErrorsName.CARTS_ERROR_NAME,
+    //     message: ErrorsMessage.TICKET_ERROR_MESSAGE,
+    //     cause: ErrorsCause.TICKET_ERROR_CAUSE,
+    //     status: 400,
+    //   });
+    // } else {
+      // logger.info(`Create ticket ${result.createdTicket.code} success`);
+      // return responder.successResponse(res, result);
+    // }
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
   }
