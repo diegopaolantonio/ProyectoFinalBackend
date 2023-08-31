@@ -25,4 +25,3 @@ router.delete("/:cid/product/:pid", roleCartOwner, deleteProductInCart); // Llam
 router.post("/:cid/purchase", createTicket);
 
 export default router;
-

@@ -23,7 +23,7 @@ form.addEventListener("submit", async (e) => {
   ) {
     Swal.fire({
       icon: "error",
-      title: "Product not added",
+      title: "Producto no agregado",
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -37,7 +37,7 @@ form.addEventListener("submit", async (e) => {
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: `Added product`,
+      title: `Producto agregado`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -66,7 +66,7 @@ form.addEventListener("reset", async (e) => {
   ) {
     Swal.fire({
       icon: "error",
-      title: "User not deleted",
+      title: "Usuario no eliminado",
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -80,7 +80,7 @@ form.addEventListener("reset", async (e) => {
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: `User ${obj.email} deleted`,
+      title: `Usuario ${obj.email} eliminado`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {

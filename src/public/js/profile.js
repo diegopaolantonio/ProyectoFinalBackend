@@ -35,7 +35,7 @@ form.addEventListener("submit", async (e) => {
   ) {
     Swal.fire({
       icon: "error",
-      title: `Role not changed`,
+      title: `Rol no fue cambiado`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -49,7 +49,7 @@ form.addEventListener("submit", async (e) => {
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: `Role changed`,
+      title: `Rol cambiado ok`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {

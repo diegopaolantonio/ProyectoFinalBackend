@@ -19,7 +19,8 @@ const swaggerOptions = {
     openapi: "3.0.1",
     info: {
       title: "Ecommerce Programacion Backend 39715",
-      description: "Documentacion que soporta el sistema del ecommerce de proyecto final de Programacion Backend 39715",
+      description:
+        "Documentacion que soporta el sistema del ecommerce de proyecto final de Programacion Backend 39715",
     },
   },
   apis: [`${__dirname}/docs/**/*.yaml`],

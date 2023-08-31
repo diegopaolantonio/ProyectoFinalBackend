@@ -33,6 +33,8 @@ export async function getProfile(req, res) {
     let user = new profileDto(req.session.user);
     const { email, role } = user;
     let premium = false;
+    let adminView = false;
+    let adminNotView = true;
     if (role != "admin") {
       const { _id, verified_documentation } = await userService.getUserByEmail(
         email
@@ -42,9 +44,14 @@ export async function getProfile(req, res) {
       }
       user._id = _id;
       user.verified_documentation = verified_documentation;
+    } else {
+      adminView = true;
+      adminNotView = false;
     }
     res.render("profile", {
       user: user,
+      adminView: adminView,
+      adminNotView: adminNotView,
       premium: premium,
     });
   } catch (error) {
@@ -162,12 +169,12 @@ export async function getProductById(req, res) {
       status,
       owner,
       thumbnail,
-    // } = product2;
+      // } = product2;
     } = product;
-    if(req.session.user.email != owner) {
+    if (req.session.user.email != owner) {
       userNotAdminOrOwner = true;
     }
-    if(req.session.user.role === "admin" || req.session.user.email === owner) {
+    if (req.session.user.role === "admin" || req.session.user.email === owner) {
       userAdminOrOwner = true;
     }
 
@@ -311,15 +318,124 @@ export async function getTickets(req, res) {
     const tickets = await ticketService.getTickets();
     const user = new profileDto(req.session.user);
     tickets.forEach((e, index) => {
-      const _id = e._id;
-      const code = e.code;
-      const purchase_datetime = e.purchase_datetime;
-      const amount = e.amount;
-      const purchaser = e.purchaser;
+      const {
+        _id,
+        code,
+        purchase_datetime,
+        amount,
+        purchaser,
+        payment_complete,
+      } = e;
 
-      ticketsArray[index] = { _id, code, purchase_datetime, amount, purchaser };
+      ticketsArray[index] = {
+        _id,
+        code,
+        purchase_datetime,
+        amount,
+        purchaser,
+        payment_complete,
+      };
     });
     res.render("tickets", { user: user, ticketsArray: ticketsArray });
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function getTicketById(req, res) {
+  try {
+    const tid = req.params.tid;
+    const ticket = await ticketService.getTicketById(tid);
+    const user = new profileDto(req.session.user);
+    let soldProducts2 = [];
+    let unsoldProducts2 = [];
+    let adminNotView = false;
+
+    if (user.role != "admin") {
+      adminNotView = true;
+    }
+
+    const {
+      _id,
+      code,
+      purchase_datetime,
+      amount,
+      purchaser,
+      soldProducts,
+      unsoldProducts,
+      payment_complete,
+    } = ticket;
+
+    soldProducts.forEach((e) => {
+      const { product, quantity } = e;
+      soldProducts2.push({ product, quantity });
+    });
+    unsoldProducts.forEach((e) => {
+      const { product, quantity } = e;
+      unsoldProducts2.push({ product, quantity });
+    });
+
+    const payment_not_complete = !payment_complete;
+
+    res.render("userTickets", {
+      user: user,
+      _id: _id,
+      code: code,
+      purchase_datetime: purchase_datetime,
+      amount: amount,
+      purchaser: purchaser,
+      soldProducts: soldProducts2,
+      unsoldProducts: unsoldProducts,
+      payment_complete: payment_complete,
+      payment_not_complete: payment_not_complete,
+      adminNotView: adminNotView,
+    });
+  } catch (error) {
+    return responder.errorResponse(res, error.message, error.status);
+  }
+}
+
+export async function getTicketByPurchaser(req, res) {
+  try {
+    let ticketsArray = [];
+    let tickets;
+    const { email } = req.session.user;
+    let adminNotView = false;
+
+    if (user.role != "admin") {
+      adminNotView = true;
+    }
+
+    if (req.session.user.role === "admin") {
+      tickets = await ticketService.getTickets();
+    } else {
+      tickets = await ticketService.getTicketByPurchaser(email);
+    }
+    const user = new profileDto(req.session.user);
+    tickets.forEach((e, index) => {
+      const {
+        _id,
+        code,
+        purchase_datetime,
+        amount,
+        purchaser,
+        payment_complete,
+      } = e;
+
+      ticketsArray[index] = {
+        _id,
+        code,
+        purchase_datetime,
+        amount,
+        purchaser,
+        payment_complete,
+      };
+    });
+    res.render("tickets", {
+      user: user,
+      ticketsArray: ticketsArray,
+      adminNotView: adminNotView,
+    });
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
   }
@@ -416,17 +532,17 @@ export function getDocuments(req, res) {
     let documentIdentity = null;
     let documentHome = null;
     let documentAccount = null;
-    user.documents.forEach(documents => {
-      if(documents.reference === "identificacion") {
+    user.documents.forEach((documents) => {
+      if (documents.reference === "identificacion") {
         documentIdentity = documents.name;
       }
-      if(documents.reference === "domicilio") {
+      if (documents.reference === "domicilio") {
         documentHome = documents.name;
       }
-      if(documents.reference === "cuenta") {
+      if (documents.reference === "cuenta") {
         documentAccount = documents.name;
       }
-    })
+    });
     res.render("documents", {
       uid: req.user._id,
       profile: req.user.profile,
@@ -464,19 +580,30 @@ export async function getUserById(req, res) {
     let documentHome = null;
     let documentAccount = null;
 
-    const {_id, profile, first_name, last_name, email, age, cart, role, verified_documentation, last_connection} = user;
+    const {
+      _id,
+      profile,
+      first_name,
+      last_name,
+      email,
+      age,
+      cart,
+      role,
+      verified_documentation,
+      last_connection,
+    } = user;
 
-    user.documents.forEach(documents => {
-      if(documents.reference === "identificacion") {
+    user.documents.forEach((documents) => {
+      if (documents.reference === "identificacion") {
         documentIdentity = documents.name;
       }
-      if(documents.reference === "domicilio") {
+      if (documents.reference === "domicilio") {
         documentHome = documents.name;
       }
-      if(documents.reference === "cuenta") {
+      if (documents.reference === "cuenta") {
         documentAccount = documents.name;
       }
-    })
+    });
 
     res.render("userDetail", {
       _id: _id,

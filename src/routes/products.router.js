@@ -20,4 +20,3 @@ router.delete("/:pid", rolePremium, deleteProduct); // Eliminar un product espec
 router.post("/:pid/products", uploadProducts(), addProducts);
 
 export default router;
-

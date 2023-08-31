@@ -23,7 +23,7 @@ form.addEventListener("submit", async (e) => {
   ) {
     Swal.fire({
       icon: "error",
-      title: "Ticket not created",
+      title: "Ticket no creado",
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -33,25 +33,26 @@ form.addEventListener("submit", async (e) => {
   }
 
   result = await response.json();
+  console.log(result.payload.createdTicket);
 
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: "Ticket created",
+      title: "Ticket creado",
       html: `
       <p>Codigo: ${result.payload.createdTicket.code}</p>
       <p>Fecha: ${result.payload.createdTicket.purchase_datetime}</p>
       <p>Monto: ${result.payload.createdTicket.amount}</p>
       <p>Comprador: ${result.payload.createdTicket.purchaser}</p>
       <h2>Ids de los productos comprados:</h2>
-      <p>${result.payload.productsAdded}</p>
+      <p>${result.payload.createdTicket.soldProducts}</p>
       <h2>Ids de los productos que no pudieron procesarse por falta de stock:</h2>
-      <p>${result.payload.productsNotAdded}</p>
+      <p>${result.payload.createdTicket.unsoldProducts}</p>
       `,
       confirmButtonText: "Ok",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        location.reload();
+    }).then((result2) => {
+      if (result2.isConfirmed) {
+        location.href = `/api/v1/payments/payment/${result.payload.createdTicket._id}`;
       }
     });
   }
@@ -79,7 +80,7 @@ form.addEventListener("reset", async (e) => {
   ) {
     Swal.fire({
       icon: "error",
-      title: "Cart not emptied",
+      title: "Carrito no fue vaciado",
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -93,7 +94,7 @@ form.addEventListener("reset", async (e) => {
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: "Empty cart",
+      title: "Carrito vaciado",
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {

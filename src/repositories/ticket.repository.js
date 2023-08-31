@@ -23,6 +23,15 @@ export default class TicketRepository {
     }
   };
 
+  getTicketByPurchaser = async (email) => {
+    try {
+      const ticket = await this.ticketDao.getTicketByPurchaser(email);
+      return ticket;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
   createTicket = async (order) => {
     try {
       const createdTicket = await this.ticketDao.createTicket(order);
@@ -36,6 +45,15 @@ export default class TicketRepository {
     try {
       const updatedTicket = await ticketDao.updateTicket(tid, ticket);
       return updatedTicket;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  deleteTicket = async (tid) => {
+    try {
+      const deletedTicket = await ticketDao.deleteTicket(tid);
+      return deletedTicket;
     } catch (error) {
       throw new Error(error);
     }

@@ -19,6 +19,24 @@ const ticketSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  soldProducts: {
+    type: [
+      {
+        product: mongoose.Types.ObjectId,
+        quantity: Number,
+      },
+    ],
+    default: [],
+  },
+  unsoldProducts: {
+    type: [
+      {
+        product: mongoose.Types.ObjectId,
+        quantity: Number,
+      },
+    ],
+    default: [],
+  },
   payment_complete: {
     type: Boolean,
     default: false,

@@ -19,7 +19,7 @@ form.addEventListener("submit", async (e) => {
   if (response.status === 401 || response.status === 500) {
     Swal.fire({
       icon: "error",
-      title: `Email or password incorrect`,
+      title: `Email o password incorrecto`,
       confirmButtonText: "Ok",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -33,7 +33,7 @@ form.addEventListener("submit", async (e) => {
   if (result.status === "Success") {
     Swal.fire({
       icon: "success",
-      title: `Login Success`,
+      title: `Login correcto`,
       text: `Bienvenido ${result.payload.first_name} ${result.payload.last_name}`,
       confirmButtonText: "Ok",
     }).then((result) => {

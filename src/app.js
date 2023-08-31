@@ -16,8 +16,10 @@ import cors from "cors";
 const app = express();
 const { dbUrl, sessionSecret } = config;
 
+// CORS
+app.use(cors()); // corsOptions
+
 // Middlewares
-app.use(cors({origin: "http://localhost:3000"}))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", express.static(`${__dirname}/public`));

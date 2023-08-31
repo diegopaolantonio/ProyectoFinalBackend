@@ -21,8 +21,6 @@ dotenv.config();
 // const environment = data[0] === "production" ? "production" : "development";
 // const port = data[1] ? data[1] : "8080";
 
-
-
 const config = {
   dbName: process.env.DB_NAME,
   dbUser: process.env.DB_USER,
@@ -39,6 +37,7 @@ const config = {
   nodemailerUser: process.env.NODEMAILER_USER,
   nodemailerPassword: process.env.NODEMAILER_PASSWORD,
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+  stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
   port: process.env.PORT || 8080,
   environment: process.env.ENVIRONMENT || "development",
   // port: port,

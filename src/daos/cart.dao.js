@@ -58,5 +58,5 @@ export default class CartDao {
     } catch (error) {
       return null;
     }
-  }
+  };
 }

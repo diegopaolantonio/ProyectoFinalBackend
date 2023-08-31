@@ -1,13 +1,13 @@
 <h1>Bienvenido {{name}}</h1>
 <p>email: {{email}}</p>
 {{#if cart}}
-  <p>Edad: {{age}}</p>
-  <p>Cart: {{cart}}</p>
+<p>Edad: {{age}}</p>
+<p>Cart: {{cart}}</p>
 {{/if}}
 <p>Role: {{role}}</p>
 {{#if cart}}
-  <a href="/cart/{{cart}}"><button>Ver carrito</button></a>
-  <br />
+<a href="/cart/{{cart}}"><button>Ver carrito</button></a>
+<br />
 {{/if}}
 <br />
 <a href="/api/v1/sessions/logout"><button>Logout</button></a>
@@ -15,15 +15,15 @@
 <br />
 <h2>Productos:</h2>
 {{#each productsArray}}
-  <div>
-    <br />
-    <h3>Id: {{this._id}}</h3>
-    <p>Title: {{this.title}}</p>
-    <p>Category: {{this.category}}</p>
-    <p>Status: {{this.status}}</p>
-    <a href="/product/detail/{{this._id}}"><button>Detalle</button></a>
-    <br />
-  </div>
+<div>
+  <br />
+  <h3>Id: {{this._id}}</h3>
+  <p>Title: {{this.title}}</p>
+  <p>Category: {{this.category}}</p>
+  <p>Status: {{this.status}}</p>
+  <a href="/product/detail/{{this._id}}"><button>Detalle</button></a>
+  <br />
+</div>
 {{/each}}
 
 <br />
@@ -33,10 +33,10 @@
   <p>nextPage: {{nextPage}}</p>
 
   {{#if hasPrevPage}}
-    <a href="{{prevLink}}"><button>Prev page</button></a>
+  <a href="{{prevLink}}"><button>Prev page</button></a>
   {{/if}}
 
   {{#if hasNextPage}}
-    <a href="{{nextLink}}"><button>Next page</button></a>
+  <a href="{{nextLink}}"><button>Next page</button></a>
   {{/if}}
 </div>

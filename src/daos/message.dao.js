@@ -21,10 +21,10 @@ export default class MessageDao {
 
   deleteMessage = async function (messageId) {
     try {
-        const deletedMessage = await messageModel.deleteOne(messageId);
-        return deletedMessage;
+      const deletedMessage = await messageModel.deleteOne(messageId);
+      return deletedMessage;
     } catch (error) {
       return null;
     }
-  }
+  };
 }

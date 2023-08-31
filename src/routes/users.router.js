@@ -14,13 +14,17 @@ import {
   addProfiles,
   updateUserDetail,
 } from "../controllers/users.controller.js";
-import { checkLogged, roleAdmin, verifyDocuments } from "../middlewares/auth.js";
+import {
+  checkLogged,
+  roleAdmin,
+  verifyDocuments,
+} from "../middlewares/auth.js";
 import { uploadDocuments, uploadProfiles } from "../middlewares/multer.js";
 
 const router = Router();
 
 router.get("/", roleAdmin, getUsers);
-router.delete("/", roleAdmin, deleteInactiveUser) // Elimina de la base de datos todos los usuarios que no se hayan conectado en los ultimos 2 dias.
+router.delete("/", roleAdmin, deleteInactiveUser); // Elimina de la base de datos todos los usuarios que no se hayan conectado en los ultimos 2 dias.
 router.get("/:email", getUserByEmail); //Pedido de un user especifico por el email
 router.get("/:uid", getUserById); // Pedido de un user especifico por el uid (user id)
 router.post("/", roleAdmin, createUser); // Agregar un nuevo user

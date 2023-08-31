@@ -17,22 +17,38 @@
     <br />
     {{/if}}
   </form>
-    <a href="/cart/{{user.cart}}"><button>Ver carrito</button></a>
+  <a href="/api/v1/sessions/logout"><button>Logout</button></a>
+  {{#if adminNotView}}
+  <br />
+  <br />
+  <a href="/cart/{{user.cart}}"><button>Ver carrito</button></a>
+  {{/if}}
+  <br />
+  <br />
   <a href="/products"><button>Ver productos</button></a>
   {{#if premium}}
   <br />
   <br />
   <a href="/addProduct"><button>Crear o borrar productos</button></a>
   {{/if}}
+  {{#if adminView}}
   <br />
   <br />
-  <a href="/api/v1/sessions/logout"><button>Logout</button></a>
+  <a href="/addProduct"><button>Crear o borrar productos</button></a>
+  {{/if}}
+  {{#if adminNotView}}
   <br />
   <br />
   <a href="/documents"><button>Subir documentacion</button></a>
-<br />
+  {{/if}}
+  <br />
+  <br />
+  <a href="/tickets"><button>Tickets</button></a>
+  {{#if adminView}}
+  <br />
   <br />
   <a href="/users"><button>Usuarios</button></a>
+  {{/if}}
 
 </div>
 

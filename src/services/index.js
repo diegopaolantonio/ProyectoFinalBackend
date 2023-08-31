@@ -4,7 +4,6 @@ import ProductService from "./products.service.js";
 import TicketService from "./ticket.service.js";
 import UserService from "./users.service.js";
 import RestoreService from "./restore.service.js";
-import PaymentService from "./payment.service.js";
 
 export const cartService = new CartService();
 export const messageService = new MessageService();
@@ -12,4 +11,3 @@ export const productService = new ProductService();
 export const ticketService = new TicketService();
 export const userService = new UserService();
 export const restoreService = new RestoreService();
-export const paymentService = new PaymentService();

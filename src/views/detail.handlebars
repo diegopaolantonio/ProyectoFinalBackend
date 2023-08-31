@@ -3,16 +3,16 @@
   <form id="productForm">
     <p>email: {{email}}</p>
     {{#if cart}}
-      <p>Edad: {{age}}</p>
+    <p>Edad: {{age}}</p>
     {{/if}}
     <p>Role: {{role}}</p>
     {{#if cart}}
-      <p>Cart: {{cart}}<input type="hidden" name="cid" value="{{cart}}" /></p>
-      <br />
-      <br />
-      <a href="/cart/{{cart}}">Ver carrito</a>
-      <br />
-      <br />
+    <p>Cart: {{cart}}<input type="hidden" name="cid" value="{{cart}}" /></p>
+    <br />
+    <br />
+    <a href="/cart/{{cart}}">Ver carrito</a>
+    <br />
+    <br />
     {{/if}}
     <a href="/api/v1/sessions/logout">Logout</a>
     <br />
@@ -30,17 +30,17 @@
       <p>Owner: {{owner}}</p>
       <p>Thumbnail: {{thumbnail}}</p>
       {{#if userNotAdminOrOwner}}
-        {{#if cart}}
-          <p>Cantidad: <input type="number" name="quantity" /></p>
-          <br />
-          <input type="submit" />
-          <br />
-        {{/if}}
+      {{#if cart}}
+      <p>Cantidad: <input type="number" name="quantity" /></p>
+      <br />
+      <input type="submit" />
+      <br />
+      {{/if}}
       {{/if}}
       {{#if userAdminOrOwner}}
-          <br />
-          <input type="reset" value="Eliminar" />
-          <br />
+      <br />
+      <input type="reset" value="Eliminar" />
+      <br />
       {{/if}}
     </div>
   </form>

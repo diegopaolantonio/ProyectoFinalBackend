@@ -18,11 +18,24 @@ export default class TicketService {
     }
   };
 
-  getTicketByid = async (tid) => {
+  getTicketById = async (tid) => {
     try {
       const ticket = await this.ticketRepository.getTicketById(tid);
       if (!ticket) {
         return { error: "Id not found" };
+      } else {
+        return ticket;
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  getTicketByPurchaser = async (email) => {
+    try {
+      const ticket = await this.ticketRepository.getTicketByPurchaser(email);
+      if (!ticket) {
+        return { error: "Email not found" };
       } else {
         return ticket;
       }
@@ -53,6 +66,19 @@ export default class TicketService {
         return { error: "Upload ticket error" };
       }
       return updatedTicket;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  deleteTicket = async (tid) => {
+    try {
+      const deletedTicket = await ticketRepository.deleteTicket(tid);
+
+      if (!deletedTicket) {
+        return { error: "Delete ticket error" };
+      }
+      return deletedTicket;
     } catch (error) {
       throw new Error(error);
     }

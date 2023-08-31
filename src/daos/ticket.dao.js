@@ -19,6 +19,15 @@ export default class TicketDao {
     }
   };
 
+  getTicketByPurchaser = async function (email) {
+    try {
+      const ticket = await ticketModel.find({ purchaser: email });
+      return ticket;
+    } catch (error) {
+      return null;
+    }
+  };
+
   createTicket = async function (order) {
     try {
       const createdTicket = await ticketModel.create(order);
@@ -35,12 +44,21 @@ export default class TicketDao {
     } catch (error) {
       return null;
     }
-  }
+  };
 
   updateTicket = async function (tid, ticket) {
     try {
       const updatedTicket = await ticketModel.updateOne({ _id: tid }, ticket);
       return updatedTicket;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  deleteTicket = async function (tid) {
+    try {
+      const deletedTicket = await ticketModel.deleteOne({ _id: tid });
+      return deletedTicket;
     } catch (error) {
       return null;
     }

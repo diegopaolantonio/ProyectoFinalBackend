@@ -255,6 +255,8 @@ export async function createTicket(req, res) {
     let productsNotAdded = [];
     let productsAddedQuantity = [];
     let productsNotAddedQuantity = [];
+    let soldProducts = [];
+    let unsoldProducts = [];
     const cart = await cartService.getCartById(cid);
 
     cart.forEach((element) => {
@@ -264,11 +266,15 @@ export async function createTicket(req, res) {
     cart_1.products.forEach(async (element, index) => {
       let quantityInCart;
       pid = element.product._id;
+      const product = pid;
+      const quantity = element.quantity;
+
       if (element.quantity < element.product.stock) {
         amount += element.product.price * element.quantity;
         quantityInCart = element.product.stock - element.quantity;
         productsAdded.push(pid);
         productsAddedQuantity.push(quantityInCart);
+        soldProducts.push({ product, quantity });
 
         let productStock;
         productStock = { stock: quantityInCart };
@@ -276,13 +282,20 @@ export async function createTicket(req, res) {
       } else {
         productsNotAdded.push(pid);
         productsNotAddedQuantity.push(element.quantity);
+        unsoldProducts.push({ product, quantity });
       }
     });
 
     var datetime = new Date();
     var purchase_datetime = datetime.toLocaleString();
 
-    const order = new ticketDto(amount, email, purchase_datetime);
+    const order = new ticketDto(
+      amount,
+      email,
+      purchase_datetime,
+      soldProducts,
+      unsoldProducts
+    );
     const createdTicket = await ticketService.createTicket(order);
 
     await cartService.deleteCart(cid);
@@ -308,8 +321,8 @@ export async function createTicket(req, res) {
       result.error =
         "Ticker no generado, ningun producto seleccionado tiene Stock";
 
-    logger.warning(
-      `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.TICKET_ERROR_MESSAGE} - ${ErrorsCause.TICKET_ERROR_CAUSE}`
+      logger.warning(
+        `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.TICKET_ERROR_MESSAGE} - ${ErrorsCause.TICKET_ERROR_CAUSE}`
       );
       return CustomError.generateCustomError({
         name: ErrorsName.CARTS_ERROR_NAME,
@@ -318,49 +331,10 @@ export async function createTicket(req, res) {
         status: 400,
       });
     } else {
-    //   await transport.sendMail({
-    //     from: config.nodemailerUser,
-    //     to: email,
-    //     subject: `Compra finalizada ${result.createdTicket.code}`,
-    //     html: `
-    //     <div>
-    //     <h1>Datos de la compra:</h1>
-    //     <p>Codigo: ${result.createdTicket.code}</p>
-    //     <p>Fecha: ${result.createdTicket.purchase_datetime}</p>
-    //     <p>Monto: ${result.createdTicket.amount}</p>
-    //     <p>Comprador: ${result.createdTicket.purchaser}</p>
-    //     <br />
-    //     <h2>Ids de los productos comprados:</h2>
-    //     <p>${result.productsAdded}</p>
-    //     </h2>
-    //     <h2>Ids de los productos que no pudieron procesarse por falta de stock:</h2>
-    //     <p>${result.productsNotAdded}</p>
-    //     <br />
-    //     <br />
-    //     <h3>Muchas gracias por elegirnos, que disfrute sus productos, lo esperamos nuevamente pronto, saludos cordiales.</h3>
-    //     </div>
-    //     `,
-    //   });
-    logger.info(`Create ticket ${result.createdTicket.code} success`);
+      logger.info(`Create ticket ${result.createdTicket.code} success`);
       return responder.successResponse(res, result);
     }
-
-    // if (result && result.error) {
-    //   logger.warning(
-    //     `${ErrorsName.CARTS_ERROR_NAME} - ${ErrorsMessage.TICKET_ERROR_MESSAGE} - ${ErrorsCause.TICKET_ERROR_CAUSE}`
-    //   );
-    //   return CustomError.generateCustomError({
-    //     name: ErrorsName.CARTS_ERROR_NAME,
-    //     message: ErrorsMessage.TICKET_ERROR_MESSAGE,
-    //     cause: ErrorsCause.TICKET_ERROR_CAUSE,
-    //     status: 400,
-    //   });
-    // } else {
-      // logger.info(`Create ticket ${result.createdTicket.code} success`);
-      // return responder.successResponse(res, result);
-    // }
   } catch (error) {
     return responder.errorResponse(res, error.message, error.status);
   }
 }
-

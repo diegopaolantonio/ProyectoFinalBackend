@@ -1,12 +1,11 @@
-<br />
 <form id="cartForm">
-<input type="hidden" name="cid" value="{{cartId}}">Cart Id: {{cartId}}</input>
-<br />
-<br />
-<input type="submit" value="Generar ticket"/ >
-<br />
-<br />
-<input type="reset" value="Vaciar carrito"/ >
+  <input type="hidden" name="cid" value="{{cartId}}">Cart Id: {{cartId}}</input>
+  <br />
+  <br />
+  <input type="submit" value="Generar ticket" />
+  <br />
+  <br />
+  <input type="reset" value="Vaciar carrito" />
 </form>
 <a type="button" href="/products"><button>Ir a productos</button></a>
 <br />
@@ -15,21 +14,21 @@
 <div>
   <h1>Productos en carrito:</h1>
   {{#each cartProducts}}
-    <div>
-      <h3>Product Id: {{this._id}}</h3>
-      <p>Title: {{this.title}}</p>
-      <p>Description: {{this.description}}</p>
-      <p>Price: {{this.price}}</p>
-      <p>Code: {{this.code}}</p>
-      <p>Stock: {{this.stock}}</p>
-      <p>Category: {{this.category}}</p>
-      <p>Status: {{this.status}}</p>
-      <p>Owner: {{this.owner}}</p>
-      <p>Thumbnail: {{this.thumbnail}}</p>
-      <p>Quantity: {{this.quantity}}</p>
-      <br />
-      <a href="/product/detail/{{this._id}}"><button>Detalle del producto</button></a>
-    </div>
+  <div>
+    <h3>Product Id: {{this._id}}</h3>
+    <p>Title: {{this.title}}</p>
+    <p>Description: {{this.description}}</p>
+    <p>Price: {{this.price}}</p>
+    <p>Code: {{this.code}}</p>
+    <p>Stock: {{this.stock}}</p>
+    <p>Category: {{this.category}}</p>
+    <p>Status: {{this.status}}</p>
+    <p>Owner: {{this.owner}}</p>
+    <p>Thumbnail: {{this.thumbnail}}</p>
+    <p>Quantity: {{this.quantity}}</p>
+    <br />
+    <a href="/product/detail/{{this._id}}"><button>Detalle del producto</button></a>
+  </div>
   {{/each}}
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

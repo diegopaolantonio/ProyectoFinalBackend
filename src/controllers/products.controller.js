@@ -152,9 +152,7 @@ export async function deleteProduct(req, res) {
   try {
     const pid = req.params.pid;
     const product = await productService.getProductById(pid);
-    console.log(req.session.user.role);
-    console.log(req.session.user.email);
-    console.log(product.owner);
+
     if (
       (req.session.user.role === "premium" &&
         req.session.user.email === product.owner) ||
@@ -172,9 +170,7 @@ export async function deleteProduct(req, res) {
           status: 400,
         });
       } else {
-        console.log("object");
-        console.log(product);
-        if (product.owner && (product.owner != "admin")) {
+        if (product.owner && product.owner != "admin") {
           await transport.sendMail({
             from: config.nodemailerUser,
             to: product.owner,

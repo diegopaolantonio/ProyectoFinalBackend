@@ -1,0 +1,50 @@
+<h1>Bienvenido {{user.name}}</h1>
+{{#if adminNotView}}
+<p>Edad: {{user.age}}</p>
+{{/if}}
+<p>Email: {{user.email}}</p>
+<p>Role: {{user.role}}</p>
+{{#if adminNotView}}
+<p>Cart: {{user.cart}}</p>
+{{/if}}
+<a href="/api/v1/sessions/logout"><button>Logout</button></a>
+<br />
+<br />
+<a href="/"><button>Ver perfil</button></a>
+<br />
+{{#if adminNotView}}
+<br />
+<a href="/cart/{{user.cart}}"><button>Carrito</button></a>
+{{/if}}
+<br />
+<br />
+<div>
+  <form id="userTicketForm">
+    <p>Id: <input type="hidden" name="_id" value={{_id}} />{{_id}}</p>
+    <p>Code: {{code}}</p>
+    <p>Purchase datetime: {{purchase_datetime}}</p>
+    <p>Amount: {{amount}}</p>
+    <p>Purchaser: {{purchaser}}</p>
+    <p>Productos procesados:</p>
+    {{#each soldProducts}}
+    <p>- Product: {{this.product}} - - Cantidad: {{this.quantity}}</p>
+    {{/each}}
+    <p>Productos no procesados:</p>
+    {{#each unsoldProducts}}
+    <p>- Product: {{this.product}} - - Cantidad: {{this.quantity}}</p>
+    {{/each}}
+    <br />
+    <p>Payment complete: {{payment_complete}}</p>
+    <br />
+    <br />
+    {{#if payment_not_complete}}
+    {{#if adminNotView}}
+    <a href="/api/v1/payments/payment/{{_id}}"><button>Reintentar pago</button></a>
+    {{/if}}
+    <input type="reset" value="Eliminar" />
+    {{/if}}
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/userTicket.js"></script>

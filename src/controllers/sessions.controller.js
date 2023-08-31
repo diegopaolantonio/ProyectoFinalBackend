@@ -60,7 +60,7 @@ export async function postLogin(req, res) {
       verified_documentation: req.user.verified_documentation,
     };
 
-    if(req.user.role != "admin") {
+    if (req.user.role != "admin") {
       const user = await userService.getUserByEmail(req.session.user.email);
       user.last_connection = Date.now();
       await userService.updateUser(user._id, user);

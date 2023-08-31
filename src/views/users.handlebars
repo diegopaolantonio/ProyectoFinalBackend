@@ -1,7 +1,8 @@
 <div>
-  <h1>Bienvenido Admin</h1>
-  <h2>Pagina para seleccion de usuario</h2>
-  <a href="/"><button>Perfil</button></a>
+  <h1>Pagina para seleccion de usuario</h1>
+  <a href="/"><button>Ver perfil</button></a>
+  <br />
+  <br />
   <a href="/api/v1/sessions/logout"><button>Logout</button></a>
 
   <br />
@@ -9,15 +10,15 @@
   <form id="userForm">
     <input type="reset" value="Eliminar usuarios inactivos"></input>
   </form>
-
   <br />
+  <h2>Usuarios:</h2>
   {{#each usersArray}}
   <div>
-    <br />
     <p>Nombre: {{this.first_name}} {{this.last_name}}</p>
     <p>Email: {{this.email}}</p>
     <p>Role: {{this.role}}</p>
     <a href="/users/{{this._id}}"><button>Detalle</button></a>
+    <br />
     <br />
   </div>
   {{/each}}
