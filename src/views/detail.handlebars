@@ -10,11 +10,14 @@
     <p>Cart: {{cart}}<input type="hidden" name="cid" value="{{cart}}" /></p>
     <br />
     <br />
-    <a href="/cart/{{cart}}">Ver carrito</a>
+    <a href="/"><button>Ver perfil</button></a>
+    <br />
+    <br />
+    <a href="/cart/{{cart}}"><button>Ver carrito</button></a>
     <br />
     <br />
     {{/if}}
-    <a href="/api/v1/sessions/logout">Logout</a>
+    <a href="/api/v1/sessions/logout"><button>Logout</button></a>
     <br />
     <br />
     <h2>Detalle de Producto:</h2>
