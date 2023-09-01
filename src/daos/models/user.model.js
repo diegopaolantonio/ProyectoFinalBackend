@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
   },
   verified_documentation: {
     type: String,
-    enum: ["none", "partial", "complete", "profile"],
+    enum: ["none", "partial", "complete"],
     default: "none",
   },
   last_connection: {

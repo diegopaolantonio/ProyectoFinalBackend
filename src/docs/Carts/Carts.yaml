@@ -252,30 +252,6 @@ components:
         products:
           product: ObjectId("s5a46dfas4df6asdfasdf45asf")
           quantity: 2
-    Tickets:
-      type: object
-      properties:
-        code:
-          type: String
-          required: true
-          description: Codigo unico que identifica el ticket.
-        purchase_datetime:
-          type: String
-          required: true
-          description: Fecha y hora de emision del ticket.
-        amount:
-          type: Number
-          required: true
-          description: Monto total del ticket.
-        purchaser:
-          type: String
-          required: true
-          description: Email de identificacion del comprador el ticket.
-      example:
-        code: 65465484515
-        purchase_datetime: 5/7/2023, 04:03:46
-        amount: 25478
-        purchaser: nombre@correo.com
   requestBodies:
     updateProductInCart:
       type: object

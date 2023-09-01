@@ -115,6 +115,30 @@ paths:
           description: Sin autorizacion para elminar el producto.
         "500":
           description: Error de comunicacion con la base de datos.
+  /api/v1/products/{pid}/products:
+    post:
+      summary: Agrega documentacion por Multer a un producto de la base de datos. Solo un usuario Admin o Premium puede agregar producto.
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/postProduct"
+      responses:
+        "200":
+          description: Producto agregado.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "400":
+          description: Error al agregar producto a la base de datos.
+        "500":
+          description: Error de comunicacion con la base de datos.
 
 components:
   schemas:

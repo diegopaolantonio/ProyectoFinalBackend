@@ -17,6 +17,6 @@ router.post("/", rolePremium, addProduct); // Agregar un nuevo product
 router.get("/:pid", getProductById); // Pedido de un product especifico por el pid (product id)
 router.put("/:pid", rolePremium, updateProduct); // Actualizar los datos de un product epecifico por el pid (product id)
 router.delete("/:pid", rolePremium, deleteProduct); // Eliminar un product especifico por el pid (product id)
-router.post("/:pid/products", uploadProducts(), addProducts);
+router.post("/:pid/products", uploadProducts(), addProducts); // Agrega documentacion a un producto especifico por el pid (product id)
 
 export default router;

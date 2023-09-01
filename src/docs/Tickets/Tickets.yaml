@@ -1,0 +1,225 @@
+paths:
+  /api/v1/tickets/:
+    get:
+      summary: Obtiene todos los tickets, se debe tener una sesion iniciada para esto.
+      tags:
+        - Tickets
+      responses:
+        "200":
+          description: Array de tickets recibido con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Tickets"
+        "400":
+          description: Error al obtener el array de tickets de la base de datos.
+        "500":
+          description: Error de comunicacion con la base de datos.
+  /api/v1/tickets/{tid}:
+    get:
+      summary: Obtiene el ticket correspondiente a id. Se debe tener una sesion iniciada para esto.
+      tags:
+        - Tickets
+      parameters:
+        - name: tid
+          in: path
+          required: true
+          description: Id del ticket a buscar.
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: Ticket recibido con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Tickets"
+        "400":
+          description: Id no encontrado.
+        "500":
+          description: Error de comunicacion con la base de datos.
+    put:
+      summary: Actualiza ticket existente correspondiente al id. Se debe tener una sesion iniciada para esto.
+      tags:
+        - Tickets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateTicket"
+      parameters:
+        - name: tid
+          in: path
+          required: true
+          description: Id del ticket a actualizar.
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: Ticket actualizado con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Tickets"
+        "400":
+          description: Id no encontrado, o datos incorrectos.
+        "500":
+          description: Error de comunicacion con la base de datos.
+    delete:
+      summary: Elimina ticket existente correspondiente al id. Se debe tener una sesion iniciada para esto.
+      tags:
+        - Tickets
+      parameters:
+        - name: tid
+          in: path
+          required: true
+          description: Id del ticket a eliminar.
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: Ticket eliminado con exito.
+        "400":
+          description: Id no encontrado.
+        "404":
+          description: Sin autorizacion para elminar el ticket.
+        "500":
+          description: Error de comunicacion con la base de datos.
+
+components:
+  schemas:
+    Tickets:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo.
+        code:
+          type: String
+          required: true
+          description: Codigo uno que identifica el ticket.
+        purchase_datetime:
+          type: String
+          required: true
+          description: Fecha y hora de creacion del ticket.
+        amount:
+          type: Number
+          required: true
+          description: Monto total del ticket.
+        purchaser:
+          type: String
+          required: true
+          description: Usuario que ejecuta la compra.
+        soldProducts:
+          type: Array
+          required: true
+          description: Productos y cantidades que fueron vendidas en este ticket.
+        unsoldProducts:
+          type: Array
+          required: true
+          description: Productos que no pudieron agregarse en este ticket.
+          items:
+            $ref: "#components/requestBodies/soldProducts"
+        payment_complete:
+          type: Boolean
+          required: true
+          description: Indicacion si se ejecuto correctamente el pago de este ticket.
+          items:
+            $ref: "#components/requestBodies/unsoldProducts"
+      example:
+        _id: ObjectId("s5a46dfas4df6asdfasdf45asf")
+        code: "1693464759937"
+        purchase_datetime: "31/8/2023, 03:52:38"
+        amount: 123
+        purchaser: "diego@correo.com"
+        soldProducts:
+          product: ObjectId("e5f66dfas4dt65fdfasdf45xcv")
+          quantity: 3
+        unsoldProducts:
+          product: ObjectId("d6r6tdfasdf875fdfasdf4rty8")
+          quantity: 10
+        payment_complete: true
+  requestBodies:
+    updateTicket:
+      type: object
+      properties:
+        code:
+          type: String
+          required: true
+          description: Codigo uno que identifica el ticket.
+        purchase_datetime:
+          type: String
+          required: true
+          description: Fecha y hora de creacion del ticket.
+        amount:
+          type: Number
+          required: true
+          description: Monto total del ticket.
+        purchaser:
+          type: String
+          required: true
+          description: Usuario que ejecuta la compra.
+        soldProducts:
+          type: Array
+          required: true
+          description: Productos y cantidades que fueron vendidas en este ticket.
+        unsoldProducts:
+          type: Array
+          required: true
+          description: Productos que no pudieron agregarse en este ticket.
+          items:
+            $ref: "#components/requestBodies/soldProducts"
+        payment_complete:
+          type: Boolean
+          required: true
+          description: Indicacion si se ejecuto correctamente el pago de este ticket.
+          items:
+            $ref: "#components/requestBodies/unsoldProducts"
+      example:
+        code: "1693464759937"
+        purchase_datetime: "31/8/2023, 03:52:38"
+        amount: 123
+        purchaser: "diego@correo.com"
+        soldProducts:
+          product: ObjectId("e5f66dfas4dt65fdfasdf45xcv")
+          quantity: 3
+        unsoldProducts:
+          product: ObjectId("d6r6tdfasdf875fdfasdf4rty8")
+          quantity: 10
+        payment_complete: true
+    soldProducts:
+      type: object
+      properties:
+        product:
+          type: ObjectId
+          required: true
+          description: Id del producto vendido.
+        quantity:
+          type: Number
+          required: true
+          description: Cantidad del producto.
+      example:
+        product: ObjectId("e5f66dfas4dt65fdfasdf45xcv")
+        quantity: 3
+    unsoldProducts:
+      type: object
+      properties:
+        product:
+          type: ObjectId
+          required: true
+          description: Id del producto vendido.
+        quantity:
+          type: Number
+          required: true
+          description: Cantidad del producto.
+      example:
+        product: ObjectId("d6r6tdfasdf875fdfasdf4rty8")
+        quantity: 10
+
